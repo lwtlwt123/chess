@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 1010" role="img" aria-labelledby="title desc">
+  <title id="title">激光雕刻象棋棋盘</title>
+  <desc id="desc">参考实体激光雕刻机出品的浅木象棋棋盘，留白舒展、线条克制、浅木板烧刻质感。</desc>
+  <defs>
+    <linearGradient id="wood" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#eadcc5" />
+      <stop offset="0.32" stop-color="#d5bd98" />
+      <stop offset="0.62" stop-color="#f5e8d2" />
+      <stop offset="1" stop-color="#bea077" />
+    </linearGradient>
+    <linearGradient id="side" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d9bea0" />
+      <stop offset="1" stop-color="#8e6b4c" />
+    </linearGradient>
+    <pattern id="grain" width="240" height="62" patternUnits="userSpaceOnUse" patternTransform="rotate(-5)">
+      <path d="M -42 30 C 17 13, 79 47, 145 25 C 184 12, 223 17, 281 34" fill="none" stroke="#846447" stroke-width="1.9" stroke-opacity="0.1" />
+      <path d="M -26 48 C 38 32, 103 67, 184 45 C 217 36, 249 39, 286 52" fill="none" stroke="#fff4df" stroke-width="1.7" stroke-opacity="0.18" />
+    </pattern>
+    <style>
+      .cut,
+      .mark {
+        fill: none;
+        stroke: #5d4331;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .cut {
+        stroke-width: 3;
+      }
+
+      .thin {
+        stroke-width: 2.7;
+      }
+
+      .mark {
+        stroke-width: 2.8;
+      }
+
+      .river {
+        fill: #664a36;
+        font-family: "STKaiti", "KaiTi", "Songti SC", serif;
+        font-size: 46px;
+        font-weight: 700;
+        letter-spacing: 11px;
+      }
+    </style>
+  </defs>
+  <rect x="34" y="34" width="852" height="942" rx="22" fill="url(#side)" />
+  <rect x="48" y="48" width="824" height="914" rx="16" fill="url(#wood)" />
+  <rect x="48" y="48" width="824" height="914" rx="16" fill="url(#grain)" />
+  <rect x="76" y="76" width="768" height="858" rx="8" fill="none" stroke="#8b6b4c" stroke-width="2.2" opacity="0.45" />
+  <g>
+    <line class="cut" x1="130" y1="122" x2="786" y2="122" />
+      <line class="cut" x1="130" y1="204" x2="786" y2="204" />
+      <line class="cut" x1="130" y1="286" x2="786" y2="286" />
+      <line class="cut" x1="130" y1="368" x2="786" y2="368" />
+      <line class="cut" x1="130" y1="450" x2="786" y2="450" />
+      <line class="cut" x1="130" y1="532" x2="786" y2="532" />
+      <line class="cut" x1="130" y1="614" x2="786" y2="614" />
+      <line class="cut" x1="130" y1="696" x2="786" y2="696" />
+      <line class="cut" x1="130" y1="778" x2="786" y2="778" />
+      <line class="cut" x1="130" y1="860" x2="786" y2="860" />
+    <line class="cut" x1="130" y1="122" x2="130" y2="860" />
+      <line class="cut" x1="212" y1="122" x2="212" y2="450" />
+      <line class="cut" x1="212" y1="532" x2="212" y2="860" />
+      <line class="cut" x1="294" y1="122" x2="294" y2="450" />
+      <line class="cut" x1="294" y1="532" x2="294" y2="860" />
+      <line class="cut" x1="376" y1="122" x2="376" y2="450" />
+      <line class="cut" x1="376" y1="532" x2="376" y2="860" />
+      <line class="cut" x1="458" y1="122" x2="458" y2="450" />
+      <line class="cut" x1="458" y1="532" x2="458" y2="860" />
+      <line class="cut" x1="540" y1="122" x2="540" y2="450" />
+      <line class="cut" x1="540" y1="532" x2="540" y2="860" />
+      <line class="cut" x1="622" y1="122" x2="622" y2="450" />
+      <line class="cut" x1="622" y1="532" x2="622" y2="860" />
+      <line class="cut" x1="704" y1="122" x2="704" y2="450" />
+      <line class="cut" x1="704" y1="532" x2="704" y2="860" />
+      <line class="cut" x1="786" y1="122" x2="786" y2="860" />
+    <line class="cut thin" x1="376" y1="122" x2="540" y2="286" />
+      <line class="cut thin" x1="540" y1="122" x2="376" y2="286" />
+      <line class="cut thin" x1="376" y1="696" x2="540" y2="860" />
+      <line class="cut thin" x1="540" y1="696" x2="376" y2="860" />
+    <path class="mark" d="M 199 261 v 12 h -12 M 199 311 v -12 h -12 M 225 261 v 12 h 12 M 225 311 v -12 h 12" />
+      <path class="mark" d="M 691 261 v 12 h -12 M 691 311 v -12 h -12 M 717 261 v 12 h 12 M 717 311 v -12 h 12" />
+      <path class="mark" d="M 143 343 v 12 h 12 M 143 393 v -12 h 12" />
+      <path class="mark" d="M 281 343 v 12 h -12 M 281 393 v -12 h -12 M 307 343 v 12 h 12 M 307 393 v -12 h 12" />
+      <path class="mark" d="M 445 343 v 12 h -12 M 445 393 v -12 h -12 M 471 343 v 12 h 12 M 471 393 v -12 h 12" />
+      <path class="mark" d="M 609 343 v 12 h -12 M 609 393 v -12 h -12 M 635 343 v 12 h 12 M 635 393 v -12 h 12" />
+      <path class="mark" d="M 773 343 v 12 h -12 M 773 393 v -12 h -12" />
+      <path class="mark" d="M 143 589 v 12 h 12 M 143 639 v -12 h 12" />
+      <path class="mark" d="M 281 589 v 12 h -12 M 281 639 v -12 h -12 M 307 589 v 12 h 12 M 307 639 v -12 h 12" />
+      <path class="mark" d="M 445 589 v 12 h -12 M 445 639 v -12 h -12 M 471 589 v 12 h 12 M 471 639 v -12 h 12" />
+      <path class="mark" d="M 609 589 v 12 h -12 M 609 639 v -12 h -12 M 635 589 v 12 h 12 M 635 639 v -12 h 12" />
+      <path class="mark" d="M 773 589 v 12 h -12 M 773 639 v -12 h -12" />
+      <path class="mark" d="M 199 671 v 12 h -12 M 199 721 v -12 h -12 M 225 671 v 12 h 12 M 225 721 v -12 h 12" />
+      <path class="mark" d="M 691 671 v 12 h -12 M 691 721 v -12 h -12 M 717 671 v 12 h 12 M 717 721 v -12 h 12" />
+  </g>
+  <rect x="130" y="122" width="656" height="738" fill="none" stroke="#543b2a" stroke-width="3.8" opacity="0.9" />
+  <text class="river" x="294" y="502" text-anchor="middle">楚河</text>
+  <text class="river" x="622" y="502" text-anchor="middle">汉界</text>
+</svg>
