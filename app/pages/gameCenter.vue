@@ -1,90 +1,164 @@
 <template>
-  <div class="gameCenter">
-    <!-- 棋盘部分 -->
+  <div class="gameCenter" :style="gameCenterStyle">
+    <button v-if="!isStarted" class="start" type="button" @pointerdown.stop.prevent="handleStart">
+      开始
+    </button>
+    <div v-else class="status" :class="{ victory: winnerCamp }">
+      {{ statusText }}
+    </div>
+    <button v-if="isStarted" class="bgm-toggle" type="button" @pointerdown.stop.prevent="toggleBgm">
+      {{ isBgmPlaying ? '关闭音乐' : '开启音乐' }}
+    </button>
+    <!-- 棋盘画布：绘制和点击逻辑都在 useChessBoard 里处理 -->
     <div class="board">
-      <canvas ref="canvasRef" @click="handleClick"></canvas>
+      <canvas ref="canvasRef" @pointerdown="handlePointerDown"></canvas>
+    </div>
+    <!-- 胜利失败弹出框 -->
+    <div class="gameStatus" v-show='winnerCamp'>
+      <GameVictory v-show="winnerCamp" />
+      <GameDefeat v-show='0' />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { chessAssets, initialPieces } from '~/data/chessPieceData'
-import { getCoordinates, getPixels, drawPiece } from '~/constants/chessAssets'
+import { computed, ref } from 'vue'
+import { chessAssets, type Camp } from '~/data/chessPieceData'
 
-// 创建canvas画布
 const canvasRef = ref<HTMLCanvasElement | null>(null)
+const isStarted = ref(false)
+const isBgmPlaying = ref(false)
+const { $audio } = useNuxtApp()
 
+const playBgm = () => {
+  $audio.play('bgm', { loop: true })
+  isBgmPlaying.value = true
+}
 
-// 生命周期 onMounted dom挂载完成阶段
-onMounted(() => {
-  const canvas = canvasRef.value
-  if (!canvas) return
+const stopBgm = () => {
+  $audio.stop('bgm')
+  isBgmPlaying.value = false
+}
 
-  const ctx = canvas.getContext('2d')
-  if (!ctx) return
+const handleStart = () => {
+  $audio.unlock()
+  playBgm()
+  isStarted.value = true
+}
 
-  const img = new Image()
-  img.src = chessAssets.boardWood
-
-  img.onload = () => {
-    canvas.width = 920
-    canvas.height = 1010
-
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+const toggleBgm = () => {
+  if (isBgmPlaying.value) {
+    stopBgm()
+    return
   }
 
-  //初始化棋盘
-  init()
+  $audio.unlock()
+  playBgm()
+}
+
+const campText = (camp: Camp) => {
+  return camp === 'red' ? '红方' : '黑方'
+}
+
+// 页面只负责挂载 canvas；棋盘状态、绘制、移动都封装在 useChessBoard。
+const { handlePointerDown, currentCamp, checkedCamp, winnerCamp } = useChessBoard(canvasRef)
+
+const gameCenterStyle = computed(() => ({
+  '--game-background-image': `url("${chessAssets.gameBackground}")`
+}))
+
+const statusText = computed(() => {
+  if (winnerCamp.value) return `${campText(winnerCamp.value)}胜利`
+  if (checkedCamp.value === currentCamp.value) return `${campText(currentCamp.value)}被将军`
+
+  return `${campText(currentCamp.value)}行棋`
 })
 
-// 调用点击方法
-const handleClick = (event: MouseEvent) => {
-  const canvas = canvasRef.value
-  if (!canvas) return
 
-  const position = getCoordinates(canvas, event)
-
-  // console.log(position)
-}
-
-// 初始化棋盘
-const init = () => {
-  const canvas = canvasRef.value
-  if (!canvas) return
-
-  const ctx = canvas.getContext('2d')
-  if (!ctx) return
-
-  // getPixels(6,0)
-  initialPieces.forEach((piece) => {
-    const { x, y } = getPixels(piece.gridX, piece.gridY)
-
-    // console.log(piece.name, x, y)
-    drawPiece(ctx, piece.imgUrl, piece.gridX, piece.gridY)
-  })
-
-}
 </script>
 
 <style scoped lang="less">
 .gameCenter {
   width: 100%;
-  height: 100%;
+  height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 12px;
+  overflow: hidden;
+  background-color: #f7f3ec;
+  background-image: var(--game-background-image);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+
 
   .board {
-    width: min(100vw, calc(80vh * 920 / 1010));
+    width: min(100%, calc(96dvh * 920 / 1010), 920px);
     aspect-ratio: 920 / 1010;
-    margin-top: 20vh;
+    position: absolute;
+    top: 14%;
 
     canvas {
       width: 100%;
       height: 100%;
       display: block;
+      cursor: pointer;
+      touch-action: none;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      outline: none;
     }
   }
+
+  .gameStatus {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    overflow: hidden;
+  }
+
+  .start,
+  .bgm-toggle,
+  .status {
+    position: absolute;
+    z-index: 2;
+    min-width: 88px;
+    height: 42px;
+    background-color: #fff;
+    top: 2vh;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 1px solid rgba(98, 78, 48, 0.35);
+    border-radius: 6px;
+    color: #3e2f1d;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    touch-action: manipulation;
+    box-shadow: 0 6px 18px rgba(64, 45, 24, 0.16);
+  }
+
+  .status {
+    pointer-events: none;
+
+    &.victory {
+      color: #9d2820;
+    }
+  }
+
+  .bgm-toggle {
+    top: 8vh;
+  }
+}
+</style>
+
+<style lang="less">
+html:has(.gameCenter),
+body:has(.gameCenter),
+body:has(.gameCenter) #__nuxt {
+  height: 100%;
+  overflow: hidden;
 }
 </style>

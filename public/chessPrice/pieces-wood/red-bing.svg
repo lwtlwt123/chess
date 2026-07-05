@@ -1,49 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision" viewBox="-6 -6 232 232" role="img" aria-labelledby="title desc">
-  <title id="title">红兵棋子</title>
-  <desc id="desc">透明背景、紧贴圆形边界的红兵实体木质象棋棋子，字形已转路径并按真实包围盒居中。</desc>
+<svg xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" viewBox="-18 -18 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">紅方兵棋子</title>
+  <desc id="desc">浅木立体象棋棋子，繁体字，带柔和投影。</desc>
   <defs>
-    <radialGradient id="red-bing-body" cx="34%" cy="22%" r="80%">
-      <stop offset="0" stop-color="#f2d9ad" />
-      <stop offset="0.34" stop-color="#c9965c" />
-      <stop offset="0.74" stop-color="#8d5a32" />
-      <stop offset="1" stop-color="#4e2c18" />
+    <filter id="red-bing-shadow" x="-20%" y="-20%" width="145%" height="145%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="7" dy="9" stdDeviation="5" flood-color="#2a1608" flood-opacity="0.42" />
+    </filter>
+    <radialGradient id="red-bing-body" cx="34%" cy="24%" r="78%">
+      <stop offset="0" stop-color="#ffe8b9" />
+      <stop offset="0.42" stop-color="#d99b55" />
+      <stop offset="0.76" stop-color="#a7632c" />
+      <stop offset="1" stop-color="#6b3819" />
     </radialGradient>
-    <radialGradient id="red-bing-face" cx="37%" cy="28%" r="76%">
-      <stop offset="0" stop-color="#ffe8bd" stop-opacity="0.86" />
-      <stop offset="0.36" stop-color="#d6a061" />
-      <stop offset="0.84" stop-color="#9a6538" />
-      <stop offset="1" stop-color="#59331d" />
+    <radialGradient id="red-bing-face" cx="37%" cy="26%" r="72%">
+      <stop offset="0" stop-color="#fff0ca" />
+      <stop offset="0.5" stop-color="#e0ad68" />
+      <stop offset="1" stop-color="#9a5824" />
     </radialGradient>
-    <linearGradient id="red-bing-glyph-floor" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#7a120d" />
-      <stop offset="0.24" stop-color="#d51f18" />
-      <stop offset="0.72" stop-color="#f03027" />
-      <stop offset="1" stop-color="#ff6355" />
+    <linearGradient id="red-bing-rim-light" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe6ae" stop-opacity="0.92" />
+      <stop offset="0.55" stop-color="#c9853e" stop-opacity="0.35" />
+      <stop offset="1" stop-color="#5d2f14" stop-opacity="0.78" />
     </linearGradient>
-    <pattern id="red-bing-grain" width="118" height="34" patternUnits="userSpaceOnUse" patternTransform="rotate(-13)">
-      <path d="M -28 16 C 10 4, 50 31, 91 13 C 113 4, 137 8, 156 21" fill="none" stroke="#f3c88e" stroke-width="1.9" stroke-opacity="0.12" />
-      <path d="M -14 29 C 28 15, 68 43, 124 24" fill="none" stroke="#6e3e20" stroke-width="1.5" stroke-opacity="0.16" />
+    <pattern id="red-bing-grain" width="96" height="30" patternUnits="userSpaceOnUse" patternTransform="rotate(-12)">
+      <path d="M -20 13 C 12 4, 46 25, 82 12 C 104 4, 124 7, 142 18" fill="none" stroke="#fff2c7" stroke-width="1.5" stroke-opacity="0.18" />
+      <path d="M -12 25 C 24 13, 59 35, 105 21" fill="none" stroke="#6c3718" stroke-width="1.4" stroke-opacity="0.13" />
     </pattern>
   </defs>
-  <circle cx="110" cy="110" r="106" fill="url(#red-bing-body)" />
-  <circle cx="110" cy="110" r="103" fill="none" stroke="#efc98f" stroke-width="2.4" stroke-opacity="0.34" />
-  <circle cx="110" cy="110" r="96" fill="none" stroke="#4f2b16" stroke-width="4.4" stroke-opacity="0.58" />
-  <circle cx="110" cy="110" r="89" fill="url(#red-bing-face)" />
-  <circle cx="110" cy="110" r="89" fill="url(#red-bing-grain)" opacity="0.8" />
-  <circle cx="110" cy="110" r="76" fill="none" stroke="#5f341b" stroke-width="6.2" stroke-opacity="0.95" />
-  <circle cx="110" cy="110" r="64" fill="none" stroke="#704021" stroke-width="1.9" stroke-opacity="0.52" />
-  <path d="M 42 106 C 46 67, 72 41, 111 36 C 80 49, 61 75, 59 106 C 57 130, 66 151, 84 164 C 56 152, 39 130, 42 106 Z" fill="#ffe2ae" opacity="0.18" />
-  <path d="M 162 37 C 185 57, 199 88, 196 120 C 193 152, 171 181, 141 191 C 166 172, 180 147, 178 117 C 177 86, 171 59, 162 37 Z" fill="#4c2a16" opacity="0.18" />
-  <g fill="none" stroke="#5a150f" stroke-width="10" stroke-linejoin="round" stroke-linecap="round" opacity="0.96">
-    <path d="M 607 -249 Q 761 -271 786 -276.5 Q 811 -282 842 -282 Q 873 -282 905.5 -259 Q 938 -236 938 -220.5 Q 938 -205 895 -205 Q 874 -205 833 -210.5 Q 792 -216 680 -216 Q 568 -216 438 -199 Q 308 -182 218 -154 Q 202 -148 177 -148 Q 152 -148 130 -161 Q 108 -174 108 -184.5 Q 108 -195 135.5 -195 Q 163 -195 370 -220 Q 367 -332 358.5 -418.5 Q 350 -505 329.5 -533.5 Q 309 -562 309 -572 Q 309 -582 327 -582 Q 345 -582 403 -561 Q 493 -594 548.5 -627.5 Q 604 -661 608 -679.5 Q 612 -698 624 -698 Q 639 -698 681 -677 Q 723 -656 723 -643 Q 723 -638 719.5 -636 Q 716 -634 671 -620 L 405 -535 Q 404 -525 404 -506 Q 404 -487 408 -418 Q 481 -421 662 -476 Q 685 -483 712.5 -483 Q 740 -483 758.5 -474.5 Q 777 -466 777 -456 Q 777 -446 747.5 -439 Q 718 -432 587 -410 Q 643 -391 643 -373 Q 643 -366 637 -357 Q 625 -336 607 -249 Z M 566 -244 Q 573 -319 573 -355 Q 573 -391 557 -405 Q 466 -391 443 -391 Q 420 -391 409 -393 L 417 -225 Z M 467 -86 Q 467 -77 460 -72 L 338 8 Q 294 37 247.5 55.5 Q 201 74 189 74 Q 177 74 177 68 Q 177 62 190 54 Q 261 8 323 -46.5 Q 385 -101 385 -120 Q 385 -148 399 -148 Q 413 -148 440 -123 Q 467 -98 467 -86 Z M 606 -146 Q 613 -146 666.5 -120 Q 720 -94 756 -68 Q 792 -42 808.5 -17 Q 825 8 825 42 Q 825 87 805 87 Q 785 87 753 47 Q 678 -47 609 -121 Q 599 -132 599 -139 Q 599 -146 606 -146 Z" transform="translate(48.70 144.20) scale(0.11900)" />
-  </g>
-  <g fill="none" stroke="#8f1f17" stroke-width="5.2" stroke-linejoin="round" stroke-linecap="round" opacity="0.98">
-    <path d="M 607 -249 Q 761 -271 786 -276.5 Q 811 -282 842 -282 Q 873 -282 905.5 -259 Q 938 -236 938 -220.5 Q 938 -205 895 -205 Q 874 -205 833 -210.5 Q 792 -216 680 -216 Q 568 -216 438 -199 Q 308 -182 218 -154 Q 202 -148 177 -148 Q 152 -148 130 -161 Q 108 -174 108 -184.5 Q 108 -195 135.5 -195 Q 163 -195 370 -220 Q 367 -332 358.5 -418.5 Q 350 -505 329.5 -533.5 Q 309 -562 309 -572 Q 309 -582 327 -582 Q 345 -582 403 -561 Q 493 -594 548.5 -627.5 Q 604 -661 608 -679.5 Q 612 -698 624 -698 Q 639 -698 681 -677 Q 723 -656 723 -643 Q 723 -638 719.5 -636 Q 716 -634 671 -620 L 405 -535 Q 404 -525 404 -506 Q 404 -487 408 -418 Q 481 -421 662 -476 Q 685 -483 712.5 -483 Q 740 -483 758.5 -474.5 Q 777 -466 777 -456 Q 777 -446 747.5 -439 Q 718 -432 587 -410 Q 643 -391 643 -373 Q 643 -366 637 -357 Q 625 -336 607 -249 Z M 566 -244 Q 573 -319 573 -355 Q 573 -391 557 -405 Q 466 -391 443 -391 Q 420 -391 409 -393 L 417 -225 Z M 467 -86 Q 467 -77 460 -72 L 338 8 Q 294 37 247.5 55.5 Q 201 74 189 74 Q 177 74 177 68 Q 177 62 190 54 Q 261 8 323 -46.5 Q 385 -101 385 -120 Q 385 -148 399 -148 Q 413 -148 440 -123 Q 467 -98 467 -86 Z M 606 -146 Q 613 -146 666.5 -120 Q 720 -94 756 -68 Q 792 -42 808.5 -17 Q 825 8 825 42 Q 825 87 805 87 Q 785 87 753 47 Q 678 -47 609 -121 Q 599 -132 599 -139 Q 599 -146 606 -146 Z" transform="translate(48.70 144.20) scale(0.11900)" />
-  </g>
-  <g fill="url(#red-bing-glyph-floor)" opacity="0.98">
-    <path d="M 607 -249 Q 761 -271 786 -276.5 Q 811 -282 842 -282 Q 873 -282 905.5 -259 Q 938 -236 938 -220.5 Q 938 -205 895 -205 Q 874 -205 833 -210.5 Q 792 -216 680 -216 Q 568 -216 438 -199 Q 308 -182 218 -154 Q 202 -148 177 -148 Q 152 -148 130 -161 Q 108 -174 108 -184.5 Q 108 -195 135.5 -195 Q 163 -195 370 -220 Q 367 -332 358.5 -418.5 Q 350 -505 329.5 -533.5 Q 309 -562 309 -572 Q 309 -582 327 -582 Q 345 -582 403 -561 Q 493 -594 548.5 -627.5 Q 604 -661 608 -679.5 Q 612 -698 624 -698 Q 639 -698 681 -677 Q 723 -656 723 -643 Q 723 -638 719.5 -636 Q 716 -634 671 -620 L 405 -535 Q 404 -525 404 -506 Q 404 -487 408 -418 Q 481 -421 662 -476 Q 685 -483 712.5 -483 Q 740 -483 758.5 -474.5 Q 777 -466 777 -456 Q 777 -446 747.5 -439 Q 718 -432 587 -410 Q 643 -391 643 -373 Q 643 -366 637 -357 Q 625 -336 607 -249 Z M 566 -244 Q 573 -319 573 -355 Q 573 -391 557 -405 Q 466 -391 443 -391 Q 420 -391 409 -393 L 417 -225 Z M 467 -86 Q 467 -77 460 -72 L 338 8 Q 294 37 247.5 55.5 Q 201 74 189 74 Q 177 74 177 68 Q 177 62 190 54 Q 261 8 323 -46.5 Q 385 -101 385 -120 Q 385 -148 399 -148 Q 413 -148 440 -123 Q 467 -98 467 -86 Z M 606 -146 Q 613 -146 666.5 -120 Q 720 -94 756 -68 Q 792 -42 808.5 -17 Q 825 8 825 42 Q 825 87 805 87 Q 785 87 753 47 Q 678 -47 609 -121 Q 599 -132 599 -139 Q 599 -146 606 -146 Z" transform="translate(48.70 144.20) scale(0.11900)" />
-  </g>
-  <circle cx="110" cy="110" r="106.8" fill="none" stroke="#f0d2a4" stroke-width="1.2" stroke-opacity="0.18" />
-  <circle cx="110" cy="110" r="105.4" fill="none" stroke="#5f3b22" stroke-width="1.1" stroke-opacity="0.28" />
+
+  <circle cx="110" cy="110" r="110" fill="url(#red-bing-body)" filter="url(#red-bing-shadow)" />
+  <circle cx="110" cy="110" r="108" fill="none" stroke="#4d2811" stroke-width="2.2" stroke-opacity="0.55" />
+  <circle cx="110" cy="110" r="101" fill="none" stroke="#ffdda0" stroke-width="3.2" stroke-opacity="0.58" />
+  <circle cx="110" cy="110" r="93" fill="url(#red-bing-face)" />
+  <circle cx="110" cy="110" r="93" fill="url(#red-bing-grain)" opacity="0.9" />
+  <circle cx="110" cy="110" r="82" fill="none" stroke="#6d3a19" stroke-width="6.5" stroke-opacity="0.88" />
+  <circle cx="110" cy="110" r="72" fill="none" stroke="#ffe2a8" stroke-width="2" stroke-opacity="0.45" />
+  <path d="M 28 96 C 33 52, 65 24, 111 20 C 73 35, 51 65, 49 101 C 47 133, 61 161, 87 178 C 49 163, 25 132, 28 96 Z" fill="#fff1c5" opacity="0.22" />
+  <path d="M 164 23 C 195 48, 211 86, 207 124 C 203 163, 175 195, 137 207 C 169 184, 188 152, 185 116 C 183 78, 174 47, 164 23 Z" fill="#4a250f" opacity="0.2" />
+
+  <text x="110" y="120" text-anchor="middle" dominant-baseline="middle"
+    font-family="STKaiti, KaiTi, DFKai-SB, BiauKai, Songti SC, serif"
+    font-size="122" font-weight="900" fill="#5e1712" stroke="#f8d99b" stroke-width="1.2" stroke-opacity="0.24"
+    paint-order="stroke fill">兵</text>
+  <text x="110" y="116" text-anchor="middle" dominant-baseline="middle"
+    font-family="STKaiti, KaiTi, DFKai-SB, BiauKai, Songti SC, serif"
+    font-size="122" font-weight="900" fill="#8e2d21">兵</text>
 </svg>

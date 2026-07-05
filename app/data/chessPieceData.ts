@@ -3,7 +3,8 @@ export const baseUrl = '/chessPrice/'
 export const chessAssets = {
   boardWood: `${baseUrl}xiangqi-board-wood.svg`,
   board: `${baseUrl}xiangqi-board.svg`,
-  piecesWood: `${baseUrl}pieces-wood/`
+  piecesWood: `${baseUrl}pieces-wood/`,
+  gameBackground: `${baseUrl}backgrounds/tropical-beach-game-bg.svg`
 } as const
 
 export type Camp = 'red' | 'black'

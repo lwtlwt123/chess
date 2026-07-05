@@ -1,49 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision" viewBox="-6 -6 232 232" role="img" aria-labelledby="title desc">
-  <title id="title">黑象棋子</title>
-  <desc id="desc">透明背景、紧贴圆形边界的黑象实体木质象棋棋子，字形已转路径并按真实包围盒居中。</desc>
+<svg xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" viewBox="-18 -18 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">黑方象棋子</title>
+  <desc id="desc">浅木立体象棋棋子，繁体字，带柔和投影。</desc>
   <defs>
-    <radialGradient id="black-xiang-body" cx="34%" cy="22%" r="80%">
-      <stop offset="0" stop-color="#f2d9ad" />
-      <stop offset="0.34" stop-color="#c9965c" />
-      <stop offset="0.74" stop-color="#8d5a32" />
-      <stop offset="1" stop-color="#4e2c18" />
+    <filter id="black-xiang-shadow" x="-20%" y="-20%" width="145%" height="145%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="7" dy="9" stdDeviation="5" flood-color="#2a1608" flood-opacity="0.42" />
+    </filter>
+    <radialGradient id="black-xiang-body" cx="34%" cy="24%" r="78%">
+      <stop offset="0" stop-color="#ffe8b9" />
+      <stop offset="0.42" stop-color="#d99b55" />
+      <stop offset="0.76" stop-color="#a7632c" />
+      <stop offset="1" stop-color="#6b3819" />
     </radialGradient>
-    <radialGradient id="black-xiang-face" cx="37%" cy="28%" r="76%">
-      <stop offset="0" stop-color="#ffe8bd" stop-opacity="0.86" />
-      <stop offset="0.36" stop-color="#d6a061" />
-      <stop offset="0.84" stop-color="#9a6538" />
-      <stop offset="1" stop-color="#59331d" />
+    <radialGradient id="black-xiang-face" cx="37%" cy="26%" r="72%">
+      <stop offset="0" stop-color="#fff0ca" />
+      <stop offset="0.5" stop-color="#e0ad68" />
+      <stop offset="1" stop-color="#9a5824" />
     </radialGradient>
-    <linearGradient id="black-xiang-glyph-floor" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#050302" />
-      <stop offset="0.24" stop-color="#120c07" />
-      <stop offset="0.72" stop-color="#24160d" />
-      <stop offset="1" stop-color="#3a2415" />
+    <linearGradient id="black-xiang-rim-light" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe6ae" stop-opacity="0.92" />
+      <stop offset="0.55" stop-color="#c9853e" stop-opacity="0.35" />
+      <stop offset="1" stop-color="#5d2f14" stop-opacity="0.78" />
     </linearGradient>
-    <pattern id="black-xiang-grain" width="118" height="34" patternUnits="userSpaceOnUse" patternTransform="rotate(-13)">
-      <path d="M -28 16 C 10 4, 50 31, 91 13 C 113 4, 137 8, 156 21" fill="none" stroke="#f3c88e" stroke-width="1.9" stroke-opacity="0.12" />
-      <path d="M -14 29 C 28 15, 68 43, 124 24" fill="none" stroke="#6e3e20" stroke-width="1.5" stroke-opacity="0.16" />
+    <pattern id="black-xiang-grain" width="96" height="30" patternUnits="userSpaceOnUse" patternTransform="rotate(-12)">
+      <path d="M -20 13 C 12 4, 46 25, 82 12 C 104 4, 124 7, 142 18" fill="none" stroke="#fff2c7" stroke-width="1.5" stroke-opacity="0.18" />
+      <path d="M -12 25 C 24 13, 59 35, 105 21" fill="none" stroke="#6c3718" stroke-width="1.4" stroke-opacity="0.13" />
     </pattern>
   </defs>
-  <circle cx="110" cy="110" r="106" fill="url(#black-xiang-body)" />
-  <circle cx="110" cy="110" r="103" fill="none" stroke="#efc98f" stroke-width="2.4" stroke-opacity="0.34" />
-  <circle cx="110" cy="110" r="96" fill="none" stroke="#4f2b16" stroke-width="4.4" stroke-opacity="0.58" />
-  <circle cx="110" cy="110" r="89" fill="url(#black-xiang-face)" />
-  <circle cx="110" cy="110" r="89" fill="url(#black-xiang-grain)" opacity="0.8" />
-  <circle cx="110" cy="110" r="76" fill="none" stroke="#5f341b" stroke-width="6.2" stroke-opacity="0.95" />
-  <circle cx="110" cy="110" r="64" fill="none" stroke="#704021" stroke-width="1.9" stroke-opacity="0.52" />
-  <path d="M 42 106 C 46 67, 72 41, 111 36 C 80 49, 61 75, 59 106 C 57 130, 66 151, 84 164 C 56 152, 39 130, 42 106 Z" fill="#ffe2ae" opacity="0.18" />
-  <path d="M 162 37 C 185 57, 199 88, 196 120 C 193 152, 171 181, 141 191 C 166 172, 180 147, 178 117 C 177 86, 171 59, 162 37 Z" fill="#4c2a16" opacity="0.18" />
-  <g fill="none" stroke="#0b0603" stroke-width="10" stroke-linejoin="round" stroke-linecap="round" opacity="0.96">
-    <path d="M 567 -202 Q 669 -145 762.5 -114 Q 856 -83 983 -75 Q 1004 -73 1004 -64 Q 1004 -58 991.5 -52.5 Q 979 -47 908.5 -32 Q 838 -17 809 -17 Q 780 -17 757 -31.5 Q 734 -46 660 -102 Q 586 -158 547 -190 Q 569 -155 582 -104 Q 595 -53 595 -10 Q 595 58 559.5 108.5 Q 524 159 498 159 Q 487 159 481 147 Q 475 135 455.5 113.5 Q 436 92 414 77 Q 407 72 407 67 Q 407 62 420 62 L 472 65 Q 502 65 513.5 54.5 Q 525 44 532 15.5 Q 539 -13 539 -41 Q 539 -103 509 -165 Q 435 -69 337.5 -4 Q 240 61 187 61 Q 172 61 172 56 Q 172 51 182 46 Q 253 17 345 -61 Q 437 -139 480 -209 Q 464 -226 443 -243 Q 370 -156 294 -116 Q 218 -76 196 -76 Q 186 -76 186 -82.5 Q 186 -89 195 -94 Q 356 -184 411 -269 Q 391 -286 373 -298 Q 316 -252 275.5 -231.5 Q 235 -211 221 -211 Q 216 -211 216 -215 Q 216 -219 228 -228 Q 345 -312 392 -367 L 337 -360 Q 337 -343 320 -343 Q 312 -343 306.5 -350.5 Q 301 -358 291 -382.5 Q 281 -407 261.5 -428 Q 242 -449 225 -459 Q 208 -469 208 -477 Q 208 -490 225.5 -490 Q 243 -490 260 -485 Q 441 -509 468 -514 Q 536 -596 547 -630 Q 500 -621 473.5 -621 Q 447 -621 419 -628 Q 374 -583 327 -558 Q 280 -533 266 -533 Q 260 -533 260 -538 Q 260 -543 277 -556.5 Q 294 -570 327.5 -603.5 Q 361 -637 375.5 -657.5 Q 390 -678 394 -690 Q 398 -702 398 -716.5 Q 398 -731 414 -731 Q 430 -731 457.5 -720.5 Q 485 -710 485 -699 Q 485 -691 462.5 -671 Q 440 -651 435 -646 Q 475 -647 513.5 -656 Q 552 -665 570 -678 Q 576 -682 589.5 -682 Q 603 -682 638 -664 Q 673 -646 673 -636 Q 673 -626 641 -619 Q 622 -613 581.5 -586 Q 541 -559 498 -519 Q 623 -536 647 -545 Q 657 -549 665 -549 Q 686 -549 729.5 -522.5 Q 773 -496 773 -480 Q 773 -469 747 -460.5 Q 721 -452 651 -377 Q 634 -358 618.5 -358 Q 603 -358 599 -371.5 Q 595 -385 574 -385 Q 538 -385 449 -374 Q 422 -339 387 -309 Q 487 -261 534 -206 Q 661 -314 664 -344 Q 667 -367 680 -367 Q 693 -367 723 -352 Q 753 -337 753 -326.5 Q 753 -316 737 -309 Q 692 -289 567 -202 Z M 470 -402 Q 545 -415 567.5 -415 Q 590 -415 600 -412 Q 610 -409 616 -409 Q 628 -409 647 -445.5 Q 666 -482 666 -491 Q 666 -506 642 -506 Q 625 -506 577.5 -502.5 Q 530 -499 488 -493 Q 509 -472 509 -460 Q 509 -454 500 -444 Q 491 -434 470 -402 Z M 452 -488 Q 336 -468 292 -465 Q 320 -437 334 -378 Q 378 -387 412 -393 Q 441 -435 452 -488 Z" transform="translate(51.60 142.80) scale(0.11220)" />
-  </g>
-  <g fill="none" stroke="#2b1a0f" stroke-width="5.2" stroke-linejoin="round" stroke-linecap="round" opacity="0.98">
-    <path d="M 567 -202 Q 669 -145 762.5 -114 Q 856 -83 983 -75 Q 1004 -73 1004 -64 Q 1004 -58 991.5 -52.5 Q 979 -47 908.5 -32 Q 838 -17 809 -17 Q 780 -17 757 -31.5 Q 734 -46 660 -102 Q 586 -158 547 -190 Q 569 -155 582 -104 Q 595 -53 595 -10 Q 595 58 559.5 108.5 Q 524 159 498 159 Q 487 159 481 147 Q 475 135 455.5 113.5 Q 436 92 414 77 Q 407 72 407 67 Q 407 62 420 62 L 472 65 Q 502 65 513.5 54.5 Q 525 44 532 15.5 Q 539 -13 539 -41 Q 539 -103 509 -165 Q 435 -69 337.5 -4 Q 240 61 187 61 Q 172 61 172 56 Q 172 51 182 46 Q 253 17 345 -61 Q 437 -139 480 -209 Q 464 -226 443 -243 Q 370 -156 294 -116 Q 218 -76 196 -76 Q 186 -76 186 -82.5 Q 186 -89 195 -94 Q 356 -184 411 -269 Q 391 -286 373 -298 Q 316 -252 275.5 -231.5 Q 235 -211 221 -211 Q 216 -211 216 -215 Q 216 -219 228 -228 Q 345 -312 392 -367 L 337 -360 Q 337 -343 320 -343 Q 312 -343 306.5 -350.5 Q 301 -358 291 -382.5 Q 281 -407 261.5 -428 Q 242 -449 225 -459 Q 208 -469 208 -477 Q 208 -490 225.5 -490 Q 243 -490 260 -485 Q 441 -509 468 -514 Q 536 -596 547 -630 Q 500 -621 473.5 -621 Q 447 -621 419 -628 Q 374 -583 327 -558 Q 280 -533 266 -533 Q 260 -533 260 -538 Q 260 -543 277 -556.5 Q 294 -570 327.5 -603.5 Q 361 -637 375.5 -657.5 Q 390 -678 394 -690 Q 398 -702 398 -716.5 Q 398 -731 414 -731 Q 430 -731 457.5 -720.5 Q 485 -710 485 -699 Q 485 -691 462.5 -671 Q 440 -651 435 -646 Q 475 -647 513.5 -656 Q 552 -665 570 -678 Q 576 -682 589.5 -682 Q 603 -682 638 -664 Q 673 -646 673 -636 Q 673 -626 641 -619 Q 622 -613 581.5 -586 Q 541 -559 498 -519 Q 623 -536 647 -545 Q 657 -549 665 -549 Q 686 -549 729.5 -522.5 Q 773 -496 773 -480 Q 773 -469 747 -460.5 Q 721 -452 651 -377 Q 634 -358 618.5 -358 Q 603 -358 599 -371.5 Q 595 -385 574 -385 Q 538 -385 449 -374 Q 422 -339 387 -309 Q 487 -261 534 -206 Q 661 -314 664 -344 Q 667 -367 680 -367 Q 693 -367 723 -352 Q 753 -337 753 -326.5 Q 753 -316 737 -309 Q 692 -289 567 -202 Z M 470 -402 Q 545 -415 567.5 -415 Q 590 -415 600 -412 Q 610 -409 616 -409 Q 628 -409 647 -445.5 Q 666 -482 666 -491 Q 666 -506 642 -506 Q 625 -506 577.5 -502.5 Q 530 -499 488 -493 Q 509 -472 509 -460 Q 509 -454 500 -444 Q 491 -434 470 -402 Z M 452 -488 Q 336 -468 292 -465 Q 320 -437 334 -378 Q 378 -387 412 -393 Q 441 -435 452 -488 Z" transform="translate(51.60 142.80) scale(0.11220)" />
-  </g>
-  <g fill="url(#black-xiang-glyph-floor)" opacity="0.98">
-    <path d="M 567 -202 Q 669 -145 762.5 -114 Q 856 -83 983 -75 Q 1004 -73 1004 -64 Q 1004 -58 991.5 -52.5 Q 979 -47 908.5 -32 Q 838 -17 809 -17 Q 780 -17 757 -31.5 Q 734 -46 660 -102 Q 586 -158 547 -190 Q 569 -155 582 -104 Q 595 -53 595 -10 Q 595 58 559.5 108.5 Q 524 159 498 159 Q 487 159 481 147 Q 475 135 455.5 113.5 Q 436 92 414 77 Q 407 72 407 67 Q 407 62 420 62 L 472 65 Q 502 65 513.5 54.5 Q 525 44 532 15.5 Q 539 -13 539 -41 Q 539 -103 509 -165 Q 435 -69 337.5 -4 Q 240 61 187 61 Q 172 61 172 56 Q 172 51 182 46 Q 253 17 345 -61 Q 437 -139 480 -209 Q 464 -226 443 -243 Q 370 -156 294 -116 Q 218 -76 196 -76 Q 186 -76 186 -82.5 Q 186 -89 195 -94 Q 356 -184 411 -269 Q 391 -286 373 -298 Q 316 -252 275.5 -231.5 Q 235 -211 221 -211 Q 216 -211 216 -215 Q 216 -219 228 -228 Q 345 -312 392 -367 L 337 -360 Q 337 -343 320 -343 Q 312 -343 306.5 -350.5 Q 301 -358 291 -382.5 Q 281 -407 261.5 -428 Q 242 -449 225 -459 Q 208 -469 208 -477 Q 208 -490 225.5 -490 Q 243 -490 260 -485 Q 441 -509 468 -514 Q 536 -596 547 -630 Q 500 -621 473.5 -621 Q 447 -621 419 -628 Q 374 -583 327 -558 Q 280 -533 266 -533 Q 260 -533 260 -538 Q 260 -543 277 -556.5 Q 294 -570 327.5 -603.5 Q 361 -637 375.5 -657.5 Q 390 -678 394 -690 Q 398 -702 398 -716.5 Q 398 -731 414 -731 Q 430 -731 457.5 -720.5 Q 485 -710 485 -699 Q 485 -691 462.5 -671 Q 440 -651 435 -646 Q 475 -647 513.5 -656 Q 552 -665 570 -678 Q 576 -682 589.5 -682 Q 603 -682 638 -664 Q 673 -646 673 -636 Q 673 -626 641 -619 Q 622 -613 581.5 -586 Q 541 -559 498 -519 Q 623 -536 647 -545 Q 657 -549 665 -549 Q 686 -549 729.5 -522.5 Q 773 -496 773 -480 Q 773 -469 747 -460.5 Q 721 -452 651 -377 Q 634 -358 618.5 -358 Q 603 -358 599 -371.5 Q 595 -385 574 -385 Q 538 -385 449 -374 Q 422 -339 387 -309 Q 487 -261 534 -206 Q 661 -314 664 -344 Q 667 -367 680 -367 Q 693 -367 723 -352 Q 753 -337 753 -326.5 Q 753 -316 737 -309 Q 692 -289 567 -202 Z M 470 -402 Q 545 -415 567.5 -415 Q 590 -415 600 -412 Q 610 -409 616 -409 Q 628 -409 647 -445.5 Q 666 -482 666 -491 Q 666 -506 642 -506 Q 625 -506 577.5 -502.5 Q 530 -499 488 -493 Q 509 -472 509 -460 Q 509 -454 500 -444 Q 491 -434 470 -402 Z M 452 -488 Q 336 -468 292 -465 Q 320 -437 334 -378 Q 378 -387 412 -393 Q 441 -435 452 -488 Z" transform="translate(51.60 142.80) scale(0.11220)" />
-  </g>
-  <circle cx="110" cy="110" r="106.8" fill="none" stroke="#f0d2a4" stroke-width="1.2" stroke-opacity="0.18" />
-  <circle cx="110" cy="110" r="105.4" fill="none" stroke="#5f3b22" stroke-width="1.1" stroke-opacity="0.28" />
+
+  <circle cx="110" cy="110" r="110" fill="url(#black-xiang-body)" filter="url(#black-xiang-shadow)" />
+  <circle cx="110" cy="110" r="108" fill="none" stroke="#4d2811" stroke-width="2.2" stroke-opacity="0.55" />
+  <circle cx="110" cy="110" r="101" fill="none" stroke="#ffdda0" stroke-width="3.2" stroke-opacity="0.58" />
+  <circle cx="110" cy="110" r="93" fill="url(#black-xiang-face)" />
+  <circle cx="110" cy="110" r="93" fill="url(#black-xiang-grain)" opacity="0.9" />
+  <circle cx="110" cy="110" r="82" fill="none" stroke="#6d3a19" stroke-width="6.5" stroke-opacity="0.88" />
+  <circle cx="110" cy="110" r="72" fill="none" stroke="#ffe2a8" stroke-width="2" stroke-opacity="0.45" />
+  <path d="M 28 96 C 33 52, 65 24, 111 20 C 73 35, 51 65, 49 101 C 47 133, 61 161, 87 178 C 49 163, 25 132, 28 96 Z" fill="#fff1c5" opacity="0.22" />
+  <path d="M 164 23 C 195 48, 211 86, 207 124 C 203 163, 175 195, 137 207 C 169 184, 188 152, 185 116 C 183 78, 174 47, 164 23 Z" fill="#4a250f" opacity="0.2" />
+
+  <text x="110" y="120" text-anchor="middle" dominant-baseline="middle"
+    font-family="STKaiti, KaiTi, DFKai-SB, BiauKai, Songti SC, serif"
+    font-size="122" font-weight="900" fill="#0f191a" stroke="#f8d99b" stroke-width="1.2" stroke-opacity="0.24"
+    paint-order="stroke fill">象</text>
+  <text x="110" y="116" text-anchor="middle" dominant-baseline="middle"
+    font-family="STKaiti, KaiTi, DFKai-SB, BiauKai, Songti SC, serif"
+    font-size="122" font-weight="900" fill="#1f2f31">象</text>
 </svg>

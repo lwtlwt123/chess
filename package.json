@@ -5,17 +5,20 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
+    "dev:lan": "nuxt dev --host 0.0.0.0",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "typecheck": "nuxt typecheck",
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "element-plus": "^2.14.2",
     "nuxt": "^4.4.8",
     "vue": "^3.5.38",
     "vue-router": "^5.1.0"
   },
   "devDependencies": {
+    "@element-plus/nuxt": "^1.1.5",
     "less": "^4.6.7",
     "typescript": "^6.0.3",
     "vue-tsc": "^3.3.6"

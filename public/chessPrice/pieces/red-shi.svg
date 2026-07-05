@@ -1,49 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision" viewBox="-6 -6 232 232" role="img" aria-labelledby="title desc">
-  <title id="title">红仕棋子</title>
-  <desc id="desc">透明背景、紧贴圆形边界的红仕实体木质象棋棋子，字形已转路径并按真实包围盒居中。</desc>
+<svg xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" viewBox="-18 -18 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">紅方仕棋子</title>
+  <desc id="desc">浅木立体象棋棋子，繁体字，带柔和投影。</desc>
   <defs>
-    <radialGradient id="red-shi-body" cx="34%" cy="22%" r="80%">
-      <stop offset="0" stop-color="#e08c67" />
-      <stop offset="0.34" stop-color="#b45a43" />
-      <stop offset="0.74" stop-color="#6b2c22" />
-      <stop offset="1" stop-color="#2d100c" />
+    <filter id="red-shi-shadow" x="-20%" y="-20%" width="145%" height="145%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="7" dy="9" stdDeviation="5" flood-color="#2a1608" flood-opacity="0.42" />
+    </filter>
+    <radialGradient id="red-shi-body" cx="34%" cy="24%" r="78%">
+      <stop offset="0" stop-color="#ffe8b9" />
+      <stop offset="0.42" stop-color="#d99b55" />
+      <stop offset="0.76" stop-color="#a7632c" />
+      <stop offset="1" stop-color="#6b3819" />
     </radialGradient>
-    <radialGradient id="red-shi-face" cx="37%" cy="28%" r="76%">
-      <stop offset="0" stop-color="#e08c67" stop-opacity="0.7" />
-      <stop offset="0.36" stop-color="#9b3d30" />
-      <stop offset="0.84" stop-color="#4a1b15" />
-      <stop offset="1" stop-color="#050403" />
+    <radialGradient id="red-shi-face" cx="37%" cy="26%" r="72%">
+      <stop offset="0" stop-color="#fff0ca" />
+      <stop offset="0.5" stop-color="#e0ad68" />
+      <stop offset="1" stop-color="#9a5824" />
     </radialGradient>
-    <linearGradient id="red-shi-glyph-floor" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#120302" />
-      <stop offset="0.24" stop-color="#e2211c" />
-      <stop offset="0.72" stop-color="#ff312a" />
-      <stop offset="1" stop-color="#ff7a6e" />
+    <linearGradient id="red-shi-rim-light" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe6ae" stop-opacity="0.92" />
+      <stop offset="0.55" stop-color="#c9853e" stop-opacity="0.35" />
+      <stop offset="1" stop-color="#5d2f14" stop-opacity="0.78" />
     </linearGradient>
-    <pattern id="red-shi-grain" width="118" height="34" patternUnits="userSpaceOnUse" patternTransform="rotate(-13)">
-      <path d="M -28 16 C 10 4, 50 31, 91 13 C 113 4, 137 8, 156 21" fill="none" stroke="#ec8e6e" stroke-width="1.9" stroke-opacity="0.12" />
-      <path d="M -14 29 C 28 15, 68 43, 124 24" fill="none" stroke="#030201" stroke-width="1.5" stroke-opacity="0.16" />
+    <pattern id="red-shi-grain" width="96" height="30" patternUnits="userSpaceOnUse" patternTransform="rotate(-12)">
+      <path d="M -20 13 C 12 4, 46 25, 82 12 C 104 4, 124 7, 142 18" fill="none" stroke="#fff2c7" stroke-width="1.5" stroke-opacity="0.18" />
+      <path d="M -12 25 C 24 13, 59 35, 105 21" fill="none" stroke="#6c3718" stroke-width="1.4" stroke-opacity="0.13" />
     </pattern>
   </defs>
-  <circle cx="110" cy="110" r="106" fill="url(#red-shi-body)" />
-  <circle cx="110" cy="110" r="103" fill="none" stroke="#e08c67" stroke-width="2.4" stroke-opacity="0.34" />
-  <circle cx="110" cy="110" r="96" fill="none" stroke="#050302" stroke-width="4.4" stroke-opacity="0.58" />
-  <circle cx="110" cy="110" r="89" fill="url(#red-shi-face)" />
-  <circle cx="110" cy="110" r="89" fill="url(#red-shi-grain)" opacity="0.8" />
-  <circle cx="110" cy="110" r="76" fill="none" stroke="#180706" stroke-width="6.2" stroke-opacity="0.95" />
-  <circle cx="110" cy="110" r="64" fill="none" stroke="#180706" stroke-width="1.9" stroke-opacity="0.52" />
-  <path d="M 42 106 C 46 67, 72 41, 111 36 C 80 49, 61 75, 59 106 C 57 130, 66 151, 84 164 C 56 152, 39 130, 42 106 Z" fill="#e08c67" opacity="0.16" />
-  <path d="M 162 37 C 185 57, 199 88, 196 120 C 193 152, 171 181, 141 191 C 166 172, 180 147, 178 117 C 177 86, 171 59, 162 37 Z" fill="#030201" opacity="0.3" />
-  <g fill="none" stroke="#5a150f" stroke-width="11" stroke-linejoin="round" stroke-linecap="round" opacity="0.96">
-    <path d="M 656 -349 Q 772 -372 778 -374 Q 810 -385 843.5 -385 Q 877 -385 903.5 -370 Q 930 -355 930 -340 Q 930 -320 875 -320 L 818 -322 Q 755 -322 655 -306 L 649 -83 Q 722 -93 742.5 -98.5 Q 763 -104 792 -104 Q 821 -104 848 -89 Q 875 -74 875 -61.5 Q 875 -49 862 -42.5 Q 849 -36 831.5 -36 Q 814 -36 793.5 -38.5 Q 773 -41 739 -41 Q 644 -41 516 -15 Q 468 -5 452 -5 Q 436 -5 414.5 -19 Q 393 -33 393 -38 Q 393 -43 401 -45.5 Q 409 -48 438 -52 L 597 -74 L 601 -298 L 477 -276 Q 431 -267 413.5 -267 Q 396 -267 373.5 -276.5 Q 351 -286 351 -292 Q 351 -301 403 -305 L 602 -339 Q 607 -621 570 -651 Q 557 -662 557 -672 Q 557 -685 578.5 -685 Q 600 -685 642.5 -667.5 Q 685 -650 685 -630 Q 685 -620 677 -600 Q 661 -564 656 -349 Z M 246 -394 Q 187 -318 127.5 -270 Q 68 -222 52 -222 Q 47 -222 47 -227.5 Q 47 -233 60 -246 Q 149 -339 199.5 -414 Q 250 -489 270.5 -539.5 Q 291 -590 291 -613.5 Q 291 -637 288.5 -645 Q 286 -653 286 -658 Q 286 -676 303.5 -676 Q 321 -676 353.5 -655.5 Q 386 -635 386 -620 Q 386 -612 373.5 -596 Q 361 -580 335 -530 Q 309 -480 268 -421 Q 306 -382 306 -327 Q 306 -315 305 -300 L 300 -130 Q 299 -48 297 -11.5 Q 295 25 289.5 55.5 Q 284 86 280 91.5 Q 276 97 271 97 Q 259 97 242 61 Q 225 25 225 9 Q 225 -7 241 -40 Q 249 -58 253 -166 Q 257 -274 257 -324 Q 257 -374 246 -394 Z" transform="translate(57.20 144.00) scale(0.11350)" />
-  </g>
-  <g fill="none" stroke="#8f1f17" stroke-width="5.8" stroke-linejoin="round" stroke-linecap="round" opacity="0.98">
-    <path d="M 656 -349 Q 772 -372 778 -374 Q 810 -385 843.5 -385 Q 877 -385 903.5 -370 Q 930 -355 930 -340 Q 930 -320 875 -320 L 818 -322 Q 755 -322 655 -306 L 649 -83 Q 722 -93 742.5 -98.5 Q 763 -104 792 -104 Q 821 -104 848 -89 Q 875 -74 875 -61.5 Q 875 -49 862 -42.5 Q 849 -36 831.5 -36 Q 814 -36 793.5 -38.5 Q 773 -41 739 -41 Q 644 -41 516 -15 Q 468 -5 452 -5 Q 436 -5 414.5 -19 Q 393 -33 393 -38 Q 393 -43 401 -45.5 Q 409 -48 438 -52 L 597 -74 L 601 -298 L 477 -276 Q 431 -267 413.5 -267 Q 396 -267 373.5 -276.5 Q 351 -286 351 -292 Q 351 -301 403 -305 L 602 -339 Q 607 -621 570 -651 Q 557 -662 557 -672 Q 557 -685 578.5 -685 Q 600 -685 642.5 -667.5 Q 685 -650 685 -630 Q 685 -620 677 -600 Q 661 -564 656 -349 Z M 246 -394 Q 187 -318 127.5 -270 Q 68 -222 52 -222 Q 47 -222 47 -227.5 Q 47 -233 60 -246 Q 149 -339 199.5 -414 Q 250 -489 270.5 -539.5 Q 291 -590 291 -613.5 Q 291 -637 288.5 -645 Q 286 -653 286 -658 Q 286 -676 303.5 -676 Q 321 -676 353.5 -655.5 Q 386 -635 386 -620 Q 386 -612 373.5 -596 Q 361 -580 335 -530 Q 309 -480 268 -421 Q 306 -382 306 -327 Q 306 -315 305 -300 L 300 -130 Q 299 -48 297 -11.5 Q 295 25 289.5 55.5 Q 284 86 280 91.5 Q 276 97 271 97 Q 259 97 242 61 Q 225 25 225 9 Q 225 -7 241 -40 Q 249 -58 253 -166 Q 257 -274 257 -324 Q 257 -374 246 -394 Z" transform="translate(57.20 144.00) scale(0.11350)" />
-  </g>
-  <g fill="url(#red-shi-glyph-floor)" opacity="0.98">
-    <path d="M 656 -349 Q 772 -372 778 -374 Q 810 -385 843.5 -385 Q 877 -385 903.5 -370 Q 930 -355 930 -340 Q 930 -320 875 -320 L 818 -322 Q 755 -322 655 -306 L 649 -83 Q 722 -93 742.5 -98.5 Q 763 -104 792 -104 Q 821 -104 848 -89 Q 875 -74 875 -61.5 Q 875 -49 862 -42.5 Q 849 -36 831.5 -36 Q 814 -36 793.5 -38.5 Q 773 -41 739 -41 Q 644 -41 516 -15 Q 468 -5 452 -5 Q 436 -5 414.5 -19 Q 393 -33 393 -38 Q 393 -43 401 -45.5 Q 409 -48 438 -52 L 597 -74 L 601 -298 L 477 -276 Q 431 -267 413.5 -267 Q 396 -267 373.5 -276.5 Q 351 -286 351 -292 Q 351 -301 403 -305 L 602 -339 Q 607 -621 570 -651 Q 557 -662 557 -672 Q 557 -685 578.5 -685 Q 600 -685 642.5 -667.5 Q 685 -650 685 -630 Q 685 -620 677 -600 Q 661 -564 656 -349 Z M 246 -394 Q 187 -318 127.5 -270 Q 68 -222 52 -222 Q 47 -222 47 -227.5 Q 47 -233 60 -246 Q 149 -339 199.5 -414 Q 250 -489 270.5 -539.5 Q 291 -590 291 -613.5 Q 291 -637 288.5 -645 Q 286 -653 286 -658 Q 286 -676 303.5 -676 Q 321 -676 353.5 -655.5 Q 386 -635 386 -620 Q 386 -612 373.5 -596 Q 361 -580 335 -530 Q 309 -480 268 -421 Q 306 -382 306 -327 Q 306 -315 305 -300 L 300 -130 Q 299 -48 297 -11.5 Q 295 25 289.5 55.5 Q 284 86 280 91.5 Q 276 97 271 97 Q 259 97 242 61 Q 225 25 225 9 Q 225 -7 241 -40 Q 249 -58 253 -166 Q 257 -274 257 -324 Q 257 -374 246 -394 Z" transform="translate(57.20 144.00) scale(0.11350)" />
-  </g>
-  <circle cx="110" cy="110" r="106.8" fill="none" stroke="#f0d2a4" stroke-width="1.2" stroke-opacity="0.18" />
-  <circle cx="110" cy="110" r="105.4" fill="none" stroke="#5f3b22" stroke-width="1.1" stroke-opacity="0.28" />
+
+  <circle cx="110" cy="110" r="110" fill="url(#red-shi-body)" filter="url(#red-shi-shadow)" />
+  <circle cx="110" cy="110" r="108" fill="none" stroke="#4d2811" stroke-width="2.2" stroke-opacity="0.55" />
+  <circle cx="110" cy="110" r="101" fill="none" stroke="#ffdda0" stroke-width="3.2" stroke-opacity="0.58" />
+  <circle cx="110" cy="110" r="93" fill="url(#red-shi-face)" />
+  <circle cx="110" cy="110" r="93" fill="url(#red-shi-grain)" opacity="0.9" />
+  <circle cx="110" cy="110" r="82" fill="none" stroke="#6d3a19" stroke-width="6.5" stroke-opacity="0.88" />
+  <circle cx="110" cy="110" r="72" fill="none" stroke="#ffe2a8" stroke-width="2" stroke-opacity="0.45" />
+  <path d="M 28 96 C 33 52, 65 24, 111 20 C 73 35, 51 65, 49 101 C 47 133, 61 161, 87 178 C 49 163, 25 132, 28 96 Z" fill="#fff1c5" opacity="0.22" />
+  <path d="M 164 23 C 195 48, 211 86, 207 124 C 203 163, 175 195, 137 207 C 169 184, 188 152, 185 116 C 183 78, 174 47, 164 23 Z" fill="#4a250f" opacity="0.2" />
+
+  <text x="110" y="120" text-anchor="middle" dominant-baseline="middle"
+    font-family="STKaiti, KaiTi, DFKai-SB, BiauKai, Songti SC, serif"
+    font-size="122" font-weight="900" fill="#5e1712" stroke="#f8d99b" stroke-width="1.2" stroke-opacity="0.24"
+    paint-order="stroke fill">仕</text>
+  <text x="110" y="116" text-anchor="middle" dominant-baseline="middle"
+    font-family="STKaiti, KaiTi, DFKai-SB, BiauKai, Songti SC, serif"
+    font-size="122" font-weight="900" fill="#8e2d21">仕</text>
 </svg>

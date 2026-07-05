@@ -1,49 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision" viewBox="-6 -6 232 232" role="img" aria-labelledby="title desc">
-  <title id="title">黑将棋子</title>
-  <desc id="desc">透明背景、紧贴圆形边界的黑将实体木质象棋棋子，字形已转路径并按真实包围盒居中。</desc>
+<svg xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" viewBox="-18 -18 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">黑方將棋子</title>
+  <desc id="desc">浅木立体象棋棋子，繁体字，带柔和投影。</desc>
   <defs>
-    <radialGradient id="black-jiang-body" cx="34%" cy="22%" r="80%">
-      <stop offset="0" stop-color="#f2d9ad" />
-      <stop offset="0.34" stop-color="#c9965c" />
-      <stop offset="0.74" stop-color="#8d5a32" />
-      <stop offset="1" stop-color="#4e2c18" />
+    <filter id="black-jiang-shadow" x="-20%" y="-20%" width="145%" height="145%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="7" dy="9" stdDeviation="5" flood-color="#2a1608" flood-opacity="0.42" />
+    </filter>
+    <radialGradient id="black-jiang-body" cx="34%" cy="24%" r="78%">
+      <stop offset="0" stop-color="#ffe8b9" />
+      <stop offset="0.42" stop-color="#d99b55" />
+      <stop offset="0.76" stop-color="#a7632c" />
+      <stop offset="1" stop-color="#6b3819" />
     </radialGradient>
-    <radialGradient id="black-jiang-face" cx="37%" cy="28%" r="76%">
-      <stop offset="0" stop-color="#ffe8bd" stop-opacity="0.86" />
-      <stop offset="0.36" stop-color="#d6a061" />
-      <stop offset="0.84" stop-color="#9a6538" />
-      <stop offset="1" stop-color="#59331d" />
+    <radialGradient id="black-jiang-face" cx="37%" cy="26%" r="72%">
+      <stop offset="0" stop-color="#fff0ca" />
+      <stop offset="0.5" stop-color="#e0ad68" />
+      <stop offset="1" stop-color="#9a5824" />
     </radialGradient>
-    <linearGradient id="black-jiang-glyph-floor" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#050302" />
-      <stop offset="0.24" stop-color="#120c07" />
-      <stop offset="0.72" stop-color="#24160d" />
-      <stop offset="1" stop-color="#3a2415" />
+    <linearGradient id="black-jiang-rim-light" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe6ae" stop-opacity="0.92" />
+      <stop offset="0.55" stop-color="#c9853e" stop-opacity="0.35" />
+      <stop offset="1" stop-color="#5d2f14" stop-opacity="0.78" />
     </linearGradient>
-    <pattern id="black-jiang-grain" width="118" height="34" patternUnits="userSpaceOnUse" patternTransform="rotate(-13)">
-      <path d="M -28 16 C 10 4, 50 31, 91 13 C 113 4, 137 8, 156 21" fill="none" stroke="#f3c88e" stroke-width="1.9" stroke-opacity="0.12" />
-      <path d="M -14 29 C 28 15, 68 43, 124 24" fill="none" stroke="#6e3e20" stroke-width="1.5" stroke-opacity="0.16" />
+    <pattern id="black-jiang-grain" width="96" height="30" patternUnits="userSpaceOnUse" patternTransform="rotate(-12)">
+      <path d="M -20 13 C 12 4, 46 25, 82 12 C 104 4, 124 7, 142 18" fill="none" stroke="#fff2c7" stroke-width="1.5" stroke-opacity="0.18" />
+      <path d="M -12 25 C 24 13, 59 35, 105 21" fill="none" stroke="#6c3718" stroke-width="1.4" stroke-opacity="0.13" />
     </pattern>
   </defs>
-  <circle cx="110" cy="110" r="106" fill="url(#black-jiang-body)" />
-  <circle cx="110" cy="110" r="103" fill="none" stroke="#efc98f" stroke-width="2.4" stroke-opacity="0.34" />
-  <circle cx="110" cy="110" r="96" fill="none" stroke="#4f2b16" stroke-width="4.4" stroke-opacity="0.58" />
-  <circle cx="110" cy="110" r="89" fill="url(#black-jiang-face)" />
-  <circle cx="110" cy="110" r="89" fill="url(#black-jiang-grain)" opacity="0.8" />
-  <circle cx="110" cy="110" r="76" fill="none" stroke="#5f341b" stroke-width="6.2" stroke-opacity="0.95" />
-  <circle cx="110" cy="110" r="64" fill="none" stroke="#704021" stroke-width="1.9" stroke-opacity="0.52" />
-  <path d="M 42 106 C 46 67, 72 41, 111 36 C 80 49, 61 75, 59 106 C 57 130, 66 151, 84 164 C 56 152, 39 130, 42 106 Z" fill="#ffe2ae" opacity="0.18" />
-  <path d="M 162 37 C 185 57, 199 88, 196 120 C 193 152, 171 181, 141 191 C 166 172, 180 147, 178 117 C 177 86, 171 59, 162 37 Z" fill="#4c2a16" opacity="0.18" />
-  <g fill="none" stroke="#0b0603" stroke-width="10" stroke-linejoin="round" stroke-linecap="round" opacity="0.96">
-    <path d="M 639 -609 Q 718 -608 771 -634 Q 787 -642 800.5 -642 Q 814 -642 841.5 -619 Q 869 -596 869 -584.5 Q 869 -573 855 -567 Q 832 -557 803 -526 Q 723 -440 665.5 -400.5 Q 608 -361 559.5 -344 Q 511 -327 497 -327 Q 483 -327 483 -331 Q 483 -338 514 -353 Q 597 -394 651 -442.5 Q 705 -491 735.5 -530.5 Q 766 -570 766 -578 Q 766 -586 751 -584 L 673 -576 Q 654 -576 625 -592 Q 593 -557 564 -533 Q 600 -527 626 -514 Q 652 -501 652 -473 Q 652 -445 631 -445 Q 610 -445 590 -467 Q 570 -489 555 -526 Q 537 -511 512 -495.5 Q 487 -480 480 -480 Q 473 -480 473 -483 Q 473 -491 494 -508 Q 530 -539 576 -608.5 Q 622 -678 616 -704 Q 614 -710 614 -715 Q 614 -732 628.5 -732 Q 643 -732 673.5 -718 Q 704 -704 704 -694.5 Q 704 -685 701 -680 Z M 351 -301 Q 352 -375 350 -462.5 Q 348 -550 344 -579.5 Q 340 -609 332 -636 Q 324 -663 317 -674.5 Q 310 -686 310 -693 Q 310 -705 325.5 -705 Q 341 -705 377 -686.5 Q 413 -668 413 -646 Q 413 -639 410 -631 Q 401 -603 398.5 -509 Q 396 -415 396 -28 Q 396 43 382 76.5 Q 368 110 354 110 Q 340 110 332.5 76.5 Q 325 43 325 25 Q 325 7 333 -21 Q 347 -74 350 -266 Q 261 -212 189 -145 Q 171 -129 158 -129 Q 145 -129 119.5 -155 Q 94 -181 94 -193.5 Q 94 -206 125 -207 Q 178 -209 351 -301 Z M 291 -423 Q 291 -405 283.5 -393 Q 276 -381 262 -381 Q 235 -381 208 -437 Q 181 -493 181 -505 Q 181 -517 190 -517 Q 208 -517 249.5 -491 Q 291 -465 291 -423 Z M 770 -316 L 849 -330 Q 889 -338 915 -338 Q 941 -338 966 -322.5 Q 991 -307 991 -296 Q 991 -279 943 -279 Q 927 -279 907 -281 Q 887 -283 854 -283 Q 821 -283 770 -278 L 786 -5 Q 786 63 760 102.5 Q 734 142 721.5 142 Q 709 142 701 128 Q 678 87 622 38 Q 613 30 613 24.5 Q 613 19 621 19 Q 629 19 651.5 24.5 Q 674 30 691 30 Q 708 30 713.5 23 Q 719 16 722 -14.5 Q 725 -45 725 -100 L 725 -203 Q 725 -231 723 -274 Q 617 -262 521 -240 Q 483 -231 463.5 -231 Q 444 -231 431 -244 Q 418 -257 418 -265 Q 418 -273 446 -275 Q 532 -280 720 -308 Q 715 -356 706 -370.5 Q 697 -385 697 -393.5 Q 697 -402 709.5 -402 Q 722 -402 750.5 -390.5 Q 779 -379 779 -363 Q 779 -356 774.5 -346.5 Q 770 -337 770 -316 Z M 526 -208 Q 542 -208 578.5 -190 Q 615 -172 615 -129 Q 615 -110 608 -99 Q 601 -88 590 -88 Q 570 -88 543 -137.5 Q 516 -187 516 -197.5 Q 516 -208 526 -208 Z" transform="translate(45.20 145.80) scale(0.11900)" />
-  </g>
-  <g fill="none" stroke="#2b1a0f" stroke-width="5.2" stroke-linejoin="round" stroke-linecap="round" opacity="0.98">
-    <path d="M 639 -609 Q 718 -608 771 -634 Q 787 -642 800.5 -642 Q 814 -642 841.5 -619 Q 869 -596 869 -584.5 Q 869 -573 855 -567 Q 832 -557 803 -526 Q 723 -440 665.5 -400.5 Q 608 -361 559.5 -344 Q 511 -327 497 -327 Q 483 -327 483 -331 Q 483 -338 514 -353 Q 597 -394 651 -442.5 Q 705 -491 735.5 -530.5 Q 766 -570 766 -578 Q 766 -586 751 -584 L 673 -576 Q 654 -576 625 -592 Q 593 -557 564 -533 Q 600 -527 626 -514 Q 652 -501 652 -473 Q 652 -445 631 -445 Q 610 -445 590 -467 Q 570 -489 555 -526 Q 537 -511 512 -495.5 Q 487 -480 480 -480 Q 473 -480 473 -483 Q 473 -491 494 -508 Q 530 -539 576 -608.5 Q 622 -678 616 -704 Q 614 -710 614 -715 Q 614 -732 628.5 -732 Q 643 -732 673.5 -718 Q 704 -704 704 -694.5 Q 704 -685 701 -680 Z M 351 -301 Q 352 -375 350 -462.5 Q 348 -550 344 -579.5 Q 340 -609 332 -636 Q 324 -663 317 -674.5 Q 310 -686 310 -693 Q 310 -705 325.5 -705 Q 341 -705 377 -686.5 Q 413 -668 413 -646 Q 413 -639 410 -631 Q 401 -603 398.5 -509 Q 396 -415 396 -28 Q 396 43 382 76.5 Q 368 110 354 110 Q 340 110 332.5 76.5 Q 325 43 325 25 Q 325 7 333 -21 Q 347 -74 350 -266 Q 261 -212 189 -145 Q 171 -129 158 -129 Q 145 -129 119.5 -155 Q 94 -181 94 -193.5 Q 94 -206 125 -207 Q 178 -209 351 -301 Z M 291 -423 Q 291 -405 283.5 -393 Q 276 -381 262 -381 Q 235 -381 208 -437 Q 181 -493 181 -505 Q 181 -517 190 -517 Q 208 -517 249.5 -491 Q 291 -465 291 -423 Z M 770 -316 L 849 -330 Q 889 -338 915 -338 Q 941 -338 966 -322.5 Q 991 -307 991 -296 Q 991 -279 943 -279 Q 927 -279 907 -281 Q 887 -283 854 -283 Q 821 -283 770 -278 L 786 -5 Q 786 63 760 102.5 Q 734 142 721.5 142 Q 709 142 701 128 Q 678 87 622 38 Q 613 30 613 24.5 Q 613 19 621 19 Q 629 19 651.5 24.5 Q 674 30 691 30 Q 708 30 713.5 23 Q 719 16 722 -14.5 Q 725 -45 725 -100 L 725 -203 Q 725 -231 723 -274 Q 617 -262 521 -240 Q 483 -231 463.5 -231 Q 444 -231 431 -244 Q 418 -257 418 -265 Q 418 -273 446 -275 Q 532 -280 720 -308 Q 715 -356 706 -370.5 Q 697 -385 697 -393.5 Q 697 -402 709.5 -402 Q 722 -402 750.5 -390.5 Q 779 -379 779 -363 Q 779 -356 774.5 -346.5 Q 770 -337 770 -316 Z M 526 -208 Q 542 -208 578.5 -190 Q 615 -172 615 -129 Q 615 -110 608 -99 Q 601 -88 590 -88 Q 570 -88 543 -137.5 Q 516 -187 516 -197.5 Q 516 -208 526 -208 Z" transform="translate(45.20 145.80) scale(0.11900)" />
-  </g>
-  <g fill="url(#black-jiang-glyph-floor)" opacity="0.98">
-    <path d="M 639 -609 Q 718 -608 771 -634 Q 787 -642 800.5 -642 Q 814 -642 841.5 -619 Q 869 -596 869 -584.5 Q 869 -573 855 -567 Q 832 -557 803 -526 Q 723 -440 665.5 -400.5 Q 608 -361 559.5 -344 Q 511 -327 497 -327 Q 483 -327 483 -331 Q 483 -338 514 -353 Q 597 -394 651 -442.5 Q 705 -491 735.5 -530.5 Q 766 -570 766 -578 Q 766 -586 751 -584 L 673 -576 Q 654 -576 625 -592 Q 593 -557 564 -533 Q 600 -527 626 -514 Q 652 -501 652 -473 Q 652 -445 631 -445 Q 610 -445 590 -467 Q 570 -489 555 -526 Q 537 -511 512 -495.5 Q 487 -480 480 -480 Q 473 -480 473 -483 Q 473 -491 494 -508 Q 530 -539 576 -608.5 Q 622 -678 616 -704 Q 614 -710 614 -715 Q 614 -732 628.5 -732 Q 643 -732 673.5 -718 Q 704 -704 704 -694.5 Q 704 -685 701 -680 Z M 351 -301 Q 352 -375 350 -462.5 Q 348 -550 344 -579.5 Q 340 -609 332 -636 Q 324 -663 317 -674.5 Q 310 -686 310 -693 Q 310 -705 325.5 -705 Q 341 -705 377 -686.5 Q 413 -668 413 -646 Q 413 -639 410 -631 Q 401 -603 398.5 -509 Q 396 -415 396 -28 Q 396 43 382 76.5 Q 368 110 354 110 Q 340 110 332.5 76.5 Q 325 43 325 25 Q 325 7 333 -21 Q 347 -74 350 -266 Q 261 -212 189 -145 Q 171 -129 158 -129 Q 145 -129 119.5 -155 Q 94 -181 94 -193.5 Q 94 -206 125 -207 Q 178 -209 351 -301 Z M 291 -423 Q 291 -405 283.5 -393 Q 276 -381 262 -381 Q 235 -381 208 -437 Q 181 -493 181 -505 Q 181 -517 190 -517 Q 208 -517 249.5 -491 Q 291 -465 291 -423 Z M 770 -316 L 849 -330 Q 889 -338 915 -338 Q 941 -338 966 -322.5 Q 991 -307 991 -296 Q 991 -279 943 -279 Q 927 -279 907 -281 Q 887 -283 854 -283 Q 821 -283 770 -278 L 786 -5 Q 786 63 760 102.5 Q 734 142 721.5 142 Q 709 142 701 128 Q 678 87 622 38 Q 613 30 613 24.5 Q 613 19 621 19 Q 629 19 651.5 24.5 Q 674 30 691 30 Q 708 30 713.5 23 Q 719 16 722 -14.5 Q 725 -45 725 -100 L 725 -203 Q 725 -231 723 -274 Q 617 -262 521 -240 Q 483 -231 463.5 -231 Q 444 -231 431 -244 Q 418 -257 418 -265 Q 418 -273 446 -275 Q 532 -280 720 -308 Q 715 -356 706 -370.5 Q 697 -385 697 -393.5 Q 697 -402 709.5 -402 Q 722 -402 750.5 -390.5 Q 779 -379 779 -363 Q 779 -356 774.5 -346.5 Q 770 -337 770 -316 Z M 526 -208 Q 542 -208 578.5 -190 Q 615 -172 615 -129 Q 615 -110 608 -99 Q 601 -88 590 -88 Q 570 -88 543 -137.5 Q 516 -187 516 -197.5 Q 516 -208 526 -208 Z" transform="translate(45.20 145.80) scale(0.11900)" />
-  </g>
-  <circle cx="110" cy="110" r="106.8" fill="none" stroke="#f0d2a4" stroke-width="1.2" stroke-opacity="0.18" />
-  <circle cx="110" cy="110" r="105.4" fill="none" stroke="#5f3b22" stroke-width="1.1" stroke-opacity="0.28" />
+
+  <circle cx="110" cy="110" r="110" fill="url(#black-jiang-body)" filter="url(#black-jiang-shadow)" />
+  <circle cx="110" cy="110" r="108" fill="none" stroke="#4d2811" stroke-width="2.2" stroke-opacity="0.55" />
+  <circle cx="110" cy="110" r="101" fill="none" stroke="#ffdda0" stroke-width="3.2" stroke-opacity="0.58" />
+  <circle cx="110" cy="110" r="93" fill="url(#black-jiang-face)" />
+  <circle cx="110" cy="110" r="93" fill="url(#black-jiang-grain)" opacity="0.9" />
+  <circle cx="110" cy="110" r="82" fill="none" stroke="#6d3a19" stroke-width="6.5" stroke-opacity="0.88" />
+  <circle cx="110" cy="110" r="72" fill="none" stroke="#ffe2a8" stroke-width="2" stroke-opacity="0.45" />
+  <path d="M 28 96 C 33 52, 65 24, 111 20 C 73 35, 51 65, 49 101 C 47 133, 61 161, 87 178 C 49 163, 25 132, 28 96 Z" fill="#fff1c5" opacity="0.22" />
+  <path d="M 164 23 C 195 48, 211 86, 207 124 C 203 163, 175 195, 137 207 C 169 184, 188 152, 185 116 C 183 78, 174 47, 164 23 Z" fill="#4a250f" opacity="0.2" />
+
+  <text x="110" y="120" text-anchor="middle" dominant-baseline="middle"
+    font-family="STKaiti, KaiTi, DFKai-SB, BiauKai, Songti SC, serif"
+    font-size="122" font-weight="900" fill="#0f191a" stroke="#f8d99b" stroke-width="1.2" stroke-opacity="0.24"
+    paint-order="stroke fill">將</text>
+  <text x="110" y="116" text-anchor="middle" dominant-baseline="middle"
+    font-family="STKaiti, KaiTi, DFKai-SB, BiauKai, Songti SC, serif"
+    font-size="122" font-weight="900" fill="#1f2f31">將</text>
 </svg>
