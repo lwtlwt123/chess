@@ -87,10 +87,7 @@ const statusText = computed(() => {
   padding: 12px;
   overflow: hidden;
   background-color: #f7f3ec;
-  background-image: var(--game-background-image);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
+  .bg-image-var(var(--game-background-image));
 
 
   .board {

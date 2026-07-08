@@ -12,6 +12,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "element-plus": "^2.14.2",
     "mysql2": "^3.22.6",
     "nuxt": "^4.4.8",
