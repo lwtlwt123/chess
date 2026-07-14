@@ -1,10 +1,10 @@
-export const baseUrl = '/chessPrice/'
+import { assetPaths } from '~/constants/assetPaths'
 
 export const chessAssets = {
-  boardWood: `${baseUrl}xiangqi-board-wood.svg`,
-  board: `${baseUrl}xiangqi-board.svg`,
-  piecesWood: `${baseUrl}pieces-wood/`,
-  gameBackground: `${baseUrl}backgrounds/tropical-beach-game-bg.svg`
+  boardWood: assetPaths.game.boardWood,
+  board: assetPaths.game.board,
+  piecesWood: assetPaths.game.piecesWood,
+  gameBackground: assetPaths.game.background
 } as const
 
 export type Camp = 'red' | 'black'
