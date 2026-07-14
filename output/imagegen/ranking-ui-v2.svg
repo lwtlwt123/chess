@@ -1,0 +1,139 @@
+<svg width="430" height="932" viewBox="0 0 430 932" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="36" y1="0" x2="410" y2="932" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#BDEBDD"/>
+      <stop offset=".34" stop-color="#F9E8B1"/>
+      <stop offset="1" stop-color="#EAC66D"/>
+    </linearGradient>
+    <linearGradient id="dark" x1="42" y1="150" x2="386" y2="330" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#303B31"/>
+      <stop offset="1" stop-color="#1D281F"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="120" y2="90" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFE7A6"/>
+      <stop offset="1" stop-color="#C08A34"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#684018" flood-opacity=".22"/>
+    </filter>
+    <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M0 0H64M0 0V64" stroke="#7EA586" stroke-opacity=".1"/>
+    </pattern>
+  </defs>
+
+  <rect width="430" height="932" fill="url(#bg)"/>
+  <rect width="430" height="932" fill="url(#grid)"/>
+  <circle cx="58" cy="32" r="132" fill="#8CAE4E" opacity=".36"/>
+  <circle cx="390" cy="172" r="126" fill="#7EA586" opacity=".27"/>
+  <circle cx="208" cy="330" r="178" fill="#FFEFC0" opacity=".26"/>
+  <path d="M-30 652C42 600 112 642 170 684C230 728 298 708 354 650C304 770 186 840 82 796C8 765 -45 714 -30 652Z" fill="#8CAE4E" opacity=".34"/>
+  <path d="M-24 770C36 734 88 760 140 780C200 804 276 780 326 724C294 842 178 922 72 904C-10 890 -62 820 -24 770Z" fill="#91AB55" opacity=".22"/>
+  <path d="M278 860L354 822L414 858L338 895L278 860Z" fill="#FFF2C1" opacity=".7"/>
+  <path d="M116 882L166 852L212 884L160 913L116 882Z" fill="#FFF2C1" opacity=".7"/>
+
+  <g transform="translate(26 28)">
+    <rect width="42" height="42" rx="21" fill="#8D3A22"/>
+    <path d="M25 12L16 21L25 30" stroke="#F8D494" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="189" y="31" text-anchor="middle" font-family="KaiTi, STKaiti, serif" font-size="30" font-weight="700" fill="#7C3A24">排行榜</text>
+    <rect x="336" y="0" width="42" height="42" rx="11" fill="#B33B22"/>
+    <path d="M348 15H356L365 9V33L356 27H348V15Z" stroke="#FFE6A8" stroke-width="2.2" stroke-linejoin="round"/>
+    <path d="M370 16L363 30M363 16L370 30" stroke="#FFE6A8" stroke-width="2" stroke-linecap="round"/>
+  </g>
+
+  <g filter="url(#shadow)" transform="translate(24 92)">
+    <rect width="382" height="82" rx="10" fill="#FFF1BD" fill-opacity=".52" stroke="#E1C47C" stroke-width="2"/>
+    <text x="24" y="31" font-family="PingFang SC, Microsoft YaHei, Arial" font-size="15" font-weight="800" fill="#8B593A">我的排名</text>
+    <text x="24" y="62" font-family="PingFang SC, Microsoft YaHei, Arial" font-size="24" font-weight="900" fill="#A6422D">第 12 名</text>
+    <text x="190" y="30" font-family="PingFang SC, Microsoft YaHei, Arial" font-size="13" fill="#8B7358">胜场</text>
+    <text x="190" y="62" font-family="DIN Alternate, Arial" font-size="30" font-weight="900" fill="#303730">18</text>
+    <text x="304" y="30" font-family="PingFang SC, Microsoft YaHei, Arial" font-size="13" fill="#8B7358">胜率</text>
+    <text x="304" y="62" font-family="DIN Alternate, Arial" font-size="30" font-weight="900" fill="#C7953B">68%</text>
+  </g>
+
+  <g filter="url(#shadow)" transform="translate(24 206)">
+    <rect width="382" height="214" rx="12" fill="url(#dark)" stroke="#D9B866" stroke-width="3"/>
+    <text x="24" y="34" font-family="PingFang SC, Microsoft YaHei, Arial" font-size="15" font-weight="800" fill="#FFF1BD">前三名</text>
+    <text x="358" y="34" text-anchor="end" font-family="PingFang SC, Microsoft YaHei, Arial" font-size="12" fill="#BDB39A">按胜场排序</text>
+    <path d="M24 54H358" stroke="#E8C679" stroke-opacity=".24"/>
+
+    <g transform="translate(134 54)">
+      <circle cx="57" cy="40" r="36" fill="url(#gold)" stroke="#FFF0BC" stroke-width="3"/>
+      <text x="57" y="52" text-anchor="middle" font-family="KaiTi, STKaiti, serif" font-size="34" font-weight="800" fill="#8F2D21">帅</text>
+      <text x="57" y="92" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Arial" font-size="15" font-weight="900" fill="#FFF1BD">测试a</text>
+      <text x="57" y="118" text-anchor="middle" font-family="DIN Alternate, Arial" font-size="30" font-weight="900" fill="#FFD36F">32胜</text>
+      <text x="57" y="143" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Arial" font-size="12" fill="#BDB39A">胜率 82% · 39局</text>
+      <text x="57" y="185" text-anchor="middle" font-family="DIN Alternate, Arial" font-size="44" font-weight="900" fill="#FFE6A8">1</text>
+    </g>
+
+    <g transform="translate(24 92)">
+      <circle cx="51" cy="32" r="28" fill="#E8DED0" stroke="#D5C09A" stroke-width="3"/>
+      <text x="51" y="43" text-anchor="middle" font-family="KaiTi, STKaiti, serif" font-size="28" font-weight="800" fill="#4D4A43">将</text>
+      <text x="51" y="78" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Arial" font-size="13" font-weight="800" fill="#FFF1BD">归云</text>
+      <text x="51" y="104" text-anchor="middle" font-family="DIN Alternate, Arial" font-size="25" font-weight="900" fill="#F4CD73">28胜</text>
+      <text x="51" y="130" text-anchor="middle" font-family="DIN Alternate, Arial" font-size="34" font-weight="900" fill="#D7D1C0">2</text>
+    </g>
+
+    <g transform="translate(280 104)">
+      <circle cx="39" cy="32" r="28" fill="#C79244" stroke="#F5D390" stroke-width="3"/>
+      <text x="39" y="43" text-anchor="middle" font-family="KaiTi, STKaiti, serif" font-size="28" font-weight="800" fill="#FFF0C8">车</text>
+      <text x="39" y="78" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Arial" font-size="13" font-weight="800" fill="#FFF1BD">青松</text>
+      <text x="39" y="104" text-anchor="middle" font-family="DIN Alternate, Arial" font-size="25" font-weight="900" fill="#F4CD73">24胜</text>
+      <text x="39" y="130" text-anchor="middle" font-family="DIN Alternate, Arial" font-size="34" font-weight="900" fill="#C79244">3</text>
+    </g>
+  </g>
+
+  <g transform="translate(24 448)">
+    <text x="0" y="0" font-family="PingFang SC, Microsoft YaHei, Arial" font-size="16" font-weight="900" fill="#8F2D21">排名列表</text>
+    <text x="382" y="0" text-anchor="end" font-family="PingFang SC, Microsoft YaHei, Arial" font-size="12" fill="#8B7358">胜场相同按胜率</text>
+  </g>
+
+  <g transform="translate(24 472)">
+    <rect width="382" height="44" rx="8" fill="#F9E9B8" fill-opacity=".72"/>
+    <text x="34" y="28" font-family="PingFang SC, Microsoft YaHei, Arial" font-size="15" font-weight="900" fill="#A6422D">总榜</text>
+    <text x="136" y="28" font-family="PingFang SC, Microsoft YaHei, Arial" font-size="15" font-weight="800" fill="#816247">胜场</text>
+    <text x="238" y="28" font-family="PingFang SC, Microsoft YaHei, Arial" font-size="15" font-weight="800" fill="#816247">胜率</text>
+    <text x="340" y="28" font-family="PingFang SC, Microsoft YaHei, Arial" font-size="15" font-weight="800" fill="#816247">总局</text>
+    <rect x="32" y="40" width="34" height="3" rx="1.5" fill="#A6422D"/>
+  </g>
+
+  <g transform="translate(24 538)" font-family="PingFang SC, Microsoft YaHei, Arial">
+    <g>
+      <rect width="382" height="76" fill="#FBEFC8" stroke="#E3CC97" stroke-width="3"/>
+      <text x="22" y="47" font-size="22" font-weight="900" fill="#A6422D">4</text>
+      <circle cx="68" cy="38" r="21" fill="#A26A34" stroke="#E8C679" stroke-width="3"/>
+      <text x="68" y="47" text-anchor="middle" font-family="KaiTi, STKaiti, serif" font-size="23" font-weight="800" fill="#FFF2C6">马</text>
+      <text x="104" y="33" font-size="18" font-weight="900" fill="#1E2520">测试b</text>
+      <text x="104" y="58" font-size="13" fill="#9C8268">21胜 · 胜率 72% · 共29局</text>
+      <text x="330" y="46" text-anchor="middle" font-family="DIN Alternate, Arial" font-size="24" font-weight="900" fill="#A6422D">21胜</text>
+    </g>
+    <g transform="translate(0 76)">
+      <rect width="382" height="76" fill="#FBEFC8" stroke="#E3CC97" stroke-width="3"/>
+      <text x="22" y="47" font-size="22" font-weight="900" fill="#8B7358">5</text>
+      <circle cx="68" cy="38" r="21" fill="#EFE4C9" stroke="#BDB39A" stroke-width="3"/>
+      <text x="68" y="47" text-anchor="middle" font-family="KaiTi, STKaiti, serif" font-size="23" font-weight="800" fill="#303730">炮</text>
+      <text x="104" y="33" font-size="18" font-weight="900" fill="#1E2520">北辰</text>
+      <text x="104" y="58" font-size="13" fill="#9C8268">19胜 · 胜率 69% · 共28局</text>
+      <text x="330" y="46" text-anchor="middle" font-family="DIN Alternate, Arial" font-size="24" font-weight="900" fill="#8B7358">19胜</text>
+    </g>
+    <g transform="translate(0 152)">
+      <rect width="382" height="76" fill="#FBEFC8" stroke="#E3CC97" stroke-width="3"/>
+      <text x="22" y="47" font-size="22" font-weight="900" fill="#8B7358">6</text>
+      <circle cx="68" cy="38" r="21" fill="#A26A34" stroke="#E8C679" stroke-width="3"/>
+      <text x="68" y="47" text-anchor="middle" font-family="KaiTi, STKaiti, serif" font-size="23" font-weight="800" fill="#FFF2C6">象</text>
+      <text x="104" y="33" font-size="18" font-weight="900" fill="#1E2520">明月</text>
+      <text x="104" y="58" font-size="13" fill="#9C8268">18胜 · 胜率 66% · 共27局</text>
+      <text x="330" y="46" text-anchor="middle" font-family="DIN Alternate, Arial" font-size="24" font-weight="900" fill="#8B7358">18胜</text>
+    </g>
+    <g transform="translate(0 228)">
+      <rect width="382" height="76" fill="#FBEFC8" stroke="#E3CC97" stroke-width="3"/>
+      <text x="22" y="47" font-size="22" font-weight="900" fill="#8B7358">7</text>
+      <circle cx="68" cy="38" r="21" fill="#EFE4C9" stroke="#BDB39A" stroke-width="3"/>
+      <text x="68" y="47" text-anchor="middle" font-family="KaiTi, STKaiti, serif" font-size="23" font-weight="800" fill="#303730">士</text>
+      <text x="104" y="33" font-size="18" font-weight="900" fill="#1E2520">长河</text>
+      <text x="104" y="58" font-size="13" fill="#9C8268">16胜 · 胜率 61% · 共26局</text>
+      <text x="330" y="46" text-anchor="middle" font-family="DIN Alternate, Arial" font-size="24" font-weight="900" fill="#8B7358">16胜</text>
+    </g>
+  </g>
+
+  <rect x="150" y="902" width="130" height="5" rx="2.5" fill="#8B7358" opacity=".36"/>
+</svg>

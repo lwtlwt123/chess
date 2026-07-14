@@ -1,0 +1,103 @@
+<svg width="430" height="932" viewBox="0 0 430 932" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="215" y1="0" x2="215" y2="932" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#B9E8D8"/>
+      <stop offset="0.34" stop-color="#FFE9A6"/>
+      <stop offset="1" stop-color="#F4D27F"/>
+    </linearGradient>
+    <linearGradient id="card" x1="56" y1="112" x2="374" y2="758" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#29372E"/>
+      <stop offset="1" stop-color="#17231D"/>
+    </linearGradient>
+    <linearGradient id="redBtn" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#C75531"/>
+      <stop offset="1" stop-color="#8B2B1E"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#7B582B" flood-opacity="0.24"/>
+    </filter>
+    <filter id="btnShadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#3E1F13" flood-opacity="0.35"/>
+    </filter>
+    <style>
+      .title{font-family:"PingFang SC","Microsoft YaHei",sans-serif;font-size:31px;font-weight:700;letter-spacing:3px;fill:#7E3C22}
+      .section{font-family:"PingFang SC","Microsoft YaHei",sans-serif;font-size:20px;font-weight:800;fill:#F4D27F}
+      .row{font-family:"PingFang SC","Microsoft YaHei",sans-serif;font-size:17px;font-weight:700;fill:#FFF1BE}
+      .desc{font-family:"PingFang SC","Microsoft YaHei",sans-serif;font-size:12px;font-weight:600;fill:#B8AD88}
+      .value{font-family:"PingFang SC","Microsoft YaHei",sans-serif;font-size:14px;font-weight:800;fill:#F5D27A}
+    </style>
+  </defs>
+
+  <rect width="430" height="932" fill="#EAF0FA"/>
+  <rect x="31" width="368" height="932" fill="url(#bg)"/>
+
+  <!-- background decoration -->
+  <path d="M31 0h368v95c-63-24-96 17-150 3C188 82 148 42 31 86V0Z" fill="#C6E4B3" opacity=".75"/>
+  <path d="M31 67c40-62 107-65 154 2 48 68 119 26 214 2v81H31V67Z" fill="#87BA7A" opacity=".28"/>
+  <path d="M31 604c66-14 101 8 154 42 54 35 116 15 214-12v298H31V604Z" fill="#A4C873" opacity=".43"/>
+  <path d="M31 752c92 54 159 34 222-42 65-79 69-188 146-168v390H31V752Z" fill="#7FAA68" opacity=".28"/>
+  <path d="M305 124c54-29 73-13 94 4v78c-52-8-86 12-126 9-56-4-83-35-132-35-48 0-75 24-110 25v-78c46-25 89-18 139 0 56 20 81 27 135-3Z" fill="#F4C17A" opacity=".55"/>
+  <path d="M70 846c93-32 173-29 284 13" stroke="#FCE8A3" stroke-width="14" stroke-linecap="round" opacity=".25"/>
+  <path d="M52 502c67-30 153-34 270 19" stroke="#FCE8A3" stroke-width="12" stroke-linecap="round" opacity=".18"/>
+  <path d="M328 810l48-27 43 30-52 27-39-30Z" fill="#FFF4BE" opacity=".72"/>
+  <path d="M365 784l6 53M347 795l24 42M397 802l-27 35" stroke="#DEC981" stroke-width="3" opacity=".78"/>
+
+  <!-- header -->
+  <circle cx="68" cy="52" r="18" fill="#8B572D" filter="url(#btnShadow)"/>
+  <path d="M75 52H61m0 0 7-7m-7 7 7 7" stroke="#D5E39A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="215" y="61" text-anchor="middle" class="title">设置</text>
+  <rect x="348" y="33" width="36" height="36" rx="9" fill="url(#redBtn)" filter="url(#btnShadow)"/>
+  <path d="M357 50h7l8-8v20l-8-8h-7v-4Z" stroke="#F9DE80" stroke-width="2.2" stroke-linejoin="round"/>
+  <path d="M376 47l6 8m0-8-6 8" stroke="#F9DE80" stroke-width="2.2" stroke-linecap="round"/>
+
+  <!-- main card only selected settings -->
+  <rect x="48" y="101" width="334" height="658" rx="15" fill="url(#card)" stroke="#D6AA56" stroke-width="3" filter="url(#shadow)" opacity=".97"/>
+
+  <text x="72" y="145" class="section">声音设置</text>
+  <line x1="72" y1="164" x2="358" y2="164" stroke="#6E674B" stroke-width="1"/>
+  <text x="82" y="203" class="row">背景音乐开关</text>
+  <text x="82" y="253" class="row">落子音效开关</text>
+  <text x="82" y="303" class="row">音量大小</text>
+  <text x="82" y="353" class="row">震动反馈开关</text>
+  <text x="82" y="374" class="desc">移动端可用</text>
+
+  <g transform="translate(309 184)">
+    <rect width="44" height="24" rx="12" fill="#C14E32"/>
+    <circle cx="31" cy="12" r="8" fill="#FFE8A0"/>
+  </g>
+  <g transform="translate(309 234)">
+    <rect width="44" height="24" rx="12" fill="#C14E32"/>
+    <circle cx="31" cy="12" r="8" fill="#FFE8A0"/>
+  </g>
+  <line x1="210" y1="298" x2="344" y2="298" stroke="#6E674B" stroke-width="5" stroke-linecap="round"/>
+  <line x1="210" y1="298" x2="300" y2="298" stroke="#F0C665" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="300" cy="298" r="9" fill="#FFE8A0"/>
+  <text x="354" y="303" text-anchor="end" class="value">70%</text>
+  <g transform="translate(309 334)">
+    <rect width="44" height="24" rx="12" fill="#C14E32"/>
+    <circle cx="31" cy="12" r="8" fill="#FFE8A0"/>
+  </g>
+
+  <text x="72" y="440" class="section">棋盘设置</text>
+  <line x1="72" y1="459" x2="358" y2="459" stroke="#6E674B" stroke-width="1"/>
+  <text x="82" y="500" class="row">走棋提示开关</text>
+  <text x="82" y="552" class="row">可走位置提示开关</text>
+  <text x="82" y="604" class="row">将军提示开关</text>
+
+  <g transform="translate(309 481)">
+    <rect width="44" height="24" rx="12" fill="#C14E32"/>
+    <circle cx="31" cy="12" r="8" fill="#FFE8A0"/>
+  </g>
+  <g transform="translate(309 533)">
+    <rect width="44" height="24" rx="12" fill="#C14E32"/>
+    <circle cx="31" cy="12" r="8" fill="#FFE8A0"/>
+  </g>
+  <g transform="translate(309 585)">
+    <rect width="44" height="24" rx="12" fill="#C14E32"/>
+    <circle cx="31" cy="12" r="8" fill="#FFE8A0"/>
+  </g>
+
+  <rect x="72" y="654" width="286" height="62" rx="13" fill="#1B281F" stroke="#6E674B" stroke-width="1.2" opacity=".9"/>
+  <text x="215" y="685" text-anchor="middle" class="desc">只保留当前标记的设置项</text>
+  <text x="215" y="707" text-anchor="middle" class="value">后续功能再按你发的图继续加</text>
+</svg>

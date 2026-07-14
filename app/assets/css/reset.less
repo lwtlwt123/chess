@@ -1,0 +1,508 @@
+@font-face {
+  font-family: "ChessTitle";
+  src: url("/chessPrice/font/font1.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "ChessKaiti";
+  src: url("/chessPrice/font/kaiti.ttf?v=33a4f512") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  min-height: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  line-height: 1.5;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    "Noto Sans",
+    "PingFang SC",
+    "Hiragino Sans GB",
+    "Microsoft YaHei",
+    sans-serif;
+  color: #111827;
+  background: #ffffff;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button,
+[role="button"],
+.el-button,
+.el-message-box__headerbtn,
+.el-tabs__item {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus,
+button:focus-visible,
+[role="button"]:focus,
+[role="button"]:focus-visible,
+.el-button:focus,
+.el-button:focus-visible,
+.el-message-box__headerbtn:focus,
+.el-message-box__headerbtn:focus-visible,
+.el-tabs__item:focus,
+.el-tabs__item:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+button {
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+textarea {
+  resize: vertical;
+}
+
+:focus-visible {
+  .rpx(outline-width, 2);
+  outline-style: solid;
+  outline-color: #2563eb;
+  .rpx(outline-offset, 2);
+}
+
+#__nuxt {
+  min-height: 100vh;
+}
+
+.chess-loading.el-loading-mask {
+  backdrop-filter: blur(calc(2 / 430 * 100vw));
+}
+
+.chess-loading .el-loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .rpx(gap, 12);
+  transform: translateY(calc(-6 / 430 * 100vw));
+}
+
+.chess-loading .el-loading-spinner svg {
+  .rpx(width, 64);
+  .rpx(height, 64);
+  animation: chess-loading-spin 1200ms linear infinite;
+  filter: drop-shadow(0 calc(8 / 430 * 100vw) calc(12 / 430 * 100vw) rgba(47, 24, 9, 0.38));
+}
+
+.chess-loading .chess-loading-ring {
+  fill: rgba(255, 232, 169, 0.18);
+  stroke: #f0c15c;
+  stroke-width: 3;
+}
+
+.chess-loading .chess-loading-arc {
+  fill: none;
+  stroke: #fff0a8;
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.chess-loading .chess-loading-piece {
+  fill: #8c2519;
+  font-family: "ChessTitle", "KaiTi", "Microsoft YaHei", serif;
+  .rpx(font-size, 22);
+  font-weight: 900;
+}
+
+.chess-loading .el-loading-spinner .el-loading-text {
+  margin: 0;
+  color: #ffe39a;
+  font-family: "ChessTitle", "KaiTi", "Microsoft YaHei", serif;
+  .rpx(font-size, 24);
+  line-height: 1;
+  text-shadow:
+    0 calc(2 / 430 * 100vw) 0 #6f3019,
+    0 calc(6 / 430 * 100vw) calc(14 / 430 * 100vw) rgba(0, 0, 0, 0.42);
+}
+
+@keyframes chess-loading-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.chess-message.el-message {
+  .rpx(min-width, 220);
+  .rpx(padding-top, 12);
+  .rpx(padding-right, 18);
+  .rpx(padding-bottom, 12);
+  .rpx(padding-left, 18);
+  .rpx(border-width, 2);
+  border-style: solid;
+  border-color: rgba(240, 193, 92, 0.9);
+  .rpx(border-radius, 8);
+  background:
+    linear-gradient(180deg, rgba(120, 55, 24, 0.96), rgba(64, 32, 16, 0.96));
+  box-shadow:
+    inset 0 0 0 calc(1 / 430 * 100vw) rgba(255, 239, 170, 0.24),
+    0 calc(12 / 430 * 100vw) calc(26 / 430 * 100vw) rgba(47, 24, 9, 0.34);
+}
+
+.chess-message .el-message__content {
+  color: #ffe39a;
+  font-family: "ChessTitle", "KaiTi", "Microsoft YaHei", serif;
+  .rpx(font-size, 20);
+  line-height: 1.2;
+  text-shadow:
+    0 calc(2 / 430 * 100vw) 0 #6f3019,
+    0 calc(5 / 430 * 100vw) calc(12 / 430 * 100vw) rgba(0, 0, 0, 0.36);
+}
+
+.chess-message .el-message__icon {
+  .rpx(margin-right, 9);
+  color: #ffe39a;
+  .rpx(font-size, 20);
+}
+
+.chess-message .el-message__closeBtn {
+  color: rgba(255, 227, 154, 0.82);
+}
+
+.chess-message .el-message__closeBtn:hover {
+  color: #ffffff;
+}
+
+.chess-message--success.el-message {
+  border-color: rgba(226, 186, 85, 0.92);
+}
+
+.chess-message--error.el-message {
+  border-color: rgba(214, 91, 70, 0.92);
+  background:
+    linear-gradient(180deg, rgba(116, 36, 26, 0.97), rgba(55, 23, 18, 0.97));
+}
+
+.chess-message--warning.el-message {
+  border-color: rgba(255, 196, 89, 0.95);
+}
+
+.chess-message--info.el-message {
+  border-color: rgba(210, 170, 96, 0.88);
+}
+
+.chess-confirm.el-message-box {
+  width: 88vw;
+  .rpx(max-width, 380);
+  padding: 0;
+  overflow: hidden;
+  .rpx(border-width, 2);
+  border-style: solid;
+  border-color: rgba(240, 193, 92, 0.92);
+  .rpx(border-radius, 10);
+  background:
+    radial-gradient(circle at 12% 8%, rgba(255, 235, 166, 0.18), rgba(255, 235, 166, 0) 30%),
+    linear-gradient(180deg, rgba(126, 59, 27, 0.98), rgba(58, 30, 17, 0.98));
+  box-shadow:
+    inset 0 0 0 calc(1 / 430 * 100vw) rgba(255, 239, 170, 0.24),
+    0 calc(18 / 430 * 100vw) calc(38 / 430 * 100vw) rgba(35, 18, 8, 0.38);
+}
+
+.chess-confirm .el-message-box__header {
+  .rpx(padding-top, 18);
+  .rpx(padding-right, 46);
+  .rpx(padding-bottom, 8);
+  .rpx(padding-left, 22);
+}
+
+.chess-confirm .el-message-box__title {
+  color: #ffe39a;
+  font-family: "ChessTitle", "KaiTi", "Microsoft YaHei", serif;
+  .rpx(font-size, 25);
+  line-height: 1.1;
+  text-shadow:
+    0 calc(2 / 430 * 100vw) 0 #6f3019,
+    0 calc(5 / 430 * 100vw) calc(12 / 430 * 100vw) rgba(0, 0, 0, 0.34);
+}
+
+.chess-confirm .el-message-box__headerbtn {
+  .rpx(top, 14);
+  .rpx(right, 14);
+  .rpx(width, 30);
+  .rpx(height, 30);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: calc(1 / 430 * 100vw) solid rgba(255, 227, 154, 0.5);
+  border-radius: 50%;
+  background: rgba(73, 31, 17, 0.72);
+  color: rgba(255, 227, 154, 0.88);
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow:
+    inset 0 calc(1 / 430 * 100vw) calc(2 / 430 * 100vw) rgba(255, 245, 190, 0.24),
+    0 calc(4 / 430 * 100vw) calc(8 / 430 * 100vw) rgba(24, 12, 7, 0.24);
+}
+
+.chess-confirm .el-message-box__headerbtn .el-message-box__close,
+.chess-confirm .el-message-box__headerbtn .el-icon,
+.chess-confirm .el-message-box__headerbtn svg {
+  color: rgba(255, 227, 154, 0.88) !important;
+  .rpx(font-size, 16);
+  font-weight: 800;
+}
+
+.chess-confirm .el-message-box__headerbtn svg path {
+  fill: currentColor !important;
+  stroke: currentColor !important;
+}
+
+.chess-confirm .el-message-box__headerbtn:hover .el-message-box__close,
+.chess-confirm .el-message-box__headerbtn:hover .el-icon,
+.chess-confirm .el-message-box__headerbtn:hover svg,
+.chess-confirm .el-message-box__headerbtn:focus .el-message-box__close,
+.chess-confirm .el-message-box__headerbtn:focus .el-icon,
+.chess-confirm .el-message-box__headerbtn:focus svg,
+.chess-confirm .el-message-box__headerbtn:focus-visible .el-message-box__close,
+.chess-confirm .el-message-box__headerbtn:focus-visible .el-icon,
+.chess-confirm .el-message-box__headerbtn:focus-visible svg {
+  color: #fff4c8 !important;
+}
+
+.chess-confirm .el-message-box__headerbtn:hover,
+.chess-confirm .el-message-box__headerbtn:focus,
+.chess-confirm .el-message-box__headerbtn:focus-visible {
+  border-color: rgba(255, 232, 164, 0.9);
+  outline: none;
+  background: rgba(120, 48, 24, 0.86);
+  color: #fff4c8 !important;
+  box-shadow:
+    inset 0 calc(1 / 430 * 100vw) calc(2 / 430 * 100vw) rgba(255, 245, 190, 0.28),
+    0 calc(4 / 430 * 100vw) calc(8 / 430 * 100vw) rgba(24, 12, 7, 0.24);
+}
+
+.chess-confirm .el-message-box__headerbtn:active {
+  transform: scale(0.94);
+}
+
+.chess-confirm .el-message-box__content {
+  .rpx(padding-top, 10);
+  .rpx(padding-right, 22);
+  .rpx(padding-bottom, 8);
+  .rpx(padding-left, 22);
+}
+
+.chess-confirm .el-message-box__status {
+  display: none;
+}
+
+.chess-confirm .el-message-box__message {
+  padding: 0;
+}
+
+.chess-confirm .el-message-box__message p {
+  margin: 0;
+  color: #fff5c7;
+  .rpx(font-size, 16);
+  line-height: 1.6;
+}
+
+.chess-confirm .el-message-box__btns {
+  display: flex;
+  justify-content: flex-end;
+  .rpx(gap, 10);
+  .rpx(padding-top, 14);
+  .rpx(padding-right, 18);
+  .rpx(padding-bottom, 18);
+  .rpx(padding-left, 18);
+}
+
+.chess-confirm .el-button {
+  --el-button-text-color: #fff7d8;
+  --el-button-border-color: rgba(255, 227, 154, 0.78);
+  --el-button-bg-color: rgba(255, 239, 196, 0.9);
+  --el-button-hover-text-color: #fff7d8;
+  --el-button-hover-border-color: #d28a4a;
+  --el-button-hover-bg-color: #a6422d;
+  --el-button-active-text-color: #fff7d8;
+  --el-button-active-border-color: #8f2d21;
+  --el-button-active-bg-color: #8f2d21;
+  --el-button-outline-color: transparent;
+  --el-button-focus-border-color: #d28a4a;
+  .rpx(min-width, 82);
+  .rpx(height, 36);
+  .rpx(border-radius, 6);
+  font-weight: 800;
+  outline: none;
+  transition:
+    transform 120ms ease,
+    filter 120ms ease;
+}
+
+.chess-confirm .el-button:focus,
+.chess-confirm .el-button:focus-visible,
+.chess-confirm .el-button:active {
+  outline: none;
+  border-color: #d28a4a !important;
+  box-shadow: none !important;
+}
+
+.chess-confirm .el-button:not(.el-button--primary) {
+  color: #6f3019 !important;
+  border-color: rgba(255, 227, 154, 0.78) !important;
+  background: rgba(255, 239, 196, 0.9) !important;
+}
+
+.chess-confirm .el-button--primary {
+  --el-button-text-color: #fff7d8;
+  --el-button-border-color: #b63625;
+  --el-button-bg-color: #b63625;
+  --el-button-hover-text-color: #fff7d8;
+  --el-button-hover-border-color: #d95a34;
+  --el-button-hover-bg-color: #b83a24;
+  --el-button-active-text-color: #fff7d8;
+  --el-button-active-border-color: #8f2d21;
+  --el-button-active-bg-color: #8f2d21;
+  color: #fff7d8 !important;
+  border-color: #b63625 !important;
+  background: linear-gradient(180deg, #d95a34, #9f2e21) !important;
+}
+
+.chess-confirm .el-button--primary:hover,
+.chess-confirm .el-button--primary:focus,
+.chess-confirm .el-button--primary:focus-visible {
+  color: #fff7d8 !important;
+  border-color: #d95a34 !important;
+  background: linear-gradient(180deg, #e1663b, #a93623) !important;
+  box-shadow: none !important;
+}
+
+.chess-confirm .el-button--primary:active {
+  color: #fff7d8 !important;
+  border-color: #8f2d21 !important;
+  background: linear-gradient(180deg, #b83a24, #8f2d21) !important;
+  box-shadow: none !important;
+}
+
+.chess-confirm .el-button:hover {
+  transform: translateY(calc(-1 / 430 * 100vw));
+  filter: brightness(1.05);
+}
+
+.chess-confirm .el-button:active {
+  transform: translateY(calc(1 / 430 * 100vw)) scale(0.98);
+  filter: brightness(0.92);
+}
+.chess-action-select{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.chess-action-select__message {
+  margin: 0;
+  .rpx(margin-bottom, 14);
+  color: #fff5c7;
+  .rpx(font-size, 16);
+  line-height: 1.6;
+  text-align: center;
+}
+
+.chess-action-select__buttons {
+  .rpx(width, 180);
+  max-width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  margin-right: auto;
+  margin-left: auto;
+  .rpx(gap, 12);
+}
+
+.chess-action-select__buttons .el-button {
+  width: 100%;
+  .rpx(height, 44);
+  margin-right: auto;
+  margin-left: auto;
+  .rpx(font-size, 17);
+  font-family: "ChessKaiti", "KaiTi", "Microsoft YaHei", serif;
+  .rpx(margin-top, 10);
+}
+
+.chess-action-select__buttons .el-button+.el-button {
+  margin-left: 0;
+  margin-right: auto;
+  display: block
+}
+.chess-action-select__buttons .el-button+.el-button:nth-of-type(2) {
+  // margin-bottom: ;
+  .rpx(margin-bottom,13)
+}
+
+
+.chess-action-box .el-message-box__btns {
+  .rpx(padding-top, 4);
+  justify-content: center;
+}
+
+.chess-action-box .el-message-box__content {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.chess-action-box .el-message-box__message {
+  width: 100%;
+}

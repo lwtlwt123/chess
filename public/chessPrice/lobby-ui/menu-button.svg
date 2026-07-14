@@ -1,0 +1,22 @@
+<svg width="500" height="126" viewBox="0 0 500 126" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="wood" x1="250" y1="12" x2="250" y2="114" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFE7A6"/>
+      <stop offset="0.48" stop-color="#C88941"/>
+      <stop offset="1" stop-color="#71401E"/>
+    </linearGradient>
+    <linearGradient id="face" x1="82" y1="27" x2="418" y2="99" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF4C5"/>
+      <stop offset="1" stop-color="#C47B36"/>
+    </linearGradient>
+    <filter id="shadow" x="-14%" y="-45%" width="128%" height="190%">
+      <feDropShadow dx="0" dy="10" stdDeviation="8" flood-color="#3A1D0D" flood-opacity="0.32"/>
+    </filter>
+  </defs>
+  <g filter="url(#shadow)">
+    <path d="M70 20C140 5 361 5 431 20C472 29 476 98 432 110C362 128 139 126 69 109C29 99 31 29 70 20Z" fill="url(#wood)"/>
+    <path d="M84 32C150 20 350 20 416 32C449 38 452 89 416 98C351 112 149 111 84 98C51 90 53 38 84 32Z" fill="url(#face)"/>
+    <path d="M100 43C170 34 328 34 400 43" stroke="#FFF0B4" stroke-width="6" stroke-linecap="round" opacity="0.52"/>
+    <path d="M101 96C169 106 330 106 399 96" stroke="#70401D" stroke-width="5" stroke-linecap="round" opacity="0.28"/>
+  </g>
+</svg>

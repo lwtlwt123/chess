@@ -1,0 +1,119 @@
+<svg width="390" height="844" viewBox="0 0 390 844" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="42" y1="0" x2="370" y2="844" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#17251f"/>
+      <stop offset=".48" stop-color="#253428"/>
+      <stop offset="1" stop-color="#111917"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="55" y1="128" x2="332" y2="268" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F3C46D"/>
+      <stop offset="1" stop-color="#BB7835"/>
+    </linearGradient>
+    <linearGradient id="red" x1="0" y1="0" x2="120" y2="60" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E94D42"/>
+      <stop offset="1" stop-color="#A9201E"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="14" stdDeviation="14" flood-color="#000" flood-opacity=".35"/>
+    </filter>
+    <pattern id="board" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M0 0H48V48H0V0Z" fill="transparent"/>
+      <path d="M0 0H48M0 0V48" stroke="#C8A66A" stroke-opacity=".08" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="390" height="844" fill="url(#bg)"/>
+  <rect width="390" height="844" fill="url(#board)"/>
+  <circle cx="324" cy="96" r="92" fill="#C44730" opacity=".16"/>
+  <circle cx="46" cy="744" r="108" fill="#D9A84F" opacity=".12"/>
+
+  <g transform="translate(22 22)">
+    <rect x="0" y="0" width="42" height="42" rx="14" fill="#F7E5BE" fill-opacity=".13"/>
+    <path d="M25.5 12L16.5 21L25.5 30" stroke="#FBE7BF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="168" y="28" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Arial" font-size="22" font-weight="700" fill="#FFF3D2">我的战绩</text>
+    <rect x="304" y="0" width="42" height="42" rx="14" fill="#F7E5BE" fill-opacity=".13"/>
+    <path d="M318 17C322 12 329 13 331 19C333 26 327 30 318 33" stroke="#FBE7BF" stroke-width="2.1" stroke-linecap="round"/>
+  </g>
+
+  <g filter="url(#shadow)" transform="translate(22 84)">
+    <rect width="346" height="186" rx="18" fill="#F7E5BE" fill-opacity=".10" stroke="#F8D494" stroke-opacity=".22"/>
+    <path d="M0 0H346V96C305 120 244 128 173 112C94 94 39 111 0 132V0Z" fill="url(#gold)" opacity=".18"/>
+    <circle cx="54" cy="56" r="31" fill="#EFD29B"/>
+    <circle cx="54" cy="56" r="25" fill="#943026"/>
+    <text x="54" y="66" text-anchor="middle" font-family="KaiTi, STKaiti, serif" font-size="30" font-weight="700" fill="#FFE8B5">帅</text>
+    <text x="98" y="51" font-family="PingFang SC, Microsoft YaHei, Arial" font-size="18" font-weight="700" fill="#FFF4D6">棋逢对手</text>
+    <text x="98" y="76" font-family="PingFang SC, Microsoft YaHei, Arial" font-size="12" fill="#D9C8A5">本周连胜 3 场 · 段位积分 1280</text>
+    <text x="282" y="48" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Arial" font-size="12" fill="#E8D4A9">胜率</text>
+    <text x="282" y="80" text-anchor="middle" font-family="DIN Alternate, Arial" font-size="34" font-weight="700" fill="#FFD47A">68%</text>
+    <g transform="translate(20 116)">
+      <rect width="92" height="50" rx="12" fill="#111A16" fill-opacity=".48"/>
+      <text x="46" y="20" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Arial" font-size="12" fill="#CDBB98">胜场</text>
+      <text x="46" y="40" text-anchor="middle" font-family="DIN Alternate, Arial" font-size="22" font-weight="700" fill="#F5C970">34</text>
+      <rect x="106" width="92" height="50" rx="12" fill="#111A16" fill-opacity=".48"/>
+      <text x="152" y="20" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Arial" font-size="12" fill="#CDBB98">负场</text>
+      <text x="152" y="40" text-anchor="middle" font-family="DIN Alternate, Arial" font-size="22" font-weight="700" fill="#F06B60">16</text>
+      <rect x="212" width="92" height="50" rx="12" fill="#111A16" fill-opacity=".48"/>
+      <text x="258" y="20" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Arial" font-size="12" fill="#CDBB98">总局</text>
+      <text x="258" y="40" text-anchor="middle" font-family="DIN Alternate, Arial" font-size="22" font-weight="700" fill="#F9E1AA">50</text>
+    </g>
+  </g>
+
+  <g transform="translate(22 294)">
+    <rect width="346" height="42" rx="13" fill="#0F1714" fill-opacity=".50"/>
+    <rect x="5" y="5" width="75" height="32" rx="10" fill="#E9BB62"/>
+    <text x="42.5" y="27" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Arial" font-size="13" font-weight="700" fill="#301E0E">全部</text>
+    <text x="123" y="27" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Arial" font-size="13" fill="#E7D2A9">胜利</text>
+    <text x="207" y="27" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Arial" font-size="13" fill="#E7D2A9">失败</text>
+    <text x="290" y="27" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Arial" font-size="13" fill="#E7D2A9">近7天</text>
+  </g>
+
+  <g transform="translate(22 360)">
+    <text x="0" y="0" font-family="PingFang SC, Microsoft YaHei, Arial" font-size="16" font-weight="700" fill="#FFF3D2">最近对局</text>
+    <text x="346" y="0" text-anchor="end" font-family="PingFang SC, Microsoft YaHei, Arial" font-size="12" fill="#D2BC91">共 50 局</text>
+  </g>
+
+  <g transform="translate(22 380)" font-family="PingFang SC, Microsoft YaHei, Arial">
+    <g>
+      <rect width="346" height="92" rx="16" fill="#F7E5BE" fill-opacity=".10" stroke="#F8D494" stroke-opacity=".16"/>
+      <rect x="16" y="20" width="52" height="52" rx="16" fill="url(#red)"/>
+      <text x="42" y="54" text-anchor="middle" font-size="23" font-family="KaiTi, STKaiti, serif" fill="#FFE3B0">胜</text>
+      <text x="82" y="32" font-size="15" font-weight="700" fill="#FFF3D2">击败 对手_青松</text>
+      <text x="82" y="55" font-size="12" fill="#CBB994">2026-07-14  12分36秒</text>
+      <text x="82" y="76" font-size="12" fill="#E9C06B">将军获胜 · +18 积分</text>
+      <rect x="278" y="30" width="52" height="32" rx="10" fill="#F1C66E"/>
+      <text x="304" y="51" text-anchor="middle" font-size="12" font-weight="700" fill="#33200D">复盘</text>
+    </g>
+    <g transform="translate(0 108)">
+      <rect width="346" height="92" rx="16" fill="#F7E5BE" fill-opacity=".075" stroke="#F8D494" stroke-opacity=".13"/>
+      <rect x="16" y="20" width="52" height="52" rx="16" fill="#465449"/>
+      <text x="42" y="54" text-anchor="middle" font-size="23" font-family="KaiTi, STKaiti, serif" fill="#FFB8AE">负</text>
+      <text x="82" y="32" font-size="15" font-weight="700" fill="#FFF3D2">惜败 对手_长河</text>
+      <text x="82" y="55" font-size="12" fill="#CBB994">2026-07-13  18分02秒</text>
+      <text x="82" y="76" font-size="12" fill="#F06B60">超时判负 · -12 积分</text>
+      <rect x="278" y="30" width="52" height="32" rx="10" fill="#F7E5BE" fill-opacity=".12"/>
+      <text x="304" y="51" text-anchor="middle" font-size="12" font-weight="700" fill="#F8D494">复盘</text>
+    </g>
+    <g transform="translate(0 216)">
+      <rect width="346" height="92" rx="16" fill="#F7E5BE" fill-opacity=".075" stroke="#F8D494" stroke-opacity=".13"/>
+      <rect x="16" y="20" width="52" height="52" rx="16" fill="#B37B35"/>
+      <text x="42" y="54" text-anchor="middle" font-size="23" font-family="KaiTi, STKaiti, serif" fill="#FFF0C8">和</text>
+      <text x="82" y="32" font-size="15" font-weight="700" fill="#FFF3D2">战平 对手_归云</text>
+      <text x="82" y="55" font-size="12" fill="#CBB994">2026-07-12  21分44秒</text>
+      <text x="82" y="76" font-size="12" fill="#D2BC91">双方议和 · +0 积分</text>
+      <rect x="278" y="30" width="52" height="32" rx="10" fill="#F7E5BE" fill-opacity=".12"/>
+      <text x="304" y="51" text-anchor="middle" font-size="12" font-weight="700" fill="#F8D494">复盘</text>
+    </g>
+    <g transform="translate(0 324)">
+      <rect width="346" height="78" rx="16" fill="#F7E5BE" fill-opacity=".055" stroke="#F8D494" stroke-opacity=".11"/>
+      <rect x="16" y="18" width="44" height="44" rx="14" fill="#903228"/>
+      <text x="38" y="48" text-anchor="middle" font-size="20" font-family="KaiTi, STKaiti, serif" fill="#FFE3B0">胜</text>
+      <text x="76" y="31" font-size="15" font-weight="700" fill="#FFF3D2">击败 对手_明月</text>
+      <text x="76" y="54" font-size="12" fill="#CBB994">2026-07-11  中盘认输</text>
+      <rect x="278" y="23" width="52" height="32" rx="10" fill="#F7E5BE" fill-opacity=".12"/>
+      <text x="304" y="44" text-anchor="middle" font-size="12" font-weight="700" fill="#F8D494">复盘</text>
+    </g>
+  </g>
+
+  <g transform="translate(0 806)">
+    <rect x="114" y="0" width="162" height="5" rx="2.5" fill="#FFF3D2" opacity=".35"/>
+  </g>
+</svg>

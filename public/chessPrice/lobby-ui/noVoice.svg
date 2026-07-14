@@ -1,0 +1,29 @@
+<svg width="200" height="200" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="noVoiceTitle noVoiceDesc">
+  <title id="noVoiceTitle">声音关闭</title>
+  <desc id="noVoiceDesc">带木质按钮风格外框的静音图标</desc>
+  <defs>
+    <linearGradient id="noVoiceOuter" x1="512" y1="96" x2="512" y2="928" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F07142"/>
+      <stop offset="0.52" stop-color="#C63A25"/>
+      <stop offset="1" stop-color="#772414"/>
+    </linearGradient>
+    <linearGradient id="noVoiceFace" x1="220" y1="218" x2="804" y2="806" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#C94B2A"/>
+      <stop offset="1" stop-color="#842416"/>
+    </linearGradient>
+    <filter id="noVoiceDrop" x="-16%" y="-16%" width="132%" height="132%">
+      <feDropShadow dx="0" dy="28" stdDeviation="24" flood-color="#3A1D0D" flood-opacity="0.34"/>
+    </filter>
+  </defs>
+  <g filter="url(#noVoiceDrop)">
+    <path d="M174 116C296 82 728 82 850 116C934 140 964 274 946 512C964 750 934 884 850 908C728 942 296 942 174 908C90 884 60 750 78 512C60 274 90 140 174 116Z" fill="url(#noVoiceOuter)"/>
+    <path d="M214 184C326 158 698 158 810 184C876 199 898 312 886 512C898 712 876 825 810 840C698 866 326 866 214 840C148 825 126 712 138 512C126 312 148 199 214 184Z" fill="url(#noVoiceFace)"/>
+    <path d="M234 246C348 224 676 224 790 246" stroke="#FFB071" stroke-width="28" stroke-linecap="round" opacity="0.52"/>
+    <path d="M244 790C362 826 662 826 780 790" stroke="#5B170E" stroke-width="24" stroke-linecap="round" opacity="0.36"/>
+    <path d="M182 512C166 336 184 228 238 214" stroke="#FFE7A6" stroke-width="18" stroke-linecap="round" opacity="0.18"/>
+    <path d="M842 512C858 688 840 796 786 810" stroke="#3A120B" stroke-width="18" stroke-linecap="round" opacity="0.16"/>
+    <g transform="translate(180 180) scale(0.65)">
+      <path d="M128 420.576v200.864h149.12l175.456 140.064V284.288l-169.792 136.288H128z m132.256-64l204.288-163.968a32 32 0 0 1 52.032 24.96v610.432a32 32 0 0 1-51.968 24.992l-209.92-167.552H96a32 32 0 0 1-32-32v-264.864a32 32 0 0 1 32-32h164.256zM752 458.656L870.4 300.8a32 32 0 1 1 51.2 38.4L792 512l129.6 172.8a32 32 0 0 1-51.2 38.4l-118.4-157.856-118.4 157.856a32 32 0 0 1-51.2-38.4l129.6-172.8-129.6-172.8a32 32 0 0 1 51.2-38.4l118.4 157.856z" fill="#FFE7A6"/>
+    </g>
+  </g>
+</svg>

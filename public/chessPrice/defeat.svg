@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="200" height="200" aria-hidden="true">
+  <defs>
+    <linearGradient id="defeat-shield-fill" x1="272" y1="120" x2="760" y2="900" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fffaf0"/>
+      <stop offset="0.52" stop-color="#f7f3ec"/>
+      <stop offset="1" stop-color="#dfc49d"/>
+    </linearGradient>
+    <linearGradient id="defeat-shield-shade" x1="270" y1="150" x2="770" y2="860" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.42"/>
+      <stop offset="0.56" stop-color="#e4c292" stop-opacity="0.2"/>
+      <stop offset="1" stop-color="#8f4b2e" stop-opacity="0.24"/>
+    </linearGradient>
+    <clipPath id="defeat-shield-clip" clipPathUnits="userSpaceOnUse">
+      <path d="M512 70C610 132 728 168 858 184C851 498 724 769 512 936C300 769 173 498 166 184C296 168 414 132 512 70Z"/>
+    </clipPath>
+  </defs>
+
+  <path
+    d="M512 70C610 132 728 168 858 184C851 498 724 769 512 936C300 769 173 498 166 184C296 168 414 132 512 70Z"
+    fill="url(#defeat-shield-fill)"
+  />
+  <path
+    d="M512 148C590 194 684 223 786 239C770 496 671 704 512 841C353 704 254 496 238 239C340 223 434 194 512 148Z"
+    fill="url(#defeat-shield-shade)"
+  />
+  <path
+    d="M512 118C596 167 694 198 804 214C790 487 683 717 512 872C341 717 234 487 220 214C330 198 428 167 512 118Z"
+    fill="none"
+    stroke="#ffffff"
+    stroke-width="26"
+    stroke-linejoin="round"
+    opacity="0.52"
+  />
+
+  <g clip-path="url(#defeat-shield-clip)">
+    <path
+      d="M316 212C366 206 436 181 512 138C478 260 445 356 410 438C360 560 306 676 238 792C198 632 175 454 168 184C218 182 272 173 316 212Z"
+      fill="#ffffff"
+      opacity="0.18"
+    />
+    <path
+      d="M720 224C682 398 616 558 522 710C486 768 454 823 426 894C448 912 476 932 512 936C724 769 851 498 858 184C816 190 770 202 720 224Z"
+      fill="#9b4b2e"
+      opacity="0.12"
+    />
+
+    <path
+      d="M536 90L477 289L546 412L471 551L533 672L461 940"
+      fill="none"
+      stroke="#9e2d20"
+      stroke-width="42"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M527 96L495 285L572 410L500 552L565 672L514 922"
+      fill="none"
+      stroke="#5d211c"
+      stroke-width="13"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      opacity="0.28"
+    />
+    <path
+      d="M546 414L690 348M474 551L325 510M531 672L664 744"
+      fill="none"
+      stroke="#9e2d20"
+      stroke-width="27"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M512 316L444 356M507 322L558 364M505 506L415 452M498 514L566 582M530 684L458 754M536 690L604 650"
+      fill="none"
+      stroke="#8b2b22"
+      stroke-width="14"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      opacity="0.88"
+    />
+    <path
+      d="M490 292L462 328L505 336ZM538 406L583 386L566 438ZM464 548L421 586L481 596ZM528 667L567 700L512 724Z"
+      fill="#f7f3ec"
+      opacity="0.42"
+    />
+    <path
+      d="M542 93L500 288L566 409L494 552L558 672L504 920"
+      fill="none"
+      stroke="#fff7e9"
+      stroke-width="8"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      opacity="0.42"
+    />
+  </g>
+</svg>

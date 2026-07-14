@@ -1,0 +1,37 @@
+.bg-image(@url, @size: cover, @position: center, @repeat: no-repeat) {
+  background-image: url(@url);
+  background-size: @size;
+  background-position: @position;
+  background-repeat: @repeat;
+}
+
+.bg-image-var(@image, @size: cover, @position: center, @repeat: no-repeat) {
+  background-image: @image;
+  background-size: @size;
+  background-position: @position;
+  background-repeat: @repeat;
+}
+
+.page-bg(@url,@width:100vw, @height: 100dvh) {
+  width: @width;
+  height: @height;
+  .bg-image(@url);
+}
+
+.center(@display:flex,@content:center,@items:center){
+  display: @display;
+  justify-content: @content;
+  align-items: @items;
+}
+
+.responsive-px(@property, @px, @design-width: 430, @min-scale: 0.75, @max-scale: 2.45) {
+  @{property}: clamp(
+    (@px * @min-scale * 1px),
+    (@px / @design-width * 100vw),
+    (@px * @max-scale * 1px)
+  );
+}
+
+.rpx(@property, @px, @design-width: 430, @min-scale: 0.75, @max-scale: 2.45) {
+  .responsive-px(@property, @px, @design-width, @min-scale, @max-scale);
+}

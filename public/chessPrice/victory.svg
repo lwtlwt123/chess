@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="200" height="200" aria-hidden="true">
+  <defs>
+    <linearGradient id="victory-cup-fill" x1="276" y1="112" x2="748" y2="748" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fffaf0"/>
+      <stop offset="0.5" stop-color="#f7f3ec"/>
+      <stop offset="1" stop-color="#e2c694"/>
+    </linearGradient>
+    <linearGradient id="victory-cup-shade" x1="300" y1="130" x2="720" y2="700" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.48"/>
+      <stop offset="0.55" stop-color="#eacb91" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#9a4f28" stop-opacity="0.25"/>
+    </linearGradient>
+    <linearGradient id="victory-base-fill" x1="278" y1="640" x2="746" y2="930" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff7e8"/>
+      <stop offset="0.48" stop-color="#f0dcc0"/>
+      <stop offset="1" stop-color="#c69356"/>
+    </linearGradient>
+    <clipPath id="victory-cup-clip" clipPathUnits="userSpaceOnUse">
+      <path d="M278 156H746C740 334 718 461 651 551C616 598 570 623 512 623C454 623 408 598 373 551C306 461 284 334 278 156Z"/>
+    </clipPath>
+  </defs>
+
+  <path
+    d="M305 250H178C158 250 144 264 142 284C135 359 156 430 199 477C235 516 283 526 342 506L326 585C250 606 180 586 128 529C69 464 43 371 53 268C61 192 110 148 183 148H306Z"
+    fill="url(#victory-cup-fill)"
+    opacity="0.92"
+  />
+  <path
+    d="M719 250H846C866 250 880 264 882 284C889 359 868 430 825 477C789 516 741 526 682 506L698 585C774 606 844 586 896 529C955 464 981 371 971 268C963 192 914 148 841 148H718Z"
+    fill="url(#victory-cup-fill)"
+    opacity="0.92"
+  />
+
+  <path
+    d="M246 112H778C806 112 828 134 828 162V186C828 209 810 228 787 228H237C214 228 196 209 196 186V162C196 134 218 112 246 112Z"
+    fill="#fff8ec"
+  />
+  <path
+    d="M278 156H746C740 334 718 461 651 551C616 598 570 623 512 623C454 623 408 598 373 551C306 461 284 334 278 156Z"
+    fill="url(#victory-cup-fill)"
+  />
+  <path
+    d="M310 224C326 359 361 464 414 531C443 568 475 586 512 586C549 586 581 568 610 531C663 464 698 359 714 224Z"
+    fill="url(#victory-cup-shade)"
+  />
+
+  <g clip-path="url(#victory-cup-clip)">
+    <path
+      d="M328 146C365 147 407 148 454 148C424 284 386 400 337 496C302 406 282 293 278 156C292 150 309 147 328 146Z"
+      fill="#ffffff"
+      opacity="0.22"
+    />
+    <path
+      d="M678 156C667 308 629 453 560 591C624 575 672 512 704 403C724 333 737 250 746 156Z"
+      fill="#8f4b2e"
+      opacity="0.12"
+    />
+    <path
+      d="M358 253H666"
+      fill="none"
+      stroke="#ffffff"
+      stroke-width="24"
+      stroke-linecap="round"
+      opacity="0.42"
+    />
+    <path
+      d="M405 488C438 529 474 550 512 550C550 550 586 529 619 488"
+      fill="none"
+      stroke="#a55c30"
+      stroke-width="18"
+      stroke-linecap="round"
+      opacity="0.22"
+    />
+  </g>
+
+  <path
+    d="M438 610H586C592 672 616 720 659 754H365C408 720 432 672 438 610Z"
+    fill="url(#victory-base-fill)"
+  />
+  <path
+    d="M382 742H642C674 742 700 768 700 800V816H324V800C324 768 350 742 382 742Z"
+    fill="url(#victory-base-fill)"
+  />
+  <path
+    d="M270 832H754C790 832 820 862 820 898V940H204V898C204 862 234 832 270 832Z"
+    fill="url(#victory-base-fill)"
+  />
+  <path
+    d="M246 872H778"
+    fill="none"
+    stroke="#ffffff"
+    stroke-width="22"
+    stroke-linecap="round"
+    opacity="0.34"
+  />
+  <path
+    d="M340 789H684"
+    fill="none"
+    stroke="#9a4f28"
+    stroke-width="14"
+    stroke-linecap="round"
+    opacity="0.22"
+  />
+  <path
+    d="M288 916H736"
+    fill="none"
+    stroke="#8e431f"
+    stroke-width="18"
+    stroke-linecap="round"
+    opacity="0.18"
+  />
+</svg>
