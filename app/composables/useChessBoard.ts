@@ -1,5 +1,6 @@
 import { onBeforeUnmount, onMounted, ref, type Ref } from 'vue'
-import { chessAssets, initialPieces, type Camp, type ChessPiece } from '~/data/chessPieceData'
+import { initialPieces, type Camp, type ChessPiece } from '~/data/chessPieceData'
+import { assetPaths } from '~/constants/assetPaths'
 import { useAssetUrl } from '~/composables/useAssetUrl'
 import {
   BOARD_HEIGHT,
@@ -13,7 +14,7 @@ import {
   getPixels,
   loadImage,
   useCanvasFn
-} from '~/constants/chessAssets'
+} from '~/utils/chessCanvas'
 import { closeLoading, showLoading } from '~/utils/loading'
 import { showChessWarning } from '~/utils/message'
 
@@ -926,7 +927,7 @@ export const useChessBoard = (
 
     try {
       const [img] = await Promise.all([
-        loadImage(assetUrl(chessAssets.boardWood)),
+        loadImage(assetUrl(assetPaths.game.board)),
         ...pieceImages.map((imgUrl) => loadImage(imgUrl))
       ])
 

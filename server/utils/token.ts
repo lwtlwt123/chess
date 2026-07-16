@@ -1,7 +1,12 @@
 import { createHmac, timingSafeEqual } from 'node:crypto'
 
 const TOKEN_EXPIRES_IN = 7 * 24 * 60 * 60
-const TOKEN_SECRET = process.env.TOKEN_SECRET || 'chess-game-local-secret'
+const TOKEN_SECRET = process.env.TOKEN_SECRET
+    || (process.env.NODE_ENV === 'production' ? '' : 'chess-game-local-secret')
+
+if (!TOKEN_SECRET) {
+    throw new Error('生产环境必须设置 TOKEN_SECRET')
+}
 
 export type AuthUser = {
     userId: number

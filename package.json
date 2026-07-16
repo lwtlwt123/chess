@@ -3,12 +3,14 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "dev:lan": "nuxt dev --host 0.0.0.0",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "typecheck": "nuxt typecheck",
+    "build": "nuxt build --dotenv .env.production",
+    "build:local": "nuxt build --dotenv .env.local",
+    "dev": "nuxt dev --dotenv .env.local",
+    "dev:lan": "nuxt dev --dotenv .env.local --host 0.0.0.0",
+    "preview": "node --env-file=.env.production .output/server/index.mjs",
+    "start": "node --env-file=.env.production .output/server/index.mjs",
+    "start:local": "node --env-file=.env.local .output/server/index.mjs",
+    "typecheck": "NUXT_BUILD_DIR=.nuxt-typecheck nuxt typecheck",
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
@@ -16,8 +18,7 @@
     "element-plus": "^2.14.2",
     "mysql2": "^3.22.6",
     "nuxt": "^4.4.8",
-    "vue": "^3.5.38",
-    "vue-router": "^5.1.0"
+    "vue": "^3.5.38"
   },
   "devDependencies": {
     "@element-plus/nuxt": "^1.1.5",

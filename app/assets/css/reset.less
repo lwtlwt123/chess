@@ -27,6 +27,8 @@
 
 html {
   min-height: 100%;
+  --app-page-width: min(100vw, 430px);
+  --app-rpx-base: var(--app-page-width);
   -webkit-text-size-adjust: 100%;
 }
 
@@ -119,7 +121,7 @@ textarea {
 :focus-visible {
   .rpx(outline-width, 2);
   outline-style: solid;
-  outline-color: #2563eb;
+  outline-color: transparent;
   .rpx(outline-offset, 2);
 }
 
@@ -128,7 +130,7 @@ textarea {
 }
 
 .chess-loading.el-loading-mask {
-  backdrop-filter: blur(calc(2 / 430 * 100vw));
+  backdrop-filter: blur(calc(2 / 430 * var(--app-rpx-base)));
 }
 
 .chess-loading .el-loading-spinner {
@@ -136,14 +138,14 @@ textarea {
   flex-direction: column;
   align-items: center;
   .rpx(gap, 12);
-  transform: translateY(calc(-6 / 430 * 100vw));
+  transform: translateY(calc(-6 / 430 * var(--app-rpx-base)));
 }
 
 .chess-loading .el-loading-spinner svg {
   .rpx(width, 64);
   .rpx(height, 64);
   animation: chess-loading-spin 1200ms linear infinite;
-  filter: drop-shadow(0 calc(8 / 430 * 100vw) calc(12 / 430 * 100vw) rgba(47, 24, 9, 0.38));
+  filter: drop-shadow(0 calc(8 / 430 * var(--app-rpx-base)) calc(12 / 430 * var(--app-rpx-base)) rgba(47, 24, 9, 0.38));
 }
 
 .chess-loading .chess-loading-ring {
@@ -173,8 +175,8 @@ textarea {
   .rpx(font-size, 24);
   line-height: 1;
   text-shadow:
-    0 calc(2 / 430 * 100vw) 0 #6f3019,
-    0 calc(6 / 430 * 100vw) calc(14 / 430 * 100vw) rgba(0, 0, 0, 0.42);
+    0 calc(2 / 430 * var(--app-rpx-base)) 0 #6f3019,
+    0 calc(6 / 430 * var(--app-rpx-base)) calc(14 / 430 * var(--app-rpx-base)) rgba(0, 0, 0, 0.42);
 }
 
 @keyframes chess-loading-spin {
@@ -196,8 +198,8 @@ textarea {
   background:
     linear-gradient(180deg, rgba(120, 55, 24, 0.96), rgba(64, 32, 16, 0.96));
   box-shadow:
-    inset 0 0 0 calc(1 / 430 * 100vw) rgba(255, 239, 170, 0.24),
-    0 calc(12 / 430 * 100vw) calc(26 / 430 * 100vw) rgba(47, 24, 9, 0.34);
+    inset 0 0 0 calc(1 / 430 * var(--app-rpx-base)) rgba(255, 239, 170, 0.24),
+    0 calc(12 / 430 * var(--app-rpx-base)) calc(26 / 430 * var(--app-rpx-base)) rgba(47, 24, 9, 0.34);
 }
 
 .chess-message .el-message__content {
@@ -206,8 +208,8 @@ textarea {
   .rpx(font-size, 20);
   line-height: 1.2;
   text-shadow:
-    0 calc(2 / 430 * 100vw) 0 #6f3019,
-    0 calc(5 / 430 * 100vw) calc(12 / 430 * 100vw) rgba(0, 0, 0, 0.36);
+    0 calc(2 / 430 * var(--app-rpx-base)) 0 #6f3019,
+    0 calc(5 / 430 * var(--app-rpx-base)) calc(12 / 430 * var(--app-rpx-base)) rgba(0, 0, 0, 0.36);
 }
 
 .chess-message .el-message__icon {
@@ -255,8 +257,8 @@ textarea {
     radial-gradient(circle at 12% 8%, rgba(255, 235, 166, 0.18), rgba(255, 235, 166, 0) 30%),
     linear-gradient(180deg, rgba(126, 59, 27, 0.98), rgba(58, 30, 17, 0.98));
   box-shadow:
-    inset 0 0 0 calc(1 / 430 * 100vw) rgba(255, 239, 170, 0.24),
-    0 calc(18 / 430 * 100vw) calc(38 / 430 * 100vw) rgba(35, 18, 8, 0.38);
+    inset 0 0 0 calc(1 / 430 * var(--app-rpx-base)) rgba(255, 239, 170, 0.24),
+    0 calc(18 / 430 * var(--app-rpx-base)) calc(38 / 430 * var(--app-rpx-base)) rgba(35, 18, 8, 0.38);
 }
 
 .chess-confirm .el-message-box__header {
@@ -272,8 +274,8 @@ textarea {
   .rpx(font-size, 25);
   line-height: 1.1;
   text-shadow:
-    0 calc(2 / 430 * 100vw) 0 #6f3019,
-    0 calc(5 / 430 * 100vw) calc(12 / 430 * 100vw) rgba(0, 0, 0, 0.34);
+    0 calc(2 / 430 * var(--app-rpx-base)) 0 #6f3019,
+    0 calc(5 / 430 * var(--app-rpx-base)) calc(12 / 430 * var(--app-rpx-base)) rgba(0, 0, 0, 0.34);
 }
 
 .chess-confirm .el-message-box__headerbtn {
@@ -284,15 +286,15 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: calc(1 / 430 * 100vw) solid rgba(255, 227, 154, 0.5);
+  border: calc(1 / 430 * var(--app-rpx-base)) solid rgba(255, 227, 154, 0.5);
   border-radius: 50%;
   background: rgba(73, 31, 17, 0.72);
   color: rgba(255, 227, 154, 0.88);
   outline: none;
   -webkit-tap-highlight-color: transparent;
   box-shadow:
-    inset 0 calc(1 / 430 * 100vw) calc(2 / 430 * 100vw) rgba(255, 245, 190, 0.24),
-    0 calc(4 / 430 * 100vw) calc(8 / 430 * 100vw) rgba(24, 12, 7, 0.24);
+    inset 0 calc(1 / 430 * var(--app-rpx-base)) calc(2 / 430 * var(--app-rpx-base)) rgba(255, 245, 190, 0.24),
+    0 calc(4 / 430 * var(--app-rpx-base)) calc(8 / 430 * var(--app-rpx-base)) rgba(24, 12, 7, 0.24);
 }
 
 .chess-confirm .el-message-box__headerbtn .el-message-box__close,
@@ -328,8 +330,8 @@ textarea {
   background: rgba(120, 48, 24, 0.86);
   color: #fff4c8 !important;
   box-shadow:
-    inset 0 calc(1 / 430 * 100vw) calc(2 / 430 * 100vw) rgba(255, 245, 190, 0.28),
-    0 calc(4 / 430 * 100vw) calc(8 / 430 * 100vw) rgba(24, 12, 7, 0.24);
+    inset 0 calc(1 / 430 * var(--app-rpx-base)) calc(2 / 430 * var(--app-rpx-base)) rgba(255, 245, 190, 0.28),
+    0 calc(4 / 430 * var(--app-rpx-base)) calc(8 / 430 * var(--app-rpx-base)) rgba(24, 12, 7, 0.24);
 }
 
 .chess-confirm .el-message-box__headerbtn:active {
@@ -356,6 +358,31 @@ textarea {
   color: #fff5c7;
   .rpx(font-size, 16);
   line-height: 1.6;
+}
+
+.avatar-confirm-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .rpx(gap, 12);
+  .rpx(padding-top, 2);
+}
+
+.avatar-confirm-preview {
+  .rpx(width, 96);
+  .rpx(height, 96);
+  border: calc(3 / 430 * var(--app-rpx-base)) solid #f0c15c;
+  border-radius: 50%;
+  background: rgba(255, 245, 199, 0.12);
+  object-fit: cover;
+  box-shadow:
+    0 0 0 calc(2 / 430 * var(--app-rpx-base)) rgba(111, 48, 25, 0.86),
+    0 calc(8 / 430 * var(--app-rpx-base)) calc(18 / 430 * var(--app-rpx-base)) rgba(28, 14, 7, 0.34);
+}
+
+.chess-confirm .el-message-box__message .avatar-confirm-text {
+  color: #fff5c7;
+  text-align: center;
 }
 
 .chess-confirm .el-message-box__btns {
@@ -436,12 +463,12 @@ textarea {
 }
 
 .chess-confirm .el-button:hover {
-  transform: translateY(calc(-1 / 430 * 100vw));
+  transform: translateY(calc(-1 / 430 * var(--app-rpx-base)));
   filter: brightness(1.05);
 }
 
 .chess-confirm .el-button:active {
-  transform: translateY(calc(1 / 430 * 100vw)) scale(0.98);
+  transform: translateY(calc(1 / 430 * var(--app-rpx-base))) scale(0.98);
   filter: brightness(0.92);
 }
 .chess-action-select{

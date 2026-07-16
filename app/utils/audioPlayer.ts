@@ -29,7 +29,7 @@ class AudioPlayer {
 
   /**
    * 批量预加载并解码音效。
-   * 例如预加载 { drop: '/xxx.m4a' } 后，就可以用 play('drop') 播放。
+   * 预加载后，就可以用 play(key) 播放。
    */
   preload(soundList: SoundMap): void {
     Object.entries(soundList).forEach(([key, src]) => {

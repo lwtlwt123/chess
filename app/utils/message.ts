@@ -1,4 +1,4 @@
-import { h } from 'vue'
+import { h, type VNode } from 'vue'
 import { ElButton, ElMessage, ElMessageBox } from 'element-plus'
 
 type ChessMessageType = 'success' | 'warning' | 'info' | 'error'
@@ -12,12 +12,13 @@ type ChessMessageOptions = {
 
 type ChessConfirmOptions = {
   title?: string
-  message: string
+  message: string | VNode
   confirmText?: string
   cancelText?: string
 }
 
-type ChessPromptOptions = ChessConfirmOptions & {
+type ChessPromptOptions = Omit<ChessConfirmOptions, 'message'> & {
+  message: string
   inputValue?: string
   placeholder?: string
   inputPattern?: RegExp

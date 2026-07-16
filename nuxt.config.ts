@@ -2,10 +2,12 @@ import { responsivePx } from './build/postcss-responsive-px'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  buildDir: process.env.NUXT_BUILD_DIR || '.nuxt',
   modules: ['@element-plus/nuxt'],
   compatibilityDate: '2025-07-15',
   runtimeConfig: {
     public: {
+      appOrigin: '',
       assetBaseUrl: ''
     }
   },

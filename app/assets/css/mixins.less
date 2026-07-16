@@ -24,14 +24,14 @@
   align-items: @items;
 }
 
-.responsive-px(@property, @px, @design-width: 430, @min-scale: 0.75, @max-scale: 2.45) {
+.responsive-px(@property, @px, @design-width: 430, @min-scale: 0.75, @max-scale: 1) {
   @{property}: clamp(
     (@px * @min-scale * 1px),
-    (@px / @design-width * 100vw),
+    calc(@px / @design-width * var(--app-rpx-base, 100vw)),
     (@px * @max-scale * 1px)
   );
 }
 
-.rpx(@property, @px, @design-width: 430, @min-scale: 0.75, @max-scale: 2.45) {
+.rpx(@property, @px, @design-width: 430, @min-scale: 0.75, @max-scale: 1) {
   .responsive-px(@property, @px, @design-width, @min-scale, @max-scale);
 }

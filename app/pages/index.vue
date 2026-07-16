@@ -1,7 +1,11 @@
 <template>
   <main class="login" :style="loginAssetStyle">
     <div v-if="!isLoginReady" class="loginLoading" aria-live="polite">
-      <div class="loginLoading__spinner" aria-hidden="true"></div>
+      <svg viewBox="0 0 50 50" class="loginLoading__svg" aria-hidden="true">
+        <circle class="loginLoading__ring" cx="25" cy="25" r="18" />
+        <path class="loginLoading__arc" d="M25 7a18 18 0 0 1 18 18" />
+        <text class="loginLoading__piece" x="25" y="32" text-anchor="middle">将</text>
+      </svg>
       <div class="loginLoading__text">资源加载中...</div>
     </div>
     <section class="loginPopBox" aria-labelledby="login-title">
@@ -245,8 +249,10 @@ onBeforeUnmount(() => {
 
 <style scoped lang="less">
 .login {
-  width: 100vw;
+  width: var(--app-page-width);
   height: 100dvh;
+  margin-right: auto;
+  margin-left: auto;
   .bg-image-var(var(--login-bg-image));
   position: relative;
   overflow: hidden;
@@ -264,13 +270,31 @@ onBeforeUnmount(() => {
     background: #f7e1ad;
   }
 
-  .loginLoading__spinner {
-    width: 44px;
-    height: 44px;
-    border: 4px solid rgba(127, 61, 39, 0.2);
-    border-top-color: #8f2d1f;
-    border-radius: 50%;
-    animation: loginLoadingSpin 760ms linear infinite;
+  .loginLoading__svg {
+    width: 64px;
+    height: 64px;
+    animation: chess-loading-spin 1200ms linear infinite;
+    filter: drop-shadow(0 calc(8 / 430 * var(--app-rpx-base)) calc(12 / 430 * var(--app-rpx-base)) rgba(47, 24, 9, 0.38));
+  }
+
+  .loginLoading__ring {
+    fill: rgba(255, 232, 169, 0.18);
+    stroke: #f0c15c;
+    stroke-width: 3;
+  }
+
+  .loginLoading__arc {
+    fill: none;
+    stroke: #fff0a8;
+    stroke-width: 5;
+    stroke-linecap: round;
+  }
+
+  .loginLoading__piece {
+    fill: #8c2519;
+    font-family: "ChessTitle", "KaiTi", "Microsoft YaHei", serif;
+    font-size: 22px;
+    font-weight: 900;
   }
 
   .loginLoading__text {
@@ -283,7 +307,7 @@ onBeforeUnmount(() => {
     position: absolute;
     top: 30%;
     left: 50%;
-    width: 100vw;
+    width: 100%;
     transform: translateX(-50%);
 
     .el-card {
@@ -308,9 +332,9 @@ onBeforeUnmount(() => {
       text-align: center;
       animation: loginTitlePulse 1.8s ease-in-out infinite;
       text-shadow:
-        calc(2 / 430 * 100vw) calc(2 / 430 * 100vw) 0 #f5d27a,
-        calc(4 / 430 * 100vw) calc(4 / 430 * 100vw) 0 #5b351f,
-        0 calc(6 / 430 * 100vw) calc(12 / 430 * 100vw) rgba(69, 39, 20, 0.35);
+        calc(2 / 430 * var(--app-rpx-base)) calc(2 / 430 * var(--app-rpx-base)) 0 #f5d27a,
+        calc(4 / 430 * var(--app-rpx-base)) calc(4 / 430 * var(--app-rpx-base)) 0 #5b351f,
+        0 calc(6 / 430 * var(--app-rpx-base)) calc(12 / 430 * var(--app-rpx-base)) rgba(69, 39, 20, 0.35);
     }
 
     .el-form {
@@ -360,7 +384,7 @@ onBeforeUnmount(() => {
     }
 
     :deep(.el-button:active) {
-      transform: translateY(calc(3 / 430 * 100vw)) scale(0.98);
+      transform: translateY(calc(3 / 430 * var(--app-rpx-base))) scale(0.98);
       filter: brightness(0.9) saturate(0.95);
     }
 
@@ -379,11 +403,7 @@ onBeforeUnmount(() => {
 @keyframes loginTitlePulse {
   50% {
     transform: scale(1.04);
-    text-shadow: 0 0 calc(12 / 430 * 100vw) #ffd36a;
+    text-shadow: 0 0 calc(12 / 430 * var(--app-rpx-base)) #ffd36a;
   }
-}
-
-@keyframes loginLoadingSpin {
-  to { transform: rotate(360deg); }
 }
 </style>

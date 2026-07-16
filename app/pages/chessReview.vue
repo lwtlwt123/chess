@@ -1,7 +1,11 @@
 <template>
     <div class="review" :style="reviewStyle">
         <div v-if="!pageReady" class="loading">
-            <div v-if="!loadError" class="spinner" aria-hidden="true" />
+            <svg v-if="!loadError" viewBox="0 0 50 50" class="loadingSvg" aria-hidden="true">
+                <circle class="loadingRing" cx="25" cy="25" r="18" />
+                <path class="loadingArc" d="M25 7a18 18 0 0 1 18 18" />
+                <text class="loadingPiece" x="25" y="32" text-anchor="middle">将</text>
+            </svg>
             <div class="loadingText">{{ loadError || '正在加载复盘...' }}</div>
             <button v-if="loadError" type="button" @click="exitReview">返回上一页</button>
         </div>
@@ -108,7 +112,7 @@ const musicEnabled = ref(true)
 let playbackTimer: number | null = null
 
 const reviewStyle = computed(() => ({
-    '--review-bg-image': toCssUrl(assetUrl(assetPaths.lobby.background))
+    '--review-bg-image': toCssUrl(assetUrl(assetPaths.background))
 }))
 const pageReady = computed(() => isDataReady.value && isBoardReady.value && isInitialBoardReady.value)
 const playPauseImg = computed(() => isPlaying.value ? assetPaths.controls.pause : assetPaths.controls.play)
@@ -240,8 +244,10 @@ onBeforeUnmount(stopPlayback)
 
 <style scoped lang="less">
 .review {
-    width: 100%;
+    width: var(--app-page-width);
     min-height: 100dvh;
+    margin-right: auto;
+    margin-left: auto;
     overflow: hidden;
     .bg-image-var(var(--review-bg-image));
 
@@ -286,15 +292,31 @@ onBeforeUnmount(stopPlayback)
             position: relative;
         }
 
-        .spinner {
-            width: 42px;
-            height: 42px;
-            border-width: 4px;
-            border-style: solid;
-            border-color: rgba(135, 86, 53, 0.22);
-            border-top-color: #a23a24;
-            border-radius: 50%;
-            animation: review-spin 760ms linear infinite;
+        .loadingSvg {
+            width: 64px;
+            height: 64px;
+            animation: chess-loading-spin 1200ms linear infinite;
+            filter: drop-shadow(0 calc(8 / 430 * var(--app-rpx-base)) calc(12 / 430 * var(--app-rpx-base)) rgba(47, 24, 9, 0.38));
+        }
+
+        .loadingRing {
+            fill: rgba(255, 232, 169, 0.18);
+            stroke: #f0c15c;
+            stroke-width: 3;
+        }
+
+        .loadingArc {
+            fill: none;
+            stroke: #fff0a8;
+            stroke-width: 5;
+            stroke-linecap: round;
+        }
+
+        .loadingPiece {
+            fill: #8c2519;
+            font-family: "ChessTitle", "KaiTi", "Microsoft YaHei", serif;
+            font-size: 22px;
+            font-weight: 900;
         }
 
         .loadingText {
@@ -447,7 +469,7 @@ onBeforeUnmount(stopPlayback)
     }
 
     .board {
-        width: min(100%, calc((100dvh - (250 / 430 * 100vw)) * 920 / 1010));
+        width: min(100%, calc((100dvh - (250 / 430 * var(--app-rpx-base))) * 920 / 1010));
         min-width: 0;
         min-height: 0;
         margin-right: auto;
@@ -544,7 +566,7 @@ onBeforeUnmount(stopPlayback)
         }
 
         .board {
-            width: min(100%, calc((100dvh - (235 / 430 * 100vw)) * 920 / 1010));
+            width: min(100%, calc((100dvh - (235 / 430 * var(--app-rpx-base))) * 920 / 1010));
         }
 
         .controls {
@@ -554,9 +576,4 @@ onBeforeUnmount(stopPlayback)
     }
 }
 
-@keyframes review-spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
 </style>

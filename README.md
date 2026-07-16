@@ -1,75 +1,52 @@
-# Nuxt Minimal Starter
+# 中国象棋
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+基于 Nuxt 4、Vue 3、MySQL 和 WebSocket 的在线中国象棋项目。
 
-## Setup
+## 本地运行
 
-Make sure to install dependencies:
-
-```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
+要求 Node.js 20+ 和 MySQL 8+。
 
 ```bash
-# npm
+npm ci
 npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
+`npm run dev` 固定读取 `.env.local`，监听 `127.0.0.1:3000`，使用本地 MySQL。HTTP API 使用相对路径，WebSocket 默认跟随浏览器当前地址，因此本地访问会自动连接本地服务。
 
-Build the application for production:
+## 检查与构建
 
 ```bash
-# npm
+npm run typecheck
 npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
 ```
 
-Locally preview production build:
+`npm run build` 固定读取 `.env.production`。需要使用本地环境构建时运行 `npm run build:local`。
+
+## 服务器部署
+
+服务器地址：`192.140.181.6`。
 
 ```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
+npm ci
+npm run build
+npm run start
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+`npm run start` 固定读取 `.env.production`，监听 `0.0.0.0:3001`。服务器原有项目继续使用 `3000`，两者互不影响。生产环境当前配置为：
+
+```dotenv
+NODE_ENV=production
+NITRO_HOST=0.0.0.0
+NITRO_PORT=3001
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_USER=root
+DB_NAME=chess_game
+NUXT_PUBLIC_APP_ORIGIN=http://192.140.181.6:3001
+```
+
+`.env.local` 和 `.env.production` 都不会进入 Git。当前可直接通过 `http://192.140.181.6:3001` 访问。以后使用 Nginx 和独立域名时，可将域名反向代理到 `127.0.0.1:3001`，并同时转发 WebSocket 升级请求。
+
+头像上传文件保存在 `.data/avatars`。部署时将该目录挂载到持久化磁盘并纳入备份，否则重新发布后用户头像会丢失。
+
+正式接口说明见 [docs/chess-api.md](docs/chess-api.md)。

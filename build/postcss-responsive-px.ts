@@ -14,6 +14,9 @@ export const responsivePx = () => ({
 
     declaration.value = declaration.value.replace(PX_RE, (_match, rawValue: string) => {
       const value = Number(rawValue)
+
+      if (value === 0) return '0px'
+
       const min = value * 0.75
       const max = value * 2.45
 

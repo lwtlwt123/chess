@@ -2,6 +2,8 @@ import { defineWebSocketHandler } from 'h3'
 import { verifyToken, type AuthUser } from '../../utils/token'
 import {
   createGame,
+  createStartedGame,
+  deleteLastMoves,
   finishGame as persistFinishedGame,
   saveMove,
   startGame as persistStartedGame
@@ -53,6 +55,10 @@ type ClientMessage =
   | { type: 'movePiece'; roomId?: string; data?: unknown }
   | { type: 'finishRoom'; roomId?: string; winnerCamp?: unknown }
   | { type: 'resignRoom'; roomId?: string }
+  | { type: 'requestDraw'; roomId?: string }
+  | { type: 'declineDraw'; roomId?: string }
+  | { type: 'requestUndo'; roomId?: string }
+  | { type: 'declineUndo'; roomId?: string }
   | { type: 'requestRematch'; roomId?: string }
   | { type: 'declineRematch'; roomId?: string }
 
@@ -63,6 +69,8 @@ const disconnectTimers = new Map<string, Map<Camp, {
   expiresAt: number
   timer: ReturnType<typeof setTimeout>
 }>>()
+const drawRequests = new Map<string, Camp>()
+const undoRequests = new Map<string, Camp>()
 const DISCONNECT_FORFEIT_DELAY = 60_000
 
 const randomCamp = (): Camp => {
@@ -133,12 +141,31 @@ const isMovePayload = (value: unknown): value is MovePayload => {
     && (value.capturedPieceId === null || typeof value.capturedPieceId === 'string')
 }
 
-const sendJson = (peer: { send: (data: unknown) => unknown }, data: unknown) => {
-  peer.send(JSON.stringify(data))
+const getUndoMoveCount = (moves: MovePayload[], requesterCamp: Camp) => {
+  const lastMove = moves[moves.length - 1]
+
+  if (!lastMove) return 0
+  if (lastMove.camp === requesterCamp) return 1
+
+  const requesterLastMove = moves[moves.length - 2]
+  return requesterLastMove?.camp === requesterCamp ? 2 : 0
 }
 
 const isSendablePeer = (value: unknown): value is { send: (data: unknown) => unknown } => {
   return isRecord(value) && typeof value.send === 'function'
+}
+
+const safeSendPayload = (peer: { send: (data: unknown) => unknown }, payload: string) => {
+  try {
+    peer.send(payload)
+    return true
+  } catch {
+    return false
+  }
+}
+
+const sendJson = (peer: { send: (data: unknown) => unknown }, data: unknown) => {
+  return safeSendPayload(peer, JSON.stringify(data))
 }
 
 const broadcastRoom = (roomId: string, data: unknown) => {
@@ -148,7 +175,7 @@ const broadcastRoom = (roomId: string, data: unknown) => {
   roomCampConnections?.forEach((campConnections) => {
     campConnections.forEach((peer) => {
       if (isSendablePeer(peer)) {
-        peer.send(payload)
+        safeSendPayload(peer, payload)
       }
     })
   })
@@ -160,8 +187,21 @@ const broadcastRoomCamp = (roomId: string, camp: Camp, data: unknown) => {
 
   campConnections?.forEach((peer) => {
     if (isSendablePeer(peer)) {
-      peer.send(payload)
+      safeSendPayload(peer, payload)
     }
+  })
+}
+
+const broadcastRoomExcept = (roomId: string, excludedPeer: unknown, data: unknown) => {
+  const roomCampConnections = roomConnections.get(roomId)
+  const payload = JSON.stringify(data)
+
+  roomCampConnections?.forEach((campConnections) => {
+    campConnections.forEach((peer) => {
+      if (peer !== excludedPeer && isSendablePeer(peer)) {
+        safeSendPayload(peer, payload)
+      }
+    })
   })
 }
 
@@ -206,7 +246,7 @@ const broadcastUser = (userId: number, data: unknown) => {
 
   connections?.forEach((peer) => {
     if (isSendablePeer(peer)) {
-      peer.send(payload)
+      safeSendPayload(peer, payload)
     }
   })
 }
@@ -362,6 +402,19 @@ const clearRematchRequest = (room: RoomState) => {
   room.rematchRequestedAt = null
 }
 
+const clearActionRequests = (roomId: string) => {
+  drawRequests.delete(roomId)
+  undoRequests.delete(roomId)
+}
+
+const serializePlayer = (player: RoomPlayer) => ({
+  userId: player.userId,
+  username: player.username,
+  nickname: player.nickname,
+  headImg: player.headImg,
+  camp: player.camp
+})
+
 const reassignRoomConnections = (roomId: string, redPlayer: RoomPlayer, blackPlayer: RoomPlayer) => {
   const roomCampConnections = roomConnections.get(roomId)
 
@@ -400,30 +453,42 @@ const reassignRoomConnections = (roomId: string, redPlayer: RoomPlayer, blackPla
   }
 }
 
-const reassignRoomPlayersForRematch = (room: RoomState) => {
+const getRematchPlayers = (room: RoomState) => {
   const previousRedPlayer = room.redPlayer
   const previousBlackPlayer = room.blackPlayer
 
-  if (!previousRedPlayer || !previousBlackPlayer) return
+  if (!previousRedPlayer || !previousBlackPlayer) return null
 
   const firstCamp = randomCamp()
   const firstPlayer = assignPlayerCamp(previousRedPlayer, firstCamp)
   const secondPlayer = assignPlayerCamp(previousBlackPlayer, oppositeCamp(firstCamp))
+  const redPlayer = firstPlayer.camp === 'red' ? firstPlayer : secondPlayer
+  const blackPlayer = firstPlayer.camp === 'black' ? firstPlayer : secondPlayer
+  const creator = room.creator.userId === redPlayer.userId
+    ? redPlayer
+    : room.creator.userId === blackPlayer.userId
+      ? blackPlayer
+      : room.creator
 
-  room.redPlayer = firstPlayer.camp === 'red' ? firstPlayer : secondPlayer
-  room.blackPlayer = firstPlayer.camp === 'black' ? firstPlayer : secondPlayer
-
-  if (room.creator.userId === room.redPlayer.userId) {
-    room.creator = room.redPlayer
-  } else if (room.creator.userId === room.blackPlayer.userId) {
-    room.creator = room.blackPlayer
-  }
-
-  reassignRoomConnections(room.roomId, room.redPlayer, room.blackPlayer)
+  return { redPlayer, blackPlayer, creator }
 }
 
 const resetRoomForRematch = async (room: RoomState) => {
-  reassignRoomPlayersForRematch(room)
+  const players = getRematchPlayers(room)
+
+  if (!players) throw new Error('重赛玩家信息不存在')
+
+  const nextRoundNo = room.roundNo + 1
+  const gameId = await createStartedGame({
+    roomId: room.roomId,
+    roundNo: nextRoundNo,
+    redUserId: players.redPlayer.userId,
+    blackUserId: players.blackPlayer.userId
+  })
+
+  room.redPlayer = players.redPlayer
+  room.blackPlayer = players.blackPlayer
+  room.creator = players.creator
   room.status = 'playing'
   room.currentCamp = 'red'
   room.moveIndex = 0
@@ -431,24 +496,29 @@ const resetRoomForRematch = async (room: RoomState) => {
   room.winnerCamp = null
   room.finishedReason = null
   room.readyCamps = ['red', 'black']
-  room.roundNo += 1
-  room.gameId = null
-  const gameId = await ensureStoredGame(room)
-  if (!gameId) throw new Error('重赛对局记录创建失败')
-  await persistStartedGame(gameId)
+  room.roundNo = nextRoundNo
+  room.gameId = gameId
+  reassignRoomConnections(room.roomId, players.redPlayer, players.blackPlayer)
   clearRoomDisconnectTimers(room.roomId)
   clearRematchRequest(room)
+  clearActionRequests(room.roomId)
 }
 
-const finishRoom = async (room: RoomState, winnerCamp: Camp, reason: FinishedReason, message: string) => {
-  if (room.winnerCamp) return
+const finishRoom = async (room: RoomState, winnerCamp: Camp | null, reason: FinishedReason, message: string) => {
+  if (room.status === 'finished') return
 
-  const winner = winnerCamp === 'red' ? room.redPlayer : room.blackPlayer
-  if (!room.gameId || !winner) throw new Error('对局记录或胜方不存在')
+  const winner = winnerCamp === 'red'
+    ? room.redPlayer
+    : winnerCamp === 'black'
+      ? room.blackPlayer
+      : null
+
+  if (!room.gameId) throw new Error('对局记录不存在')
+  if (winnerCamp && !winner) throw new Error('胜方不存在')
 
   await persistFinishedGame({
     gameId: room.gameId,
-    winnerUserId: winner.userId,
+    winnerUserId: winner?.userId ?? null,
     winnerCamp,
     reason
   })
@@ -457,6 +527,7 @@ const finishRoom = async (room: RoomState, winnerCamp: Camp, reason: FinishedRea
   room.winnerCamp = winnerCamp
   room.finishedReason = reason
   clearRematchRequest(room)
+  clearActionRequests(room.roomId)
   clearRoomDisconnectTimers(room.roomId)
 
   broadcastRoom(room.roomId, {
@@ -465,6 +536,39 @@ const finishRoom = async (room: RoomState, winnerCamp: Camp, reason: FinishedRea
     message,
     data: getRoomPayload(room)
   })
+}
+
+const getRoomAndPlayer = (
+  peer: { send: (data: unknown) => unknown; context: Record<string, unknown> },
+  data: { roomId?: string }
+) => {
+  const auth = peer.context.auth as AuthUser
+  const roomId = data.roomId?.trim() || (typeof peer.context.roomId === 'string' ? peer.context.roomId : '')
+
+  if (!roomId) {
+    sendMoveRejected(peer, '房间号不能为空')
+    return null
+  }
+
+  const room = rooms.get(roomId)
+
+  if (!room) {
+    sendMoveRejected(peer, '房间不存在', 404)
+    return null
+  }
+
+  const player = findPlayer(room, auth.userId)
+
+  if (!player) {
+    sendMoveRejected(peer, '你不在这个房间里', 403)
+    return null
+  }
+
+  return { roomId, room, player }
+}
+
+const getOpponentPlayer = (room: RoomState, camp: Camp) => {
+  return camp === 'red' ? room.blackPlayer : room.redPlayer
 }
 
 const scheduleDisconnectForfeit = (roomId: string, camp: Camp) => {
@@ -484,7 +588,9 @@ const scheduleDisconnectForfeit = (roomId: string, camp: Camp) => {
       winnerCamp,
       'disconnect',
       `${campText(camp)}掉线超时，${campText(winnerCamp)}胜利`
-    )
+    ).catch((error) => {
+      console.error('处理掉线判负失败:', error)
+    })
   }, DISCONNECT_FORFEIT_DELAY)
 
   getDisconnectTimerMap(roomId).set(camp, {
@@ -514,8 +620,9 @@ export default defineWebSocketHandler({
     trackUserConnection(auth.userId, peer)
   },
 
-  async message(peer, message) {
-    let data: ClientMessage
+  message(peer, message) {
+    void (async () => {
+      let data: ClientMessage
 
     try {
       data = message.json<ClientMessage>()
@@ -629,11 +736,11 @@ export default defineWebSocketHandler({
       trackRoomConnection(roomId, player.camp, peer)
       peer.subscribe(`room:${roomId}`)
 
-      if (room.status === 'finished' && room.winnerCamp) {
+      if (room.status === 'finished') {
         sendJson(peer, {
           type: 'roomFinished',
           code: 200,
-          message: `${campText(room.winnerCamp)}胜利`,
+          message: room.winnerCamp ? `${campText(room.winnerCamp)}胜利` : '双方和棋',
           data: {
             ...getRoomPayload(room),
             camp: player.camp
@@ -642,9 +749,12 @@ export default defineWebSocketHandler({
         return
       }
 
-      if (room.redPlayer && room.blackPlayer) {
-        room.status = 'waiting'
+      if (room.status === 'playing') {
+        sendRoomStartedToPlayers(room, '对局已恢复')
+        return
+      }
 
+      if (room.redPlayer && room.blackPlayer) {
         try {
           await ensureStoredGame(room)
         } catch (error) {
@@ -805,7 +915,7 @@ export default defineWebSocketHandler({
       peer.context.roomId = roomId
       peer.context.camp = player.camp
 
-      peer.publish(`room:${roomId}`, JSON.stringify({
+      broadcastRoomExcept(roomId, peer, {
         type: 'pieceMoved',
         code: 200,
         message: '对方已落子',
@@ -815,7 +925,7 @@ export default defineWebSocketHandler({
           currentCamp: room.currentCamp,
           move
         }
-      }))
+      })
     }
 
     if (data.type === 'finishRoom') {
@@ -895,6 +1005,198 @@ export default defineWebSocketHandler({
       )
     }
 
+    if (data.type === 'requestDraw') {
+      const result = getRoomAndPlayer(peer, data)
+      if (!result) return
+
+      const { roomId, room, player } = result
+
+      if (room.status !== 'playing' || room.winnerCamp) {
+        sendMoveRejected(peer, '当前不能请求和棋')
+        return
+      }
+
+      const opponentCamp = oppositeCamp(player.camp)
+      const opponentPlayer = getOpponentPlayer(room, player.camp)
+
+      if (!opponentPlayer || !hasUserConnection(opponentPlayer.userId)) {
+        sendMoveRejected(peer, '对方不在线，无法请求和棋')
+        return
+      }
+
+      if (drawRequests.get(roomId) === player.camp) {
+        sendMoveRejected(peer, '已发送和棋请求，等待对方确认')
+        return
+      }
+
+      if (drawRequests.get(roomId) === opponentCamp) {
+        clearActionRequests(roomId)
+        await finishRoom(room, null, 'normal', '双方同意和棋')
+        return
+      }
+
+      drawRequests.set(roomId, player.camp)
+
+      broadcastUser(opponentPlayer.userId, {
+        type: 'drawInvite',
+        code: 200,
+        message: `${campText(player.camp)}请求和棋`,
+        data: {
+          roomId,
+          fromCamp: player.camp,
+          fromPlayer: serializePlayer(player)
+        }
+      })
+
+      sendJson(peer, {
+        type: 'drawInviteSent',
+        code: 200,
+        message: '已发送和棋请求'
+      })
+    }
+
+    if (data.type === 'declineDraw') {
+      const result = getRoomAndPlayer(peer, data)
+      if (!result) return
+
+      const { roomId, room, player } = result
+      const requesterCamp = drawRequests.get(roomId)
+
+      if (!requesterCamp || requesterCamp === player.camp) {
+        drawRequests.delete(roomId)
+        return
+      }
+
+      const requesterPlayer = requesterCamp === 'red' ? room.redPlayer : room.blackPlayer
+      drawRequests.delete(roomId)
+
+      if (requesterPlayer) {
+        broadcastUser(requesterPlayer.userId, {
+          type: 'drawInviteDeclined',
+          code: 200,
+          message: `${campText(player.camp)}拒绝了和棋`,
+          data: { roomId, fromCamp: player.camp }
+        })
+      }
+    }
+
+    if (data.type === 'requestUndo') {
+      const result = getRoomAndPlayer(peer, data)
+      if (!result) return
+
+      const { roomId, room, player } = result
+
+      if (room.status !== 'playing' || room.winnerCamp) {
+        sendMoveRejected(peer, '当前不能请求悔棋')
+        return
+      }
+
+      if (!room.gameId) {
+        sendMoveRejected(peer, '还没有可悔的走棋')
+        return
+      }
+
+      const opponentCamp = oppositeCamp(player.camp)
+      const opponentPlayer = getOpponentPlayer(room, player.camp)
+
+      if (!opponentPlayer || !hasUserConnection(opponentPlayer.userId)) {
+        sendMoveRejected(peer, '对方不在线，无法请求悔棋')
+        return
+      }
+
+      if (undoRequests.get(roomId) === player.camp) {
+        sendMoveRejected(peer, '已发送悔棋请求，等待对方确认')
+        return
+      }
+
+      if (undoRequests.get(roomId) === opponentCamp) {
+        const requesterCamp = opponentCamp
+        const undoMoveCount = getUndoMoveCount(room.moves, requesterCamp)
+
+        if (undoMoveCount === 0) {
+          undoRequests.delete(roomId)
+          sendMoveRejected(peer, '还没有可悔的走棋')
+          return
+        }
+
+        const nextMoveIndex = room.moveIndex - undoMoveCount
+
+        try {
+          await deleteLastMoves({
+            gameId: room.gameId,
+            fromStepNo: nextMoveIndex + 1,
+            nextCamp: requesterCamp
+          })
+        } catch (error) {
+          console.error('删除悔棋记录失败:', error)
+          sendMoveRejected(peer, '悔棋记录保存失败')
+          return
+        }
+
+        room.moves.splice(-undoMoveCount, undoMoveCount)
+        room.moveIndex = nextMoveIndex
+        room.currentCamp = requesterCamp
+        clearActionRequests(roomId)
+
+        broadcastRoom(roomId, {
+          type: 'undoAccepted',
+          code: 200,
+          message: `双方同意悔棋，已撤回${undoMoveCount}步`,
+          data: getRoomPayload(room)
+        })
+        return
+      }
+
+      if (getUndoMoveCount(room.moves, player.camp) === 0) {
+        sendMoveRejected(peer, '还没有可悔的走棋')
+        return
+      }
+
+      undoRequests.set(roomId, player.camp)
+
+      broadcastUser(opponentPlayer.userId, {
+        type: 'undoInvite',
+        code: 200,
+        message: `${campText(player.camp)}请求悔棋`,
+        data: {
+          roomId,
+          fromCamp: player.camp,
+          fromPlayer: serializePlayer(player)
+        }
+      })
+
+      sendJson(peer, {
+        type: 'undoInviteSent',
+        code: 200,
+        message: '已发送悔棋请求'
+      })
+    }
+
+    if (data.type === 'declineUndo') {
+      const result = getRoomAndPlayer(peer, data)
+      if (!result) return
+
+      const { roomId, room, player } = result
+      const requesterCamp = undoRequests.get(roomId)
+
+      if (!requesterCamp || requesterCamp === player.camp) {
+        undoRequests.delete(roomId)
+        return
+      }
+
+      const requesterPlayer = requesterCamp === 'red' ? room.redPlayer : room.blackPlayer
+      undoRequests.delete(roomId)
+
+      if (requesterPlayer) {
+        broadcastUser(requesterPlayer.userId, {
+          type: 'undoInviteDeclined',
+          code: 200,
+          message: `${campText(player.camp)}拒绝了悔棋`,
+          data: { roomId, fromCamp: player.camp }
+        })
+      }
+    }
+
     if (data.type === 'requestRematch') {
       const auth = peer.context.auth as AuthUser
       const roomId = data.roomId?.trim() || (typeof peer.context.roomId === 'string' ? peer.context.roomId : '')
@@ -918,7 +1220,7 @@ export default defineWebSocketHandler({
         return
       }
 
-      if (room.status !== 'finished' || !room.winnerCamp) {
+      if (room.status !== 'finished') {
         sendMoveRejected(peer, '对局还没结束')
         return
       }
@@ -937,7 +1239,21 @@ export default defineWebSocketHandler({
       }
 
       if (room.rematchRequestedBy === opponentCamp) {
-        await resetRoomForRematch(room)
+        try {
+          await resetRoomForRematch(room)
+        } catch (error) {
+          console.error('重新开始对局失败:', error)
+          clearRematchRequest(room)
+          sendMoveRejected(peer, '重新开始失败，请重试')
+          broadcastUser(opponentPlayer.userId, {
+            type: 'rematchInviteCanceled',
+            code: 500,
+            message: '重新开始失败，请重试',
+            data: { roomId }
+          })
+          return
+        }
+
         sendRoomStartedToPlayers(room, '双方已重新开始')
         return
       }
@@ -993,7 +1309,7 @@ export default defineWebSocketHandler({
         return
       }
 
-      if (room.status !== 'finished' || !room.winnerCamp) {
+      if (room.status !== 'finished') {
         return
       }
 
@@ -1019,6 +1335,10 @@ export default defineWebSocketHandler({
         })
       }
     }
+    })().catch((error) => {
+      console.error('处理房间消息失败:', error)
+      sendMoveRejected(peer, '服务器处理失败，请重试', 500)
+    })
   },
 
   close(peer) {

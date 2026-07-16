@@ -176,59 +176,6 @@ const result = await $fetch('/api/chess/review', {
 
 返回的 `moves` 字段已经与 `ChessMovePayload` 使用相同的坐标命名，可以交给棋盘的 `applyMoveHistory()`。
 
-## 3. 手动保存走棋记录
-
-```http
-POST /api/addChessInfo
-Content-Type: application/json
-```
-
-> 正常联机对局不需要调用此接口。WebSocket 的 `movePiece` 已经自动写入数据库。该接口用于调试、后台补录或其他非 WebSocket 场景。
-
-请求体：
-
-```json
-{
-  "gameId": 101,
-  "stepNo": 1,
-  "camp": "red",
-  "pieceId": "red-pao-1",
-  "fromX": 1,
-  "fromY": 7,
-  "toX": 4,
-  "toY": 7,
-  "capturedPieceId": null
-}
-```
-
-参数说明：
-
-| 参数 | 类型 | 必填 | 说明 |
-| --- | --- | --- | --- |
-| `gameId` | number | 是 | 对局 ID |
-| `stepNo` | number | 是 | 步数，从 1 开始，同一局不能重复 |
-| `camp` | `red` \| `black` | 是 | 执棋阵营，必须与当前用户一致 |
-| `pieceId` | string | 是 | 移动棋子的 ID，最多 32 字符 |
-| `fromX` | number | 是 | 起点横坐标，0-8 |
-| `fromY` | number | 是 | 起点纵坐标，0-9 |
-| `toX` | number | 是 | 终点横坐标，0-8 |
-| `toY` | number | 是 | 终点纵坐标，0-9 |
-| `capturedPieceId` | string \| null | 是 | 被吃棋子 ID，没有吃棋时传 `null` |
-
-成功响应：
-
-```json
-{
-  "code": 200,
-  "message": "走棋记录保存成功",
-  "data": {
-    "moveId": 501,
-    "gameId": 101,
-    "stepNo": 1
-  }
-}
-```
-
 ## WebSocket 自动持久化
 
 页面不需要额外调用接口保存正常对局。服务端自动处理：

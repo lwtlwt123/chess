@@ -1,9 +1,9 @@
 export const assetPaths = {
+  background: '/chessPrice/backgrounds/tropical-beach-game-bg.svg',
   login: {
     background: '/login-bg.png'
   },
   lobby: {
-    background: '/chessPrice/backgrounds/tropical-beach-game-bg.svg',
     fallbackAvatar: '/chessPrice/lobby-ui/empty_head_img.svg',
     edit: '/chessPrice/lobby-ui/edit.svg',
     title: '/chessPrice/lobby-ui/title-chuhe-hanjie.svg?v=shadow-light',
@@ -19,15 +19,16 @@ export const assetPaths = {
     menuButton: '/chessPrice/lobby-ui/menu-button.svg'
   },
   record: {
-    background: '/chessPrice/backgrounds/tropical-beach-game-bg.svg'
+    arrow: '/right.svg'
   },
   game: {
-    background: '/chessPrice/backgrounds/tropical-beach-game-bg.svg',
-    boardWood: '/chessPrice/xiangqi-board-wood.svg',
-    board: '/chessPrice/xiangqi-board.svg',
-    piecesWood: '/chessPrice/pieces-wood/',
+    board: '/chessPrice/xiangqi-board-wood.svg',
+    pieces: '/chessPrice/pieces-wood/',
     victory: '/chessPrice/victory.svg',
-    defeat: '/chessPrice/defeat.svg'
+    defeat: '/chessPrice/defeat.svg',
+    requestDraw: '/chessPrice/draw-he.svg',
+    requestUndo: '/chessPrice/draw-hui.svg',
+    surrender: '/chessPrice/surrender.svg'
   },
   sounds: {
     drop: '/chessPrice/sounds/pick_piece_fast.wav',
@@ -38,11 +39,10 @@ export const assetPaths = {
     click: '/chessPrice/sounds/click.mp3',
     chessBgm: '/chessPrice/sounds/chessBgm.mp3'
   },
-  controls:{
-    left:'/chessPrice/bg-left.svg',
-    right:'/chessPrice/bg-right.svg',
-    play:'/chessPrice/pause.svg',
-    pause:'/chessPrice/play.svg',
-  },
-  right:'/right.svg'
+  controls: {
+    left: '/chessPrice/bg-left.svg',
+    right: '/chessPrice/bg-right.svg',
+    play: '/chessPrice/pause.svg',
+    pause: '/chessPrice/play.svg'
+  }
 } as const

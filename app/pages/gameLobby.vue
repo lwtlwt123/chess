@@ -22,7 +22,27 @@
       <div class="info">
         <div class="userInfo">
           <div class="img">
-            <img :src="userHeadImg" alt="">
+            <button
+              class="avatarEditor"
+              type="button"
+              aria-label="更换头像"
+              :aria-busy="isUpdatingAvatar"
+              :disabled="isUpdatingAvatar"
+              @click="openAvatarPicker"
+            >
+              <img class="avatarImage" :src="userHeadImg" alt="当前头像">
+              <span class="avatarOverlay" aria-hidden="true">
+                <img class="avatarEditIcon" :src="assetUrl(assetPaths.lobby.edit)" alt="">
+              </span>
+            </button>
+            <input
+              ref="avatarInput"
+              class="avatarInput"
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              tabindex="-1"
+              @change="handleAvatarSelect"
+            >
           </div>
           <div class="nameInfo">
             <div class="name">{{ userInfoData.nickname ? userInfoData.nickname : '未设置账户名' }}
@@ -56,10 +76,10 @@
             查看战绩
           </div>
           <div class="rankingList btn" @click="rankFn">
-            排行榜
+            排行榜(未做)
           </div>
           <div class="settings btn" @click="setFn">
-            设置
+            设置（未做）
           </div>
         </div>
 
@@ -70,7 +90,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted } from 'vue'
+import { computed, h, nextTick, onBeforeUnmount, onMounted } from 'vue'
 import { assetPaths } from '~/constants/assetPaths'
 import { toCssUrl, useAssetUrl } from '~/composables/useAssetUrl'
 import {
@@ -93,6 +113,10 @@ type UserData = {
 }
 
 type EditNameData = UserData & {
+  token: string
+}
+
+type EditAvatarData = UserData & {
   token: string
 }
 
@@ -141,24 +165,6 @@ type MoveRejectedMessage = {
   message: string
 }
 
-type RematchInviteMessage = {
-  type: 'rematchInvite'
-  code: number
-  message: string
-  data: {
-    roomId: string
-    fromCamp: Camp
-    fromPlayer: RoomPlayer
-    requestedAt: number
-  }
-}
-
-type RematchInviteDeclinedMessage = {
-  type: 'rematchInviteDeclined'
-  code: number
-  message: string
-}
-
 type RoomStartedMessage = {
   type: 'roomStarted'
   code: number
@@ -177,8 +183,6 @@ type RoomSocketMessage =
   | RoomCreatedMessage
   | RoomErrorMessage
   | MoveRejectedMessage
-  | RematchInviteMessage
-  | RematchInviteDeclinedMessage
   | RoomWaitingMessage
   | RoomStartedMessage
 
@@ -210,13 +214,14 @@ const userInfoData = ref<UserData>({
 })
 
 const assetUrl = useAssetUrl()
+const roomWebSocketUrl = useRoomWebSocketUrl()
 const userHeadImg = computed(() => {
   return userInfoData.value.headImg
     ? assetUrl(userInfoData.value.headImg)
     : assetUrl(assetPaths.lobby.fallbackAvatar)
 })
 const lobbyAssetStyle = computed<Record<string, string>>(() => ({
-  '--lobby-bg-image': toCssUrl(assetUrl(assetPaths.lobby.background)),
+  '--lobby-bg-image': toCssUrl(assetUrl(assetPaths.background)),
   '--logout-button-image': toCssUrl(assetUrl(assetPaths.lobby.logoutButton)),
   '--user-banner-image': toCssUrl(assetUrl(assetPaths.lobby.userBanner)),
   '--lobby-panel-image': toCssUrl(assetUrl(assetPaths.lobby.panel)),
@@ -228,18 +233,13 @@ const isUserInfoReady = ref(false)
 const isPageLoading = ref(true)
 const isExiting = ref(false)
 const isCreatingRoom = ref(false)
+const isUpdatingAvatar = ref(false)
+const avatarInput = ref<HTMLInputElement | null>(null)
 const musicFlag = ref(true)
 let roomSocket: WebSocket | null = null
 let lobbySocket: WebSocket | null = null
 let lobbyReconnectTimer: number | null = null
 let isLobbyPageActive = false
-let isLobbyRematchPromptOpen = false
-
-const getRoomWsUrl = (token: string) => {
-  const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
-
-  return `${protocol}//${window.location.host}/ws/room?token=${encodeURIComponent(token)}`
-}
 
 const ensureRoomSocketAuth = async () => {
   const token = getAuthToken()
@@ -258,7 +258,7 @@ const createRoomBySocket = async () => {
   return new Promise<RoomCreatedMessage['data']>((resolve, reject) => {
     roomSocket?.close()
 
-    const ws = new WebSocket(getRoomWsUrl(token))
+    const ws = new WebSocket(roomWebSocketUrl(token))
     roomSocket = ws
 
     const timer = window.setTimeout(() => {
@@ -314,7 +314,7 @@ const joinRoomBySocket = async (roomId: string) => {
   return new Promise<RoomData>((resolve, reject) => {
     roomSocket?.close()
 
-    const ws = new WebSocket(getRoomWsUrl(token))
+    const ws = new WebSocket(roomWebSocketUrl(token))
     roomSocket = ws
 
     const timer = window.setTimeout(() => {
@@ -372,16 +372,6 @@ const clearLobbyReconnectTimer = () => {
   lobbyReconnectTimer = null
 }
 
-const sendLobbyRoomCommand = (data: { type: 'requestRematch' | 'declineRematch'; roomId: string }) => {
-  if (!lobbySocket || lobbySocket.readyState !== WebSocket.OPEN) {
-    showChessWarning('房间连接已断开')
-    return false
-  }
-
-  lobbySocket.send(JSON.stringify(data))
-  return true
-}
-
 const getMyCampFromRoom = (room: RoomData) => {
   const auth = getAuthStorage()
 
@@ -407,35 +397,6 @@ const enterRoomFromLobby = async (room: RoomData) => {
   })
 }
 
-const handleLobbyRematchInvite = async (invite: RematchInviteMessage['data']) => {
-  if (isLobbyRematchPromptOpen) return
-
-  isLobbyRematchPromptOpen = true
-
-  const playerName = invite.fromPlayer.nickname || invite.fromPlayer.username || '对方'
-  const accepted = await showChessConfirm({
-    title: '再来一局',
-    message: `${playerName} 邀请你再来一局`,
-    confirmText: '接受',
-    cancelText: '拒绝'
-  })
-
-  isLobbyRematchPromptOpen = false
-
-  if (accepted) {
-    sendLobbyRoomCommand({
-      type: 'requestRematch',
-      roomId: invite.roomId
-    })
-    return
-  }
-
-  sendLobbyRoomCommand({
-    type: 'declineRematch',
-    roomId: invite.roomId
-  })
-}
-
 const handleLobbySocketMessage = (event: MessageEvent) => {
   let data: RoomSocketMessage
 
@@ -445,17 +406,7 @@ const handleLobbySocketMessage = (event: MessageEvent) => {
     return
   }
 
-  if (data.type === 'rematchInvite') {
-    void handleLobbyRematchInvite(data.data)
-    return
-  }
-
-  if (data.type === 'roomStarted') {
-    void enterRoomFromLobby(data.data)
-    return
-  }
-
-  if (data.type === 'moveRejected' || data.type === 'rematchInviteDeclined') {
+  if (data.type === 'moveRejected') {
     showChessWarning(data.message)
   }
 }
@@ -468,7 +419,7 @@ const connectLobbySocket = () => {
 
   clearLobbyReconnectTimer()
 
-  const ws = new WebSocket(getRoomWsUrl(token))
+  const ws = new WebSocket(roomWebSocketUrl(token))
   lobbySocket = ws
 
   ws.onmessage = handleLobbySocketMessage
@@ -572,6 +523,82 @@ const editFn = async () => {
     if (messageType === 'error') showChessError(messageText)
   }
 
+}
+
+const openAvatarPicker = () => {
+  if (isUpdatingAvatar.value || !avatarInput.value) return
+
+  avatarInput.value.value = ''
+  avatarInput.value.click()
+}
+
+const handleAvatarSelect = async (event: Event) => {
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+
+  if (!file) return
+
+  const allowedTypes = ['image/jpeg', 'image/png', 'image/webp']
+
+  if (!allowedTypes.includes(file.type)) {
+    showChessWarning('请选择 JPG、PNG 或 WebP 图片')
+    return
+  }
+
+  if (file.size > 5 * 1024 * 1024) {
+    showChessWarning('头像图片不能超过 5MB')
+    return
+  }
+
+  const previewUrl = URL.createObjectURL(file)
+  const confirmed = await showChessConfirm({
+    title: '更换头像',
+    message: h('div', { class: 'avatar-confirm-content' }, [
+      h('img', {
+        class: 'avatar-confirm-preview',
+        src: previewUrl,
+        alt: '新头像预览'
+      }),
+      h('p', { class: 'avatar-confirm-text' }, '确定使用这张图片作为新头像吗？')
+    ]),
+    confirmText: '确认更换',
+    cancelText: '取消'
+  })
+
+  URL.revokeObjectURL(previewUrl)
+
+  if (!confirmed) return
+
+  const formData = new FormData()
+  formData.append('avatar', file)
+  isUpdatingAvatar.value = true
+  showLoading('头像上传中...')
+
+  try {
+    const res = await apiFetch<EditAvatarData>('/api/avatar', {
+      method: 'POST',
+      body: formData
+    })
+
+    if (res.code !== 200 || !res.data) {
+      showChessWarning(res.message || '头像更换失败')
+      return
+    }
+
+    saveAuthStorage(res.data)
+    userInfoData.value = {
+      userId: String(res.data.userId).padStart(6, '0'),
+      username: res.data.username,
+      nickname: res.data.nickname,
+      headImg: res.data.headImg
+    }
+    showChessSuccess(res.message || '头像更换成功')
+  } catch {
+    showChessError('头像更换失败，请稍后再试')
+  } finally {
+    isUpdatingAvatar.value = false
+    closeLoading()
+  }
 }
 
 const setMusicFn = () => {
@@ -767,9 +794,11 @@ onBeforeUnmount(() => {
 
 <style scoped lang="less">
 .gameLobby {
-  width: 100vw;
+  width: var(--app-page-width);
   height: 100dvh;
   min-height: 100dvh;
+  margin-right: auto;
+  margin-left: auto;
   position: relative;
   overflow: hidden;
   overscroll-behavior: none;
@@ -807,7 +836,7 @@ onBeforeUnmount(() => {
 
 
     .exit:active {
-      transform: translateY(calc(3 / 430 * 100vw)) scale(0.97);
+      transform: translateY(calc(3 / 430 * var(--app-rpx-base))) scale(0.97);
       filter: brightness(0.9) saturate(0.95);
     }
 
@@ -836,7 +865,7 @@ onBeforeUnmount(() => {
     }
 
     .voice:active {
-      transform: translateY(calc(3 / 430 * 100vw)) scale(0.94);
+      transform: translateY(calc(3 / 430 * var(--app-rpx-base))) scale(0.94);
       filter: brightness(0.9) saturate(0.95);
     }
   }
@@ -858,14 +887,14 @@ onBeforeUnmount(() => {
     flex-direction: column;
     gap: 12px;
     background: rgba(31, 17, 8, 0.72);
-    backdrop-filter: blur(calc(2 / 430 * 100vw));
+    backdrop-filter: blur(calc(2 / 430 * var(--app-rpx-base)));
   }
 
   .lobbyLoadingSvg {
     width: 64px;
     height: 64px;
     animation: chess-loading-spin 1200ms linear infinite;
-    filter: drop-shadow(0 calc(8 / 430 * 100vw) calc(12 / 430 * 100vw) rgba(47, 24, 9, 0.38));
+    filter: drop-shadow(0 calc(8 / 430 * var(--app-rpx-base)) calc(12 / 430 * var(--app-rpx-base)) rgba(47, 24, 9, 0.38));
   }
 
   .lobbyLoadingRing {
@@ -894,15 +923,15 @@ onBeforeUnmount(() => {
     font-size: 24px;
     line-height: 1;
     text-shadow:
-      0 calc(2 / 430 * 100vw) 0 #6f3019,
-      0 calc(6 / 430 * 100vw) calc(14 / 430 * 100vw) rgba(0, 0, 0, 0.42);
+      0 calc(2 / 430 * var(--app-rpx-base)) 0 #6f3019,
+      0 calc(6 / 430 * var(--app-rpx-base)) calc(14 / 430 * var(--app-rpx-base)) rgba(0, 0, 0, 0.42);
   }
 
   .info {
     .center();
 
     .userInfo {
-      width: 80vw;
+      width: 80%;
       max-width: 620px;
       aspect-ratio: 620 / 160;
       .bg-image-var(var(--user-banner-image), 100% 100%);
@@ -916,13 +945,79 @@ onBeforeUnmount(() => {
         aspect-ratio: 1;
         transform: translate(-50%, -50%);
         border-radius: 50%;
-        overflow: hidden;
 
-        img {
+        .avatarEditor {
+          position: relative;
+          display: block;
+          width: 100%;
+          height: 100%;
+          padding: 0;
+          overflow: hidden;
+          border: 0;
+          border-radius: 50%;
+          background: #6f3019;
+          cursor: pointer;
+          isolation: isolate;
+        }
+
+        .avatarImage {
           width: 100%;
           height: 100%;
           border-radius: 50%;
           object-fit: cover;
+          transition: transform 160ms ease;
+        }
+
+        .avatarOverlay {
+          position: absolute;
+          inset: 0;
+          z-index: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 50%;
+          background: rgba(45, 23, 12, 0.64);
+          opacity: 0;
+          pointer-events: none;
+          transition: opacity 160ms ease;
+        }
+
+        .avatarEditIcon {
+          width: 34%;
+          height: 34%;
+          filter: brightness(0) invert(1) drop-shadow(0 1px 2px rgba(45, 23, 12, 0.45));
+        }
+
+        .avatarEditor:focus-visible {
+          outline: 2px solid #fff0a8;
+          outline-offset: -3px;
+        }
+
+        .avatarEditor:disabled {
+          cursor: wait;
+        }
+
+        .avatarEditor:disabled .avatarOverlay {
+          opacity: 1;
+        }
+
+        .avatarInput {
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          overflow: hidden;
+          clip: rect(0 0 0 0);
+          clip-path: inset(50%);
+          white-space: nowrap;
+        }
+
+        .avatarEditor:hover .avatarOverlay,
+        .avatarEditor:focus-visible .avatarOverlay {
+          opacity: 1;
+        }
+
+        .avatarEditor:hover .avatarImage {
+          transform: scale(1.06);
         }
 
         // 头像默认图在模板里通过 assetUrl 统一处理。
@@ -967,7 +1062,7 @@ onBeforeUnmount(() => {
 
   .fun {
     position: relative;
-    width: 100vw;
+    width: 100%;
     height: 60vh;
     .bg-image-var(var(--lobby-panel-image), contain);
     display: flex;
@@ -977,7 +1072,7 @@ onBeforeUnmount(() => {
       position: absolute;
       top: 50%;
       left: 50%;
-      width: min(100vw, calc(60vh * 760 / 1180));
+      width: min(100%, calc(60vh * 760 / 1180));
       aspect-ratio: 760 / 1180;
       transform: translate(-50%, -50%);
 
@@ -1004,7 +1099,7 @@ onBeforeUnmount(() => {
       position: absolute;
       top: 50%;
       left: 50%;
-      width: min(100vw, calc(60vh * 760 / 1180));
+      width: min(100%, calc(60vh * 760 / 1180));
       aspect-ratio: 760 / 1180;
       transform: translate(-50%, -50%);
       font-family: "ChessKaiti", "KaiTi", "Microsoft YaHei", serif;
@@ -1057,7 +1152,7 @@ onBeforeUnmount(() => {
 
       .startGame:active,
       .btn:active {
-        transform: translateX(-50%) translateY(calc(3 / 430 * 100vw)) scale(0.97);
+        transform: translateX(-50%) translateY(calc(3 / 430 * var(--app-rpx-base))) scale(0.97);
         filter: brightness(0.9) saturate(0.95);
       }
 
@@ -1107,7 +1202,7 @@ onBeforeUnmount(() => {
 html:has(.gameLobby),
 body:has(.gameLobby),
 body:has(.gameLobby) #__nuxt,
-body:has(.gameLobby) #__nuxt > div {
+body:has(.gameLobby) #__nuxt>div {
   width: 100%;
   height: 100%;
   overflow: hidden;

@@ -1,5 +1,9 @@
 <template>
   <div class="myRecord" :style="recordStyle">
+    <div v-if="isPageLoading" class="recordLoading recordLoading--page">
+      <div class="loadingPiece">将</div>
+      <div class="loadingText">战绩加载中...</div>
+    </div>
     <header class="header">
       <button class="exit" type="button" aria-label="返回大厅" title="返回大厅" @click="exitReview">
         <img :src="assetUrl(assetPaths.lobby.quit)" alt="">
@@ -21,7 +25,7 @@
               {{ userInfo?.nickname || userInfo?.username || '未设置账户名' }}
             </div>
             <div class="id">
-              ID:<span>{{ String(userInfo?.userId).padStart(6, '0') || '--' }}</span>
+              ID:<span>{{ displayUserId }}</span>
               <span>·</span>
               <span>共奕
                 <span>{{ gameInfo.total }}</span>局</span>
@@ -55,11 +59,7 @@
       <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
         <el-tab-pane label="全部" name="first">
           <div class="list" @scroll="handleListScroll">
-            <div v-if="isPageLoading" class="recordLoading">
-              <div class="loadingPiece">将</div>
-              <div class="loadingText">战绩加载中...</div>
-            </div>
-            <div class="line" v-for="value in rankList" :key="value.gameId">
+            <div class="line" :class="`line--${resultClass(value)}`" v-for="value in rankList" :key="value.gameId">
               <div class="info">
                 <div class="result" :class="resultClass(value)">
                   {{ resultText(value) }}
@@ -76,7 +76,7 @@
               </div>
               <button class="review" type="button" @click="openReview(value.gameId)">
                 复盘
-                <img :src="assetUrl(assetPaths.right)" alt="">
+                <img :src="assetUrl(assetPaths.record.arrow)" alt="">
               </button>
             </div>
             <div v-if="isLoadingMore" class="recordLoading">
@@ -88,7 +88,7 @@
         </el-tab-pane>
         <el-tab-pane label="胜局" name="second">
           <div class="list" @scroll="handleListScroll">
-            <div class="line" v-for="value in winList" :key="value.gameId">
+            <div class="line" :class="`line--${resultClass(value)}`" v-for="value in winList" :key="value.gameId">
               <div class="info">
                 <div class="result" :class="resultClass(value)">
                   {{ resultText(value) }}
@@ -105,7 +105,7 @@
               </div>
               <button class="review" type="button" @click="openReview(value.gameId)">
                 复盘
-                <img :src="assetUrl(assetPaths.right)" alt="">
+                <img :src="assetUrl(assetPaths.record.arrow)" alt="">
               </button>
             </div>
             <div v-if="isLoadingMore" class="recordLoading">
@@ -117,7 +117,7 @@
         </el-tab-pane>
         <el-tab-pane label="负局" name="third">
           <div class="list" @scroll="handleListScroll">
-            <div class="line" v-for="value in loseList" :key="value.gameId">
+            <div class="line" :class="`line--${resultClass(value)}`" v-for="value in loseList" :key="value.gameId">
               <div class="info">
                 <div class="result" :class="resultClass(value)">
                   {{ resultText(value) }}
@@ -134,7 +134,7 @@
               </div>
               <button class="review" type="button" @click="openReview(value.gameId)">
                 复盘
-                <img :src="assetUrl(assetPaths.right)" alt="">
+                <img :src="assetUrl(assetPaths.record.arrow)" alt="">
               </button>
             </div>
             <div v-if="isLoadingMore" class="recordLoading">
@@ -146,7 +146,7 @@
         </el-tab-pane>
         <el-tab-pane label="和棋" name="fourth">
           <div class="list" @scroll="handleListScroll">
-            <div class="line" v-for="value in drawList" :key="value.gameId">
+            <div class="line" :class="`line--${resultClass(value)}`" v-for="value in drawList" :key="value.gameId">
               <div class="info">
                 <div class="result" :class="resultClass(value)">
                   {{ resultText(value) }}
@@ -163,7 +163,7 @@
               </div>
               <button class="review" type="button" @click="openReview(value.gameId)">
                 复盘
-                <img :src="assetUrl(assetPaths.right)" alt="">
+                <img :src="assetUrl(assetPaths.record.arrow)" alt="">
               </button>
             </div>
             <div v-if="isLoadingMore" class="recordLoading">
@@ -233,7 +233,7 @@ const isLoadingMore = ref(false)
 const assetUrl = useAssetUrl()
 const { $audio } = useNuxtApp()
 const recordStyle = computed(() => ({
-  '--record-bg-image': toCssUrl(assetUrl(assetPaths.record.background))
+  '--record-bg-image': toCssUrl(assetUrl(assetPaths.background))
 }))
 const winRate = computed(() => {
   if (!gameInfo.value.total) return 0
@@ -245,6 +245,11 @@ const winList = computed(() => rankList.value.filter(item => item.winnerUserId =
 const loseList = computed(() => rankList.value.filter(item => item.winnerUserId !== null && item.winnerUserId !== currentUserId.value))
 const drawList = computed(() => rankList.value.filter(item => item.winnerUserId === null))
 const userAvatar = computed(() => assetUrl(userInfo.value?.headImg || assetPaths.lobby.fallbackAvatar))
+const displayUserId = computed(() => {
+  const userId = userInfo.value?.userId || currentUserId.value
+
+  return userId ? String(userId).padStart(6, '0') : '------'
+})
 
 const handleClick = (tab: TabsPaneContext, event: Event) => {
   // console.log(tab, event)
@@ -357,8 +362,10 @@ onMounted(() => {
 
 <style scoped lang="less">
 .myRecord {
-  width: 100%;
-  min-height: 100dvh;
+  width: var(--app-page-width);
+  height: 100dvh;
+  margin-right: auto;
+  margin-left: auto;
   overflow: hidden;
   .bg-image-var(var(--record-bg-image));
   padding: 15px;
@@ -411,6 +418,7 @@ onMounted(() => {
           img {
             width: 100%;
             height: 100%;
+            border-radius: 50%;
           }
         }
 
@@ -512,13 +520,19 @@ onMounted(() => {
 
       .left {
         span:nth-of-type(1) {
-          color: #ef6258;
+          color: #e35d52;
         }
       }
 
       .center {
         span:nth-of-type(1) {
-          color: #f2ead4;
+          color: #78afe0;
+        }
+      }
+
+      .right {
+        span:nth-of-type(1) {
+          color: #e0aa4f;
         }
       }
     }
@@ -561,18 +575,37 @@ onMounted(() => {
         border-top: 3px solid #e3cc97;
       }
 
-      max-height: 580px;
+      max-height: calc(100dvh - 360px);
       overflow-y: scroll;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
 
       .line {
         width: 100%;
         padding: 20px;
         background-color: #fbefc8;
         border: 3px solid #e3cc97;
+        border-left-width: 6px;
         border-top: none;
         display: flex;
         align-items: center;
         justify-content: space-between;
+        transition: background-color 160ms ease;
+
+        &--win {
+          border-left-color: #b9473e;
+          background-color: #fff0dc;
+        }
+
+        &--lose {
+          border-left-color: #356f9f;
+          background-color: #e6f1fa;
+        }
+
+        &--draw {
+          border-left-color: #b87819;
+          background-color: #fff3cf;
+        }
 
         .info {
           display: flex;
@@ -588,8 +621,8 @@ onMounted(() => {
             border-radius: 50%;
             font-family: "ChessKaiti", "KaiTi", serif;
             font-size: 22px;
-            // color: #b6584a;
             font-weight: 800;
+            border: 2px solid currentColor;
             box-shadow:
               inset 0 2px 4px rgba(255, 255, 255, 0.35),
               inset 0 -4px 6px rgba(88, 45, 18, 0.22),
@@ -598,11 +631,18 @@ onMounted(() => {
           }
 
           .win {
-            color: #b6584a;
+            color: #a9342d;
+            background-color: #f7d8cb;
           }
 
           .lose {
-            color: #303730;
+            color: #285f8e;
+            background-color: #cfe4f5;
+          }
+
+          .draw {
+            color: #8b590f;
+            background-color: #f6d995;
           }
 
           .userInfo {
@@ -724,5 +764,14 @@ onMounted(() => {
 .myRecord>* {
   position: relative;
   z-index: 1;
+}
+</style>
+
+<style lang="less">
+html:has(.myRecord),
+body:has(.myRecord),
+body:has(.myRecord) #__nuxt {
+  height: 100%;
+  overflow: hidden;
 }
 </style>

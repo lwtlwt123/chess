@@ -1,12 +1,5 @@
 import { assetPaths } from '~/constants/assetPaths'
 
-export const chessAssets = {
-  boardWood: assetPaths.game.boardWood,
-  board: assetPaths.game.board,
-  piecesWood: assetPaths.game.piecesWood,
-  gameBackground: assetPaths.game.background
-} as const
-
 export type Camp = 'red' | 'black'
 
 export type PieceName =
@@ -30,7 +23,7 @@ export interface ChessPiece {
 }
 
 const getPieceImgUrl = (camp: Camp, name: PieceName) => {
-  return `${chessAssets.piecesWood}${camp}-${name}.svg`
+  return `${assetPaths.game.pieces}${camp}-${name}.svg`
 }
 
 const initialPiecePositions: Omit<ChessPiece, 'imgUrl'>[] = [

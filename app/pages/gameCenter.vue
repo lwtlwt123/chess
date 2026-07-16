@@ -21,7 +21,10 @@
             <img :src="playerAvatar(opponentInfo)" alt="" class="roomOverlay__avatar">
             <div class="roomOverlay__name">{{ playerName(opponentInfo) }}</div>
             <div class="roomOverlay__id">ID:{{ playerId(opponentInfo) }}</div>
-            <span class="roomOverlay__ready">{{ opponentReady ? '已确认' : '已加入' }}</span>
+            <span class="roomOverlay__ready" :class="{ 'roomOverlay__ready--left': isOpponentDisconnected }">
+              {{ opponentReadyText }}
+            </span>
+            <div v-if="isOpponentDisconnected" class="roomOverlay__waitingDots" aria-hidden="true"><i></i><i></i><i></i></div>
           </div>
           <div v-else class="roomOverlay__player roomOverlay__player--empty">
             <span class="roomOverlay__tag">对方</span>
@@ -44,9 +47,7 @@
           <strong :key="startCountdown" class="roomOverlay__countdown-number">{{ startCountdown }}</strong>
         </div>
         <div v-else-if="roomPhase !== 'error' && !canConfirmReady" class="roomOverlay__loading" aria-hidden="true">
-          <span></span>
-          <span></span>
-          <span></span>
+          <i></i><i></i><i></i>
         </div>
 
         <button v-if="roomLabel" class="roomOverlay__roomId" type="button" @click="copyRoomId">
@@ -58,39 +59,88 @@
     <div class="quit" @click="quitFn">
       <img :src="assetUrl(assetPaths.lobby.quit)" alt="退出">
     </div>
-
-    <div v-show="roomPhase === 'playing' && !winnerCamp" class="status" :class="`status--${turnStatusTone}`">
-      <img :src="turnStatusAvatar" alt="" class="status__icon">
-      <span class="status__text">{{ statusText }}</span>
-    </div>
-
     <button v-show="roomPhase === 'playing'" class="bgm-toggle" type="button" aria-label="声音开关" @click="toggleBgm">
       <img :src="soundIconUrl" alt="" class="bgm-toggle__icon">
     </button>
+    <!-- 用户 -->
+    <div class="user" :class="{ 'user--active': isTopTurn }">
+      <div class="left">
+        <div class="headImg">
+          <img :src="playerAvatar(topPlayerInfo)" alt="">
+        </div>
+        <div class="userInfo">
+          <div class="name">
+            {{ topPlayerLabel }}：{{ topDisplayName }}
+          </div>
+          <div class="info">
+            <span>{{ topCampText }}</span>
+            <span>·</span>
+            <span>ID:{{ topDisplayId }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="waitBtn">
+        <span>{{ topStatusText }}</span>
+      </div>
+    </div>
 
     <!-- 棋盘画布：绘制和点击逻辑都在 useChessBoard 里处理 -->
     <div class="board">
       <ChessBoardCanvas ref="boardRef" :player-camp="myCamp" :active="isBoardActive" @move="sendRoomMove"
         @finish="sendRoomFinish" />
     </div>
+    <div class="user user1" :class="{ 'user--active': isBottomTurn }">
+      <div class="left">
+        <div class="headImg">
+          <img :src="playerAvatar(bottomPlayerInfo)" alt="">
+        </div>
+        <div class="userInfo">
+          <div class="name">
+            {{ bottomPlayerLabel }}：{{ bottomDisplayName }}
+          </div>
+          <div class="info">
+            <span>{{ bottomCampText }}</span>
+            <span>·</span>
+            <span>ID:{{ bottomDisplayId }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="waitBtn youBtn">
+        <span>{{ bottomStatusText }}</span>
+      </div>
+    </div>
 
-    <!-- 胜利失败弹出框 -->
-    <div class="gameStatus" v-show="winnerCamp">
-      <GameVictory v-show="isWinnerView" @retry="requestRematch" @review="openReview" :roomId="roomId" />
-      <GameDefeat v-show="!isWinnerView" @retry="requestRematch" @review="openReview" :roomId="roomId" />
+    <div v-show="roomPhase === 'playing' && !isGameFinished" class="actionBtns">
+      <button type="button" @click="requestUndo">
+        <img :src="assetUrl(assetPaths.game.requestUndo)" alt="">
+        <span>悔棋</span>
+      </button>
+      <button type="button" @click="requestDraw">
+        <img :src="assetUrl(assetPaths.game.requestDraw)" alt="">
+        <span>和棋</span>
+      </button>
+      <button type="button" @click="surrenderGame">
+        <img :src="assetUrl(assetPaths.game.surrender)" alt="">
+        <span>投降</span>
+      </button>
+    </div>
+
+    <div v-show="isGameFinished" class="gameStatus">
+      <GameResultDialog :result="gameResult" :rematch-requested="rematchRequested"
+        @retry="requestRematch" @review="openReview" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ElMessageBox } from 'element-plus'
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { assetPaths } from '~/constants/assetPaths'
-import { chessAssets, type Camp } from '~/data/chessPieceData'
+import type { Camp } from '~/data/chessPieceData'
 import { toCssUrl, useAssetUrl } from '~/composables/useAssetUrl'
 import { getAuthStorage, getAuthToken } from '~/utils/auth'
 import type { ChessMovePayload } from '~/composables/useChessBoard'
 import ChessBoardCanvas from '~/components/game/ChessBoardCanvas.vue'
+import GameResultDialog from '~/components/game/GameResultDialog.vue'
 
 type RoomPhase = 'connecting' | 'waiting' | 'loading' | 'playing' | 'error'
 type FinishedReason = 'disconnect' | 'resign' | 'normal'
@@ -156,23 +206,22 @@ type RoomSocketMessage =
     }
   }
   | {
-    type: 'rematchInvite'
+    type: 'drawInvite' | 'undoInvite'
     code: number
     message: string
     data: {
       roomId: string
       fromCamp: Camp
       fromPlayer: RoomPlayer
-      requestedAt: number
     }
   }
   | {
-    type: 'rematchInviteSent'
+    type: 'rematchInviteSent' | 'drawInviteSent' | 'undoInviteSent'
     code: number
     message: string
   }
   | {
-    type: 'rematchInviteDeclined'
+    type: 'rematchInviteDeclined' | 'drawInviteDeclined' | 'undoInviteDeclined'
     code: number
     message: string
     data: {
@@ -192,9 +241,13 @@ type RoomSocketMessage =
     type: 'roomFinished'
     code: number
     message: string
-    data: RoomData & {
-      winnerCamp: Camp
-    }
+    data: RoomData
+  }
+  | {
+    type: 'undoAccepted'
+    code: number
+    message: string
+    data: RoomData
   }
   | {
     type: 'error'
@@ -212,12 +265,14 @@ const roomMoves = ref<ChessMovePayload[]>([])
 const isBoardSynced = ref(false)
 const localPlayer = ref<RoomPlayer | null>(null)
 const disconnectExpiresAt = ref<number | null>(null)
+const disconnectedCamp = ref<Camp | null>(null)
 const disconnectNow = ref(Date.now())
 const rematchRequested = ref(false)
 const startCountdown = ref(3)
-const isRematchPromptOpen = ref(false)
+const isActionPromptOpen = ref(false)
 const { $audio } = useNuxtApp()
 const assetUrl = useAssetUrl()
+const roomWebSocketUrl = useRoomWebSocketUrl()
 
 const roomId = computed(() => {
   return typeof route.query.roomId === 'string' ? route.query.roomId : ''
@@ -237,7 +292,8 @@ let enterBoardTimer: number | null = null
 let startCountdownTimer: number | null = null
 let isEnterDelayDone = false
 let disconnectCountdownTimer: number | null = null
-let rematchPromptSeq = 0
+let isLeavingRoom = false
+let roomCloseMessage = ''
 
 const playBgm = () => {
   $audio.stop('chess_bgm')
@@ -273,20 +329,6 @@ const soundIconUrl = computed(() => {
   return isBgmPlaying.value
     ? assetUrl(assetPaths.lobby.voice)
     : assetUrl(assetPaths.lobby.noVoice)
-})
-
-const turnStatusText = computed(() => {
-  if (winnerCamp.value) return `${campText(winnerCamp.value)}胜利`
-  if (checkedCamp.value) return checkedCamp.value === myCamp.value ? '我方被将军' : '对方被将军'
-
-  return currentCamp.value === myCamp.value ? '我方走棋' : '对方走棋'
-})
-
-const turnStatusTone = computed(() => {
-  if (winnerCamp.value) return winnerCamp.value
-  if (checkedCamp.value) return checkedCamp.value
-
-  return currentCamp.value
 })
 
 const sendRoomMove = (move: ChessMovePayload) => {
@@ -353,15 +395,15 @@ const syncBoardFromRoom = () => {
 }
 
 const currentCamp = computed(() => boardRef.value?.currentCamp ?? 'red')
-const checkedCamp = computed(() => boardRef.value?.checkedCamp ?? null)
 const winnerCamp = computed(() => boardRef.value?.winnerCamp ?? null)
+const isGameFinished = computed(() => roomData.value?.status === 'finished' || Boolean(winnerCamp.value))
 const isBoardReady = computed(() => boardRef.value?.isBoardReady ?? false)
 const applyRemoteMove = (move: ChessMovePayload) => boardRef.value?.applyRemoteMove(move) ?? false
 const applyMoveHistory = (moves: ChessMovePayload[]) => boardRef.value?.applyMoveHistory(moves)
 const finishGame = (winner: Camp, options?: { playSound?: boolean }) => boardRef.value?.finishGame(winner, options)
 
 const gameCenterStyle = computed(() => ({
-  '--game-background-image': toCssUrl(assetUrl(chessAssets.gameBackground))
+  '--game-background-image': toCssUrl(assetUrl(assetPaths.background))
 }))
 
 const playerByCamp = (camp: Camp) => {
@@ -380,10 +422,6 @@ const playerAvatar = (player: RoomPlayer | null) => {
     : assetUrl(assetPaths.lobby.fallbackAvatar)
 }
 
-const turnStatusAvatar = computed(() => {
-  return playerAvatar(playerByCamp(currentCamp.value))
-})
-
 const playerName = (player: RoomPlayer) => player.nickname || player.username || campText(player.camp)
 const playerId = (player: RoomPlayer) => String(player.userId).padStart(6, '0')
 const myPlayerInfo = computed(() => {
@@ -394,11 +432,46 @@ const opponentInfo = computed(() => {
   if (!myCamp.value) return null
   return playerByCamp(myCamp.value === 'red' ? 'black' : 'red')
 })
+const topCamp = computed<Camp>(() => 'black')
+const bottomCamp = computed<Camp>(() => 'red')
+const topPlayerInfo = computed(() => playerByCamp(topCamp.value))
+const bottomPlayerInfo = computed(() => playerByCamp(bottomCamp.value))
+const isMyCamp = (camp: Camp) => myCamp.value === camp
+const playerLabel = (camp: Camp) => isMyCamp(camp) ? '我方' : '对方'
+const playerStatusText = (camp: Camp, player: RoomPlayer | null) => {
+  if (!player) return '等待'
+  if (isGameFinished.value) {
+    if (!roomData.value?.winnerCamp) return '和棋'
+    return roomData.value.winnerCamp === camp ? '胜利' : '失败'
+  }
+  if (roomPhase.value !== 'playing') return '等待'
+  if (currentCamp.value !== camp) return '等待'
+
+  return isMyCamp(camp) ? '轮到你' : '对方走棋'
+}
+const isTopTurn = computed(() => roomPhase.value === 'playing' && currentCamp.value === topCamp.value)
+const isBottomTurn = computed(() => roomPhase.value === 'playing' && currentCamp.value === bottomCamp.value)
+const topPlayerLabel = computed(() => playerLabel(topCamp.value))
+const bottomPlayerLabel = computed(() => playerLabel(bottomCamp.value))
+const topDisplayName = computed(() => topPlayerInfo.value ? playerName(topPlayerInfo.value) : '等待加入')
+const bottomDisplayName = computed(() => bottomPlayerInfo.value ? playerName(bottomPlayerInfo.value) : '等待加入')
+const topDisplayId = computed(() => topPlayerInfo.value ? playerId(topPlayerInfo.value) : '------')
+const bottomDisplayId = computed(() => bottomPlayerInfo.value ? playerId(bottomPlayerInfo.value) : '------')
+const topCampText = computed(() => campText(topCamp.value))
+const bottomCampText = computed(() => campText(bottomCamp.value))
+const topStatusText = computed(() => playerStatusText(topCamp.value, topPlayerInfo.value))
+const bottomStatusText = computed(() => playerStatusText(bottomCamp.value, bottomPlayerInfo.value))
 const roomLabel = computed(() => roomData.value?.roomId || roomId.value)
 const myReady = computed(() => Boolean(myCamp.value && roomData.value?.readyCamps?.includes(myCamp.value)))
 const opponentReady = computed(() => {
   if (!myCamp.value) return false
   return Boolean(roomData.value?.readyCamps?.includes(myCamp.value === 'red' ? 'black' : 'red'))
+})
+const isOpponentDisconnected = computed(() => Boolean(myCamp.value && disconnectedCamp.value === (myCamp.value === 'red' ? 'black' : 'red')))
+const opponentReadyText = computed(() => {
+  if (isOpponentDisconnected.value) return '等待重连'
+
+  return opponentReady.value ? '已确认' : '已加入'
 })
 const canConfirmReady = computed(() => {
   return roomPhase.value === 'waiting'
@@ -446,32 +519,29 @@ const overlayMessage = computed(() => {
   return ''
 })
 
-const statusText = computed(() => {
-  return turnStatusText.value
-})
-
 const isWinnerView = computed(() => {
-  if (!winnerCamp.value) return false
+  if (!roomData.value?.winnerCamp && !winnerCamp.value) return false
   if (!myCamp.value) return true
 
-  return winnerCamp.value === myCamp.value
+  return (roomData.value?.winnerCamp ?? winnerCamp.value) === myCamp.value
+})
+const isDrawView = computed(() => roomData.value?.status === 'finished' && !roomData.value.winnerCamp)
+const gameResult = computed<'victory' | 'defeat' | 'draw'>(() => {
+  if (isDrawView.value) return 'draw'
+  return isWinnerView.value ? 'victory' : 'defeat'
 })
 
 const clearRematchUiState = () => {
   rematchRequested.value = false
-  rematchPromptSeq += 1
-
-  if (isRematchPromptOpen.value) {
-    ElMessageBox.close()
-    isRematchPromptOpen.value = false
-  }
 }
 
-const finishRoomGame = (winner: Camp) => {
+const finishRoomGame = (winner: Camp | null) => {
   clearDisconnectCountdown()
   clearRematchUiState()
   roomPhase.value = 'playing'
   roomMessage.value = ''
+  if (!winner) return
+
   finishGame(winner, {
     playSound: !myCamp.value || winner === myCamp.value
   })
@@ -479,6 +549,7 @@ const finishRoomGame = (winner: Camp) => {
 
 const clearDisconnectCountdown = () => {
   disconnectExpiresAt.value = null
+  disconnectedCamp.value = null
 
   if (disconnectCountdownTimer) {
     window.clearInterval(disconnectCountdownTimer)
@@ -501,7 +572,9 @@ const startDisconnectCountdown = (expiresAt: number) => {
   }, 1000)
 }
 
-const sendRoomCommand = (type: 'requestRematch' | 'declineRematch') => {
+const sendRoomCommand = (
+  type: 'requestRematch' | 'requestDraw' | 'declineDraw' | 'requestUndo' | 'declineUndo' | 'resignRoom'
+) => {
   if (!roomId.value) return false
 
   const ws = roomSocket.value
@@ -520,12 +593,9 @@ const sendRoomCommand = (type: 'requestRematch' | 'declineRematch') => {
 }
 
 const requestRematch = () => {
-  if (!roomId.value || !winnerCamp.value) return
+  if (!roomId.value || !isGameFinished.value) return
 
-  if (rematchRequested.value) {
-    showChessInfo('已发送邀请，等待对方确认')
-    return
-  }
+  if (rematchRequested.value) return
 
   if (sendRoomCommand('requestRematch')) {
     rematchRequested.value = true
@@ -540,46 +610,83 @@ const openReview = async () => {
     return
   }
 
+  isLeavingRoom = true
   await navigateTo({
     path: '/chessReview',
-    query: { gameId: String(gameId) }
+    query: {
+      gameId: String(gameId),
+      roomId: roomId.value,
+      ...(myCamp.value ? { camp: myCamp.value } : {})
+    }
   })
 }
 
-const declineRematch = () => {
-  sendRoomCommand('declineRematch')
+const requestDraw = async () => {
+  if (!roomId.value || isGameFinished.value) return
+
+  const ok = await showChessConfirm({
+    title: '请求和棋',
+    message: '确定向对方请求和棋吗？',
+    confirmText: '请求',
+    cancelText: '取消'
+  })
+
+  if (!ok) return
+  sendRoomCommand('requestDraw')
 }
 
-const handleIncomingRematchInvite = async (invite: {
+const requestUndo = async () => {
+  if (!roomId.value || isGameFinished.value) return
+
+  const ok = await showChessConfirm({
+    title: '请求悔棋',
+    message: '确定向对方请求悔棋吗？',
+    confirmText: '请求',
+    cancelText: '取消'
+  })
+
+  if (!ok) return
+  sendRoomCommand('requestUndo')
+}
+
+const surrenderGame = async () => {
+  if (!roomId.value || isGameFinished.value) return
+
+  const ok = await showChessConfirm({
+    title: '投降',
+    message: '确定要投降认输吗？',
+    confirmText: '投降',
+    cancelText: '取消'
+  })
+
+  if (!ok) return
+  sendRoomCommand('resignRoom')
+}
+
+const handleIncomingActionInvite = async (invite: {
+  type: 'draw' | 'undo'
   fromCamp: Camp
   fromPlayer: RoomPlayer
 }) => {
-  if (invite.fromCamp === myCamp.value || isRematchPromptOpen.value) return
+  if (invite.fromCamp === myCamp.value || isActionPromptOpen.value) return
 
-  const promptSeq = rematchPromptSeq + 1
-  rematchPromptSeq = promptSeq
-  isRematchPromptOpen.value = true
-
-  const playerName = invite.fromPlayer.nickname || invite.fromPlayer.username || campText(invite.fromCamp)
+  isActionPromptOpen.value = true
+  const name = invite.fromPlayer.nickname || invite.fromPlayer.username || campText(invite.fromCamp)
+  const isDraw = invite.type === 'draw'
   const accepted = await showChessConfirm({
-    title: '再来一局',
-    message: `${playerName} 邀请你再来一局`,
-    confirmText: '接受',
+    title: isDraw ? '请求和棋' : '请求悔棋',
+    message: `${name} ${isDraw ? '请求和棋' : '请求悔棋'}，是否同意？`,
+    confirmText: '同意',
     cancelText: '拒绝'
   })
-
-  if (rematchPromptSeq !== promptSeq) return
-
-  isRematchPromptOpen.value = false
+  isActionPromptOpen.value = false
 
   if (accepted) {
-    if (sendRoomCommand('requestRematch')) {
-      rematchRequested.value = true
-    }
+    sendRoomCommand(isDraw ? 'requestDraw' : 'requestUndo')
     return
   }
 
-  declineRematch()
+  sendRoomCommand(isDraw ? 'declineDraw' : 'declineUndo')
 }
 
 const copyRoomId = async () => {
@@ -618,6 +725,7 @@ const closeRoomOverlay = async () => {
 
   if (!confirmed) return
 
+  isLeavingRoom = true
   await navigateTo('/gameLobby', { replace: true })
 }
 
@@ -668,10 +776,25 @@ const scheduleEnterBoard = () => {
   }, 2400)
 }
 
-const getRoomWsUrl = (token: string) => {
-  const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
+const enterStartedRoom = (data: RoomData, message: string) => {
+  clearDisconnectCountdown()
+  clearRematchUiState()
+  applyRoomSnapshot(data)
+  roomPhase.value = 'loading'
+  roomMessage.value = message
+  scheduleEnterBoard()
+  syncBoardFromRoom()
+}
 
-  return `${protocol}//${window.location.host}/ws/room?token=${encodeURIComponent(token)}`
+const leaveRoomAfterDisconnect = () => {
+  if (isLeavingRoom) return
+
+  isLeavingRoom = true
+  clearDisconnectCountdown()
+  clearRematchUiState()
+  stopBgm()
+  showChessWarning(roomCloseMessage || '房间连接已断开，已返回游戏大厅')
+  void navigateTo('/gameLobby', { replace: true })
 }
 
 const connectRoomSocket = () => {
@@ -684,12 +807,12 @@ const connectRoomSocket = () => {
   const token = getAuthToken()
 
   if (!token) {
-    roomPhase.value = 'error'
-    roomMessage.value = '登录已过期，请重新登录'
+    roomCloseMessage = '登录已过期，请重新登录'
+    leaveRoomAfterDisconnect()
     return
   }
 
-  const ws = new WebSocket(getRoomWsUrl(token))
+  const ws = new WebSocket(roomWebSocketUrl(token))
   roomSocket.value = ws
 
   ws.onopen = () => {
@@ -733,36 +856,65 @@ const connectRoomSocket = () => {
       return
     }
 
+    if (message.type === 'undoAccepted') {
+      applyRoomSnapshot(message.data)
+      roomPhase.value = 'playing'
+      syncBoardFromRoom()
+      showChessSuccess(message.message || '悔棋成功')
+      return
+    }
+
     if (message.type === 'opponentLeft') {
       if (message.data.camp !== myCamp.value) {
         roomPhase.value = 'waiting'
         roomMessage.value = ''
+        disconnectedCamp.value = message.data.camp
         startDisconnectCountdown(message.data.expiresAt)
+        disconnectedCamp.value = message.data.camp
       }
 
       return
     }
 
-    if (message.type === 'rematchInvite') {
-      void handleIncomingRematchInvite(message.data)
+    if (message.type === 'drawInvite') {
+      void handleIncomingActionInvite({
+        type: 'draw',
+        fromCamp: message.data.fromCamp,
+        fromPlayer: message.data.fromPlayer
+      })
+      return
+    }
+
+    if (message.type === 'undoInvite') {
+      void handleIncomingActionInvite({
+        type: 'undo',
+        fromCamp: message.data.fromCamp,
+        fromPlayer: message.data.fromPlayer
+      })
       return
     }
 
     if (message.type === 'rematchInviteSent') {
       rematchRequested.value = true
-      showChessInfo(message.message)
+      return
+    }
+
+    if (message.type === 'drawInviteSent' || message.type === 'undoInviteSent') {
       return
     }
 
     if (message.type === 'rematchInviteDeclined') {
       clearRematchUiState()
+      return
+    }
+
+    if (message.type === 'drawInviteDeclined' || message.type === 'undoInviteDeclined') {
       showChessWarning(message.message)
       return
     }
 
     if (message.type === 'rematchInviteCanceled') {
       clearRematchUiState()
-      showChessInfo(message.message)
       return
     }
 
@@ -771,8 +923,10 @@ const connectRoomSocket = () => {
       applyRoomSnapshot(message.data)
       syncBoardFromRoom()
 
-      if (!winnerCamp.value) {
+      if (!winnerCamp.value && message.data.winnerCamp) {
         finishRoomGame(message.data.winnerCamp)
+      } else if (!message.data.winnerCamp) {
+        finishRoomGame(null)
       }
 
       return
@@ -781,12 +935,17 @@ const connectRoomSocket = () => {
     if (message.type === 'error') {
       roomPhase.value = 'error'
       roomMessage.value = message.message
+      roomCloseMessage = message.message
       ws.close()
-      showChessError(message.message)
       return
     }
 
     if (message.type === 'roomWaiting') {
+      if (message.data.status === 'playing') {
+        enterStartedRoom(message.data, '对局已恢复')
+        return
+      }
+
       clearDisconnectCountdown()
       clearRematchUiState()
       applyRoomSnapshot(message.data)
@@ -797,13 +956,7 @@ const connectRoomSocket = () => {
     }
 
     if (message.type === 'roomStarted') {
-      clearDisconnectCountdown()
-      clearRematchUiState()
-      applyRoomSnapshot(message.data)
-      roomPhase.value = 'loading'
-      roomMessage.value = message.message
-      scheduleEnterBoard()
-      syncBoardFromRoom()
+      enterStartedRoom(message.data, message.message)
     }
   }
 
@@ -813,14 +966,10 @@ const connectRoomSocket = () => {
   }
 
   ws.onclose = () => {
-    if (roomSocket.value === ws) {
-      roomSocket.value = null
-    }
+    if (roomSocket.value !== ws) return
 
-    if (roomPhase.value === 'connecting') {
-      roomPhase.value = 'error'
-      roomMessage.value = '房间连接失败'
-    }
+    roomSocket.value = null
+    leaveRoomAfterDisconnect()
   }
 }
 
@@ -845,6 +994,7 @@ const quitFn = async () => {
 
   clearDisconnectCountdown()
   clearRematchUiState()
+  isLeavingRoom = true
   roomSocket.value = null
   ws?.close(1000, 'quit room')
   await navigateTo('/gameLobby', { replace: true })
@@ -870,6 +1020,7 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
+  isLeavingRoom = true
   roomSocket.value?.close()
   stopBgm()
   clearDisconnectCountdown()
@@ -888,8 +1039,10 @@ onBeforeUnmount(() => {
 <style scoped lang="less">
 .gameCenter {
 
-  width: 100%;
+  width: var(--app-page-width);
   height: 100dvh;
+  margin-right: auto;
+  margin-left: auto;
   position: relative;
   display: flex;
   align-items: center;
@@ -902,12 +1055,173 @@ onBeforeUnmount(() => {
   background-position: center;
   background-repeat: no-repeat;
 
+  .user {
+    background-color: #192622;
+    width: 65%;
+    height: 70px;
+    position: absolute;
+    top: 8%;
+    left: 5%;
+    border-radius: 15px;
+    border: 3px solid #ab8a4b;
+    padding: 6px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .left {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+
+      .headImg {
+        flex: 0 0 auto;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        border: 2px solid #ab8a4b;
+        margin-right: 10px;
+
+        img {
+          border-radius: 50%;
+          width: 100%;
+          height: 100%;
+
+        }
+      }
+
+      .userInfo {
+        min-width: 0;
+        color: #f5e8b9;
+
+        .name {
+          overflow: hidden;
+          font-size: 16px;
+          font-weight: 1000;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .info {
+          overflow: hidden;
+          font-size: 13px;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+    }
+
+    .waitBtn {
+      flex: 0 0 auto;
+
+      span {
+        padding: 3px 15px;
+        border-radius: 20px;
+        background-color: #7d6842;
+      }
+    }
+
+    &.user--active {
+      border-color: #5cff9b;
+      box-shadow:
+        inset 0 0 0 2px rgba(255, 236, 151, 0.72),
+        0 0 0 4px rgba(92, 255, 155, 0.34),
+        0 0 24px rgba(92, 255, 155, 0.78),
+        0 10px 22px rgba(25, 67, 36, 0.36);
+      animation: userActiveGlow 1.5s ease-in-out infinite;
+
+      .headImg {
+        border-color: #5cff9b;
+        box-shadow:
+          0 0 0 2px rgba(255, 236, 151, 0.6),
+          0 0 16px rgba(92, 255, 155, 0.88);
+          border-radius: 50%;
+      }
+
+      .waitBtn {
+        span {
+          color: #2b2719;
+          background: linear-gradient(180deg, #ffe88d, #f5c85b);
+          box-shadow: 0 3px 8px rgba(92, 56, 18, 0.3);
+        }
+      }
+    }
+  }
+
+  .user1 {
+    top: auto;
+    right: 5%;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 86px);
+    left: auto;
+    width: 70%;
+
+    .youBtn {
+      span {
+        background-color: #f5d270;
+      }
+    }
+  }
+
+  .actionBtns {
+    position: absolute;
+    left: 50%;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 14px);
+    z-index: 6;
+    width: min(78%, 330px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(8px, calc(12 / 430 * var(--app-rpx-base)), 12px);
+    transform: translateX(-50%);
+
+    button {
+      flex: 1;
+      min-width: 0;
+      padding: 0;
+      border: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(2px, calc(4 / 430 * var(--app-rpx-base)), 4px);
+      color: #f5e8b9;
+      background: transparent;
+      font-family: "ChessKaiti", "KaiTi", "Microsoft YaHei", serif;
+      font-size: clamp(11px, calc(13 / 430 * var(--app-rpx-base)), 13px);
+      font-weight: 800;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      transition:
+        transform 120ms ease,
+        filter 120ms ease;
+
+      &:active {
+        transform: translateY(calc(2 / 430 * var(--app-rpx-base))) scale(0.94);
+        filter: brightness(0.9);
+      }
+
+      img {
+        width: clamp(34px, calc(42 / 430 * var(--app-rpx-base)), 42px);
+        height: clamp(34px, calc(42 / 430 * var(--app-rpx-base)), 42px);
+        object-fit: contain;
+        filter: drop-shadow(0 calc(4 / 430 * var(--app-rpx-base)) calc(7 / 430 * var(--app-rpx-base)) rgba(42, 22, 10, 0.28));
+      }
+
+      span {
+        line-height: 1;
+        text-shadow: 0 calc(2 / 430 * var(--app-rpx-base)) calc(4 / 430 * var(--app-rpx-base)) rgba(50, 27, 12, 0.4);
+      }
+    }
+  }
+
   .board {
-    width: min(100%, calc(96dvh * 920 / 1010));
+    width: min(100%, calc((100dvh - 280px - env(safe-area-inset-bottom, 0px)) * 920 / 1010));
     max-width: 920px;
     aspect-ratio: 920 / 1010;
     position: absolute;
-    top: 14%;
+    top: 16%;
 
     canvas {
       width: 100%;
@@ -953,12 +1267,12 @@ onBeforeUnmount(() => {
     justify-content: center;
     padding: 24px;
     background: rgba(45, 27, 13, 0.62);
-    backdrop-filter: blur(calc(2 / 430 * 100vw));
+    backdrop-filter: blur(calc(2 / 430 * var(--app-rpx-base)));
   }
 
   .roomOverlay__panel {
     position: relative;
-    width: min(82vw, calc(430 / 430 * 100vw));
+    width: min(82vw, var(--app-rpx-base));
     max-width: 430px;
     min-height: 300px;
     padding: 28px;
@@ -970,11 +1284,11 @@ onBeforeUnmount(() => {
     background:
       linear-gradient(180deg, rgba(119, 51, 21, 0.96), rgba(71, 31, 15, 0.96)),
       #6f3019;
-    border: calc(2 / 430 * 100vw) solid rgba(255, 218, 126, 0.78);
+    border: calc(2 / 430 * var(--app-rpx-base)) solid rgba(255, 218, 126, 0.78);
     border-radius: 8px;
     box-shadow:
-      0 calc(16 / 430 * 100vw) calc(42 / 430 * 100vw) rgba(0, 0, 0, 0.36),
-      inset 0 0 0 calc(1 / 430 * 100vw) rgba(255, 245, 203, 0.26);
+      0 calc(16 / 430 * var(--app-rpx-base)) calc(42 / 430 * var(--app-rpx-base)) rgba(0, 0, 0, 0.36),
+      inset 0 0 0 calc(1 / 430 * var(--app-rpx-base)) rgba(255, 245, 203, 0.26);
     font-family: "ChessKaiti", "KaiTi", "Microsoft YaHei", serif;
   }
 
@@ -1046,8 +1360,8 @@ onBeforeUnmount(() => {
     line-height: 1;
     font-weight: 800;
     text-shadow:
-      0 calc(2 / 430 * 100vw) 0 #6f3019,
-      0 calc(8 / 430 * 100vw) calc(16 / 430 * 100vw) rgba(0, 0, 0, 0.3);
+      0 calc(2 / 430 * var(--app-rpx-base)) 0 #6f3019,
+      0 calc(8 / 430 * var(--app-rpx-base)) calc(16 / 430 * var(--app-rpx-base)) rgba(0, 0, 0, 0.3);
   }
 
   .roomOverlay__players {
@@ -1066,7 +1380,7 @@ onBeforeUnmount(() => {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border: calc(1 / 430 * 100vw) solid rgba(255, 224, 139, 0.3);
+    border: calc(1 / 430 * var(--app-rpx-base)) solid rgba(255, 224, 139, 0.3);
     border-radius: 8px;
     background: rgba(255, 237, 181, 0.11);
   }
@@ -1095,7 +1409,7 @@ onBeforeUnmount(() => {
     height: 54px;
     border-radius: 50%;
     object-fit: cover;
-    border: calc(2 / 430 * 100vw) solid rgba(255, 232, 166, 0.82);
+    border: calc(2 / 430 * var(--app-rpx-base)) solid rgba(255, 232, 166, 0.82);
     background: #ecd9b2;
   }
 
@@ -1127,12 +1441,17 @@ onBeforeUnmount(() => {
     font-size: 10px;
   }
 
+  .roomOverlay__ready--left {
+    color: #fff0bd;
+    background: rgba(158, 95, 45, 0.48);
+  }
+
   .roomOverlay__emptyAvatar {
     width: 54px;
     height: 54px;
     display: grid;
     place-items: center;
-    border: calc(2 / 430 * 100vw) dashed rgba(255, 226, 154, 0.4);
+    border: calc(2 / 430 * var(--app-rpx-base)) dashed rgba(255, 226, 154, 0.4);
     border-radius: 50%;
     color: rgba(255, 232, 166, 0.55);
     font-size: 25px;
@@ -1168,7 +1487,7 @@ onBeforeUnmount(() => {
   }
 
   .roomOverlay__message {
-    min-height: calc(24 / 430 * 100vw);
+    min-height: calc(24 / 430 * var(--app-rpx-base));
     font-size: 20px;
     line-height: 1.25;
     color: #ffe9a7;
@@ -1181,20 +1500,19 @@ onBeforeUnmount(() => {
     justify-content: center;
     gap: 8px;
 
-    span {
-      width: 12px;
-      height: 12px;
+    i {
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
       background: #ffe29a;
-      box-shadow: 0 0 calc(12 / 430 * 100vw) rgba(255, 226, 154, 0.72);
       animation: room-waiting-dot 920ms ease-in-out infinite;
     }
 
-    span:nth-child(2) {
+    i:nth-child(2) {
       animation-delay: 120ms;
     }
 
-    span:nth-child(3) {
+    i:nth-child(3) {
       animation-delay: 240ms;
     }
   }
@@ -1219,7 +1537,7 @@ onBeforeUnmount(() => {
   }
 
   .roomOverlay__roomId {
-    min-width: min(64vw, calc(280 / 430 * 100vw));
+    min-width: min(64vw, calc(280 / 430 * var(--app-rpx-base)));
     min-height: 48px;
     padding: 8px;
     display: flex;
@@ -1230,7 +1548,7 @@ onBeforeUnmount(() => {
     appearance: none;
     -webkit-appearance: none;
     background: rgba(255, 239, 195, 0.1);
-    border: calc(1 / 430 * 100vw) solid rgba(255, 224, 139, 0.38);
+    border: calc(1 / 430 * var(--app-rpx-base)) solid rgba(255, 224, 139, 0.38);
     border-radius: 8px;
     color: #f2c86d;
     font: inherit;
@@ -1248,13 +1566,13 @@ onBeforeUnmount(() => {
   }
 
   .roomOverlay__roomId:active {
-    transform: translateY(calc(2 / 430 * 100vw)) scale(0.98);
+    transform: translateY(calc(2 / 430 * var(--app-rpx-base))) scale(0.98);
     filter: brightness(0.94);
   }
 
   .roomOverlay__roomId:focus-visible {
-    outline: calc(2 / 430 * 100vw) solid rgba(255, 236, 181, 0.7);
-    outline-offset: calc(2 / 430 * 100vw);
+    outline: calc(2 / 430 * var(--app-rpx-base)) solid rgba(255, 236, 181, 0.7);
+    outline-offset: calc(2 / 430 * var(--app-rpx-base));
   }
 
   .roomOverlay__roomIdText {
@@ -1272,63 +1590,6 @@ onBeforeUnmount(() => {
     inset: 0;
     z-index: 20;
     overflow: hidden;
-  }
-
-  .status {
-    position: absolute;
-    z-index: 4;
-    top: 2vh;
-    left: 50%;
-    transform: translateX(-50%);
-    min-width: 128px;
-    height: 44px;
-    padding-left: 12px;
-    padding-right: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    background: rgba(255, 248, 226, 0.94);
-    border-width: 1px;
-    border-style: solid;
-    border-color: rgba(146, 90, 33, 0.34);
-    border-radius: 8px;
-    color: #5a371c;
-    font-family: "ChessKaiti", "KaiTi", "Microsoft YaHei", serif;
-    box-shadow:
-      0 calc(6 / 430 * 100vw) calc(18 / 430 * 100vw) rgba(64, 45, 24, 0.18),
-      inset 0 0 0 calc(1 / 430 * 100vw) rgba(255, 255, 255, 0.42);
-    pointer-events: none;
-  }
-
-  .status__icon {
-    width: 26px;
-    height: 26px;
-    display: block;
-    flex: 0 0 auto;
-    border-radius: 50%;
-    object-fit: cover;
-    background: #ecd9b2;
-    box-shadow: 0 0 0 2px rgba(255, 232, 166, 0.82);
-  }
-
-  .status__text {
-    font-size: 18px;
-    line-height: 1;
-    font-weight: 800;
-    white-space: nowrap;
-  }
-
-  .status--red {
-    background: rgba(255, 243, 210, 0.96);
-    border-color: rgba(181, 83, 43, 0.46);
-    color: #9d2820;
-  }
-
-  .status--black {
-    background: rgba(238, 232, 222, 0.96);
-    border-color: rgba(22, 18, 14, 0.42);
-    color: #19140f;
   }
 
   .bgm-toggle {
@@ -1357,7 +1618,7 @@ onBeforeUnmount(() => {
   }
 
   .bgm-toggle:active {
-    transform: translateY(calc(2 / 430 * 100vw)) scale(0.94);
+    transform: translateY(calc(2 / 430 * var(--app-rpx-base))) scale(0.94);
     filter: brightness(0.92);
   }
 
@@ -1366,7 +1627,7 @@ onBeforeUnmount(() => {
     height: 100%;
     display: block;
     object-fit: contain;
-    filter: drop-shadow(0 calc(4 / 430 * 100vw) calc(6 / 430 * 100vw) rgba(64, 45, 24, 0.2));
+    filter: drop-shadow(0 calc(4 / 430 * var(--app-rpx-base)) calc(6 / 430 * var(--app-rpx-base)) rgba(64, 45, 24, 0.2));
   }
 
 }
@@ -1380,7 +1641,7 @@ onBeforeUnmount(() => {
   }
 
   50% {
-    transform: translateY(calc(-7 / 430 * 100vw)) scale(1);
+    transform: translateY(calc(-7 / 430 * var(--app-rpx-base))) scale(1);
     opacity: 1;
   }
 }
@@ -1399,6 +1660,16 @@ onBeforeUnmount(() => {
   100% {
     opacity: 0.86;
     transform: scale(0.94);
+  }
+}
+
+@keyframes userActiveGlow {
+  50% {
+    box-shadow:
+      inset 0 0 0 2px rgba(255, 236, 151, 0.86),
+      0 0 0 6px rgba(92, 255, 155, 0.42),
+      0 0 34px rgba(92, 255, 155, 0.96),
+      0 10px 22px rgba(25, 67, 36, 0.36);
   }
 }
 </style>

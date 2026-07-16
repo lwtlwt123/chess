@@ -6,6 +6,7 @@
 </template>
 
 <script setup lang="ts">
+import { ElMessageBox } from 'element-plus'
 import { onBeforeUnmount, onMounted, watch } from 'vue'
 import { assetPaths } from '~/constants/assetPaths'
 import { useAssetUrl } from '~/composables/useAssetUrl'
@@ -29,8 +30,109 @@ let handleButtonSound: ((event: PointerEvent) => void) | null = null
 let presenceSocket: WebSocket | null = null
 let presenceToken = ''
 let presenceReconnectTimer: number | null = null
+let presenceRematchPromptOpen = false
+let presenceRematchPromptSeq = 0
+let isEnteringRematchRoom = false
 const assetUrl = useAssetUrl()
+const roomWebSocketUrl = useRoomWebSocketUrl()
 const route = useRoute()
+
+type PresenceRematchInvite = {
+  roomId: string
+  fromCamp: 'red' | 'black'
+  fromPlayer: {
+    username: string
+    nickname: string | null
+  }
+  requestedAt: number
+}
+
+type PresenceSocketMessage =
+  | { type: 'rematchInvite'; message: string; data: PresenceRematchInvite }
+  | { type: 'roomStarted'; message: string; data: { roomId: string; camp?: 'red' | 'black' } }
+  | { type: 'moveRejected' | 'rematchInviteDeclined' | 'rematchInviteCanceled' | 'error'; message: string }
+
+const isGameCenterRoute = () => route.path === '/gameCenter'
+
+const closePresenceRematchPrompt = () => {
+  presenceRematchPromptSeq += 1
+
+  if (!presenceRematchPromptOpen) return
+
+  presenceRematchPromptOpen = false
+  ElMessageBox.close()
+}
+
+const sendPresenceRoomCommand = (type: 'requestRematch' | 'declineRematch', roomId: string) => {
+  const socket = presenceSocket
+
+  if (!socket || socket.readyState !== WebSocket.OPEN) {
+    showChessWarning('房间连接已断开')
+    return false
+  }
+
+  socket.send(JSON.stringify({ type, roomId }))
+  return true
+}
+
+const handlePresenceRematchInvite = async (invite: PresenceRematchInvite) => {
+  if (presenceRematchPromptOpen) return
+
+  const promptSeq = presenceRematchPromptSeq + 1
+  presenceRematchPromptSeq = promptSeq
+  presenceRematchPromptOpen = true
+
+  const playerName = invite.fromPlayer.nickname || invite.fromPlayer.username || '对方'
+  const accepted = await showChessConfirm({
+    title: '再来一局',
+    message: `${playerName} 邀请你再来一局`,
+    confirmText: '接受',
+    cancelText: '拒绝'
+  })
+
+  if (presenceRematchPromptSeq !== promptSeq) return
+
+  presenceRematchPromptOpen = false
+  sendPresenceRoomCommand(accepted ? 'requestRematch' : 'declineRematch', invite.roomId)
+}
+
+const enterRematchRoom = async (data: { roomId: string; camp?: 'red' | 'black' }) => {
+  if (isGameCenterRoute() || isEnteringRematchRoom) return
+
+  isEnteringRematchRoom = true
+  closePresenceRematchPrompt()
+
+  await navigateTo({
+    path: '/gameCenter',
+    query: {
+      roomId: data.roomId,
+      ...(data.camp ? { camp: data.camp } : {})
+    }
+  })
+}
+
+const handlePresenceSocketMessage = (event: MessageEvent) => {
+  let message: PresenceSocketMessage
+
+  try {
+    message = JSON.parse(event.data) as PresenceSocketMessage
+  } catch {
+    return
+  }
+
+  if (message.type === 'rematchInvite') {
+    void handlePresenceRematchInvite(message.data)
+    return
+  }
+
+  if (message.type === 'roomStarted') {
+    void enterRematchRoom(message.data)
+    return
+  }
+
+  closePresenceRematchPrompt()
+  showChessWarning(message.message)
+}
 
 const clearPresenceReconnect = () => {
   if (presenceReconnectTimer === null) return
@@ -40,6 +142,7 @@ const clearPresenceReconnect = () => {
 
 const closePresence = () => {
   clearPresenceReconnect()
+  closePresenceRematchPrompt()
   const socket = presenceSocket
   presenceSocket = null
   presenceToken = ''
@@ -58,9 +161,9 @@ const connectPresence = () => {
 
   closePresence()
   presenceToken = token
-  const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
-  const socket = new WebSocket(`${protocol}//${window.location.host}/ws/room?token=${encodeURIComponent(token)}`)
+  const socket = new WebSocket(roomWebSocketUrl(token))
   presenceSocket = socket
+  socket.onmessage = handlePresenceSocketMessage
 
   socket.onclose = () => {
     if (presenceSocket !== socket) return
@@ -122,7 +225,10 @@ onMounted(() => {
 })
 
 watch(() => route.fullPath, () => {
-  if (import.meta.client) connectPresence()
+  if (!import.meta.client) return
+
+  isEnteringRematchRoom = false
+  connectPresence()
 })
 
 onBeforeUnmount(() => {
